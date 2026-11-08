@@ -18,9 +18,10 @@ const steps = [
 ];
 
 const work = [
-  { img: "[Sharporders screenshot]", tag: "MOBILE APP · MVP", name: "Sharporders", d: "[One line on what it does.] Live on both app stores." },
-  { img: "[Napollo Music screenshot]", tag: "[TYPE] · MVP", name: "Napollo Music", d: "[One line on what it does.] [Result.]" },
-  { img: "[Booking platform screenshot]", tag: "BOOKING PLATFORMS · ONGOING CTO SUPPORT", name: "Jara Beach Resort and Lufasi Lodges", d: "Built from scratch, supported ever since. [With permission.]" },
+  { imgs: ["/work/nexuss-hero.jpg"], href: "/our-work/nexuss", tag: "HERITAGE PLATFORM · MOBILE AND WEB", name: "Nexuss", d: "One home for Nigeria’s family stories. 165 screens, live on iOS, Android and web." },
+  { imgs: ["/work/jara-hero.jpg", "/work/lufasi-hero.jpg"], href: "/our-work", tag: "BOOKING PLATFORMS · ONGOING CTO SUPPORT", name: "Jara Beach Resort and Lufasi Lodges", d: "Built from scratch, supported ever since. [With permission.]" },
+  { label: "[Sharporders screenshot]", href: "/our-work/sharporders", tag: "MOBILE APP · MVP", name: "Sharporders", d: "[One line on what it does.] Live on both app stores." },
+  { label: "[Napollo Music screenshot]", href: "/our-work", tag: "[TYPE] · MVP", name: "Napollo Music", d: "[One line on what it does.] [Result.]" },
 ];
 
 export default function Home() {
@@ -105,14 +106,21 @@ export default function Home() {
           <span className="md:hidden">Our work</span>
           <span className="hidden md:inline">Products we have taken from idea to launch</span>
         </h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
+        <div className="mt-10 grid gap-8 md:grid-cols-2">
           {work.map((w, i) => (
-            <article key={w.name} className={i > 0 ? "hidden md:block" : ""}>
-              <div className="grid aspect-[16/10] place-items-center rounded-2xl bg-slate-200 px-4 text-center text-slate-600">{w.img}</div>
+            <Link key={w.name} href={w.href} className={`group ${i > 0 ? "hidden md:block" : ""}`}>
+              {w.imgs ? (
+                <div className="flex aspect-[16/10] items-center justify-center gap-3 overflow-hidden rounded-2xl bg-navy p-4 md:p-5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {w.imgs.map((src) => <img key={src} src={src} alt={`${w.name} screenshot`} className={`h-auto rounded-lg shadow-lg ${w.imgs.length > 1 ? "w-1/2" : "max-h-full w-auto max-w-full"}`} />)}
+                </div>
+              ) : (
+                <div className="grid aspect-[16/10] place-items-center rounded-2xl bg-slate-200 px-4 text-center text-slate-600">{w.label}</div>
+              )}
               <p className="mt-5 text-xs font-bold uppercase tracking-wide text-signal">{w.tag}</p>
-              <h3 className="mt-1 text-xl font-bold">{w.name}</h3>
+              <h3 className="mt-1 text-xl font-bold group-hover:text-signal">{w.name}</h3>
               <p className="mt-2 leading-relaxed text-slate-600">{w.d}</p>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
