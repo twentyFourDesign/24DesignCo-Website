@@ -6,6 +6,7 @@ export type CaseStudyData = {
   eyebrow: string;
   title: string;
   url?: string;
+  hero?: string;
   intro: string;
   meta: [string, string][];
   stats: [string, string][]; // [value, label]
@@ -14,7 +15,7 @@ export type CaseStudyData = {
   stages: { no: string; name: string; title: string; points: string[] }[];
   look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
   design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
-  extra?: { eyebrow: string; title: string; body: string[]; shots: string[] };
+  extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
   run: { title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
   results: [string, string, string][]; // [label, value, description]
@@ -45,7 +46,12 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
                 ))}
               </dl>
             </div>
-            <Placeholder label={`[${d.name} hero screenshot]`} className="aspect-[16/10] bg-navy-2 text-slate-400" />
+            {d.hero ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={d.hero} alt={`${d.name} screenshot`} className="h-auto w-full rounded-xl shadow-2xl shadow-black/40" />
+            ) : (
+              <Placeholder label={`[${d.name} hero screenshot]`} className="aspect-[16/10]" />
+            )}
           </div>
         </div>
       </section>
@@ -176,7 +182,12 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{d.extra.title}</h2>
             {d.extra.body.map((p) => <p key={p} className="mt-4 max-w-2xl text-lg text-slate-600">{p}</p>)}
             <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {d.extra.shots.map((s) => <Placeholder key={s} label={s} className="aspect-[16/10] bg-white" />)}
+              {d.extra.shots.map((s, i) => typeof s === "string" ? (
+                <Placeholder key={s} label={s} className="aspect-[16/10] bg-white" />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={s[1]} src={s[1]} alt={s[0]} className={`h-auto w-full rounded-xl shadow-lg ${i === 0 && d.extra!.shots.length === 3 ? "md:col-span-2" : ""}`} />
+              ))}
             </div>
           </Section>
         </section>

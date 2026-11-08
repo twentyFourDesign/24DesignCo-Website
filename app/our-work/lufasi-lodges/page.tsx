@@ -11,6 +11,7 @@ const data: CaseStudyData = {
   eyebrow: "Case study · Hospitality · Web app",
   title: "Lufasi Lodges: a night in the forest, booked online, from idea to launch",
   url: "booking.lufasilodges.com",
+  hero: "/work/lufasi-hero.jpg",
   intro: "We took Lufasi Lodges from an idea to a live booking system. That meant the guest booking flow, the admin dashboard behind it, the build, and running it after launch.",
   meta: [["Client", "Lufasi Lodges"], ["Platforms", "Web: guest booking and admin"], ["Services", "Discovery, UI/UX, web app build, launch, CTO as a Service"], ["Live at", "booking.lufasilodges.com"]],
   stats: [["6", "Steps from picking dates to a confirmed booking"], ["9", "Admin modules, from bookings and pricing to vouchers and reports"], ["[X]", "Weeks from idea to launch"], ["[N]", "Bookings taken online since launch"]],

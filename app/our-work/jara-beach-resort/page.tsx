@@ -11,6 +11,7 @@ const data: CaseStudyData = {
   eyebrow: "Case study · Hospitality · Web app",
   title: "Jara Beach Resort: every way to the beach, booked online, from idea to launch",
   url: "booking.jarabeachresort.com",
+  hero: "/work/jara-hero.jpg",
   intro: "We took Jara Beach Resort from an idea to one booking system for overnight stays, day passes, retreats and live events. That meant the guest booking flow, the back office behind it, the build, and running it after launch.",
   meta: [["Client", "Jara Beach Resort"], ["Platforms", "Web: guest booking and back office"], ["Services", "Discovery, UI/UX, web app build, launch, CTO as a Service"], ["Live at", "booking.jarabeachresort.com"]],
   stats: [["4", "Ways to book: overnight, day pass, retreats and live events"], ["13", "Back-office modules, from guests and staff to payments and Club 100"], ["[X]", "Weeks from idea to launch"], ["[N]", "Bookings taken online since launch"]],

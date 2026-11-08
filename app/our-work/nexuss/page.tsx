@@ -11,6 +11,7 @@ const data: CaseStudyData = {
   eyebrow: "Case study · Heritage platform · Mobile and web",
   title: "Nexuss: one home for Nigeria's family stories, from idea to launch",
   url: "nexussapp.com",
+  hero: "/work/nexuss-hero.jpg",
   intro: "We took Nexuss from a founder's idea to a live product. That meant the brand, 165 screens across mobile and web, the build, and the launch campaign.",
   meta: [["Client", "Nexuss"], ["Platforms", "iOS, Android, web"], ["Services", "Discovery, brand, UI/UX, MVP build, launch"], ["Live at", "nexussapp.com"]],
   stats: [["165", "Screens designed: 113 for the mobile app and 52 for the web app"], ["5", "Stages from first workshop to public launch"], ["[X]", "Weeks from idea to launch"], ["[N]", "Families signed up in the first [period]"]],
@@ -61,7 +62,7 @@ const data: CaseStudyData = {
     eyebrow: "The web app",
     title: "The same family, on a bigger screen",
     body: ["Most family research happens at a desk. The web app has every mobile feature, plus a desktop dashboard for the admins who check Country history."],
-    shots: ["[nexussapp.com/tree screenshot]", "[nexussapp.com/history screenshot]", "[nexussapp.com/admin/review screenshot]"],
+    shots: [["nexussapp.com/tree", "/work/nexuss-web-tree.jpg"], ["nexussapp.com/history", "/work/nexuss-web-history.jpg"], ["nexussapp.com/admin/review", "/work/nexuss-web-admin.jpg"]],
   },
   run: {
     title: "Built lean, launched on a date that matters",

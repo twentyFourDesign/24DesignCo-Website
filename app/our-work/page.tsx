@@ -7,8 +7,8 @@ export const metadata: Metadata = { title: "Our Work | 24 Design Co." };
 const Tag = ({ children }: { children: string }) => <p className="mt-5 text-xs font-bold uppercase tracking-wide text-signal">{children}</p>;
 
 const partners = [
-  { name: "Jara Beach Resort", bg: "#9DD4D3", fg: "#111111", href: "/our-work/jara-beach-resort", blurb: "A custom booking system for a beach resort, designed around how the resort actually runs, and supported by us since launch." },
-  { name: "Lufasi Lodges", bg: "#ECEAE0", fg: "#0E472F", href: "/our-work/lufasi-lodges", blurb: "A custom booking system built from scratch for Lufasi Lodges, and supported by us since launch." },
+  { name: "Jara Beach Resort", logo: "/work/logo-jara.jpg", href: "/our-work/jara-beach-resort", blurb: "A custom booking system for a beach resort, designed around how the resort actually runs, and supported by us since launch." },
+  { name: "Lufasi Lodges", logo: "/work/logo-lufasi.jpg", href: "/our-work/lufasi-lodges", blurb: "A custom booking system built from scratch for Lufasi Lodges, and supported by us since launch." },
 ];
 
 export default function Page() {
@@ -52,9 +52,8 @@ export default function Page() {
         <div className="mt-10 grid gap-8 md:grid-cols-2">
           {partners.map((p) => (
             <article key={p.name} className="overflow-hidden rounded-2xl bg-white shadow-sm">
-              <div className="grid h-56 place-items-center px-6 text-center" style={{ backgroundColor: p.bg }}>
-                <span className="font-display text-4xl font-extrabold tracking-tight" style={{ color: p.fg }}>{p.name.toUpperCase()}</span>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.logo} alt={`${p.name} logo`} className="h-auto w-full" />
               <div className="p-7 md:p-8">
                 <Tag>BOOKING PLATFORM · ONGOING CTO SUPPORT</Tag>
                 <h3 className="mt-1 text-2xl font-bold">{p.name}</h3>
