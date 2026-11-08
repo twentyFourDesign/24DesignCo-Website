@@ -65,8 +65,8 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-navy pb-24 text-center text-sm text-slate-300 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-5 py-8 md:px-8">
-        <span className="hidden md:inline">Plot 1A, Road 3, Ikota Villa, Lekki, Lagos · [phone] · [email]</span>
-        <span className="md:hidden">Lekki, Lagos · [phone] · [email]</span>
+        <span className="hidden md:inline">1A, Road 3, Ikota Villa Estate, Lekki, Lagos · +234 70445 44455 · info@24group.com.ng</span>
+        <span className="md:hidden">Lekki, Lagos · +234 70445 44455 · info@24group.com.ng</span>
       </div>
     </footer>
   );
