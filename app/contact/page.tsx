@@ -23,7 +23,6 @@ export default function Page() {
               <ul className="mt-6 space-y-2 text-slate-700">
                 <li><strong>Phone:</strong> +234 70445 44455</li>
                 <li><strong>Email:</strong> info@24group.com.ng</li>
-                <li><strong>Address:</strong> 1A, Road 3, Ikota Villa Estate, Lekki, Lagos</li>
                 <li><strong>Replies:</strong> within one business day</li>
               </ul>
             </div>

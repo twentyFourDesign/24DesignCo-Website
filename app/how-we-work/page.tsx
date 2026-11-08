@@ -34,7 +34,7 @@ export default function Page() {
           <div className="rounded-2xl bg-white p-8"><Eyebrow>Communication</Eyebrow><h3 className="mt-3 text-2xl font-bold">How we communicate</h3>
             <Check items={["One point of contact", "A demo every two weeks", "A shared project board", "A weekly update"]} /></div>
           <div className="rounded-2xl bg-white p-8"><Eyebrow>Payment</Eyebrow><h3 className="mt-3 text-2xl font-bold">How you pay</h3>
-            <Check items={["Discovery: [upfront]", "MVP: milestone payments", "CTO Partner: monthly", "USD or GBP invoicing available"]} /></div>
+            <Check items={["Discovery: upfront", "MVP: milestone payments", "CTO Partner: monthly", "USD or GBP invoicing available"]} /></div>
           <div className="rounded-2xl bg-white p-8"><Eyebrow>Ownership</Eyebrow><h3 className="mt-3 text-2xl font-bold">What you own</h3>
             <p className="mt-5 text-slate-700">Code, designs and documentation, transferred on final payment.</p></div>
         </div>

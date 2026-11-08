@@ -59,13 +59,12 @@ export default function Page() {
                 <h3 className="mt-1 text-2xl font-bold">{p.name}</h3>
                 <p className="mt-2 text-slate-600">{p.blurb}</p>
                 <Check items={["Booking system built from scratch", "Maintenance, security monitoring and backups", "Ongoing CTO support and roadmap"]} />
-                <dl className="mt-7 grid grid-cols-3 gap-4 border-t border-slate-200 pt-6">
-                  {[["[N]", "Bookings handled"], ["[N]", "Years supported"], ["[N]%", "Uptime"]].map(([v, l]) => (
+                <dl className="mt-7 grid grid-cols-2 gap-4 border-t border-slate-200 pt-6">
+                  {[["5", "Years supported"], ["99%", "Uptime"]].map(([v, l]) => (
                     <div key={l}><dt className="sr-only">{l}</dt><dd className="font-display text-2xl font-extrabold">{v}</dd><p className="text-sm text-slate-600">{l}</p></div>
                   ))}
                 </dl>
-                <div className="mt-6 flex items-center justify-between text-sm">
-                  <span className="text-slate-600">Partner since [year]</span>
+                <div className="mt-6 flex justify-end">
                   <Link href={p.href} className="text-base font-semibold text-signal">Read the story →</Link>
                 </div>
               </div>

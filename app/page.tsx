@@ -72,7 +72,7 @@ export default function Home() {
       <section className="bg-cloud">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-2 px-5 py-6 text-[15px] font-semibold md:flex-row md:justify-between md:px-8">
           <span>Live on the App Store and Google Play</span>
-          <span>Building software in Lagos since [year]</span>
+          <span>Building products and software in Lagos since 2008</span>
           <span className="hidden md:inline">Founders in [markets served]</span>
         </div>
       </section>

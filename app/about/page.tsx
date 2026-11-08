@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <main>
       <PageHero eyebrow="About" title="We help founders turn ideas into products, and stay on as their technical team.">
-        Building software in Lagos since [year].
+        Building products and software in Lagos since 2008.
       </PageHero>
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2">
