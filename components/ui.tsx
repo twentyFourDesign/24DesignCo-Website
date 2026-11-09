@@ -66,6 +66,7 @@ export function Footer() {
     <footer className="border-t border-white/10 bg-navy pb-24 text-center text-sm text-slate-300 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-5 py-8 md:px-8">
         <span>+234 70445 44455 · info@24group.com.ng</span>
+        <p className="mt-2 text-xs text-slate-400">24 Design Co. is a trading name of 24 Discovery Limited, RC 1733408.</p>
       </div>
     </footer>
   );
