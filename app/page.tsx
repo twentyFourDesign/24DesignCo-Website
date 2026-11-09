@@ -19,7 +19,8 @@ const steps = [
 
 const work = [
   { imgs: ["/work/nexuss-hero.jpg"], href: "/our-work/nexuss", tag: "HERITAGE PLATFORM · MOBILE AND WEB", name: "Nexuss", d: "One home for Nigeria’s family stories. 165 screens, live on iOS, Android and web." },
-  { imgs: ["/work/jara-hero.jpg", "/work/lufasi-hero.jpg"], href: "/our-work", tag: "BOOKING PLATFORMS · ONGOING CTO SUPPORT", name: "Jara Beach Resort and Lufasi Lodges", d: "Built from scratch, supported ever since. [With permission.]" },
+  { imgs: ["/work/jara-hero.jpg"], href: "/our-work/jara-beach-resort", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", name: "Jara Beach Resort", d: "A custom booking system for a beach resort, built from scratch and supported by us since launch." },
+  { imgs: ["/work/lufasi-hero.jpg"], href: "/our-work/lufasi-lodges", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", name: "Lufasi Lodges", d: "A custom booking system for a forest camp, built from scratch and supported by us since launch." },
   { label: "[Sharporders screenshot]", href: "/our-work/sharporders", tag: "MOBILE APP · MVP", name: "Sharporders", d: "[One line on what it does.] Live on both app stores." },
   { label: "[Napollo Music screenshot]", href: "/our-work", tag: "[TYPE] · MVP", name: "Napollo Music", d: "[One line on what it does.] [Result.]" },
 ];
@@ -68,15 +69,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust strip */}
-      <section className="bg-cloud">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-2 px-5 py-6 text-[15px] font-semibold md:flex-row md:justify-between md:px-8">
-          <span>Live on the App Store and Google Play</span>
-          <span>Building products and software in Lagos since 2008</span>
-          <span className="hidden md:inline">Founders in [markets served]</span>
-        </div>
-      </section>
-
       {/* Three steps */}
       <section id="services" className="mx-auto max-w-[1200px] scroll-mt-20 px-5 pt-20 md:px-8 md:pt-28">
         <h2 className="text-3xl font-extrabold tracking-tight md:text-5xl">
@@ -106,7 +98,7 @@ export default function Home() {
           <span className="md:hidden">Our work</span>
           <span className="hidden md:inline">Products we have taken from idea to launch</span>
         </h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
+        <div className="mt-10 grid gap-8 md:grid-cols-3">
           {work.map((w, i) => (
             <Link key={w.name} href={w.href} className={`group ${i > 0 ? "hidden md:block" : ""}`}>
               {w.imgs ? (

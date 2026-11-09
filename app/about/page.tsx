@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CtaBand, Eyebrow, H2, PageHero, Placeholder, Section } from "@/components/ui";
+import { CtaBand, H2, PageHero, Placeholder, Section } from "@/components/ui";
 
 export const metadata: Metadata = { title: "About | 24 Design Co." };
 
@@ -9,7 +9,6 @@ const beliefs = [
   ["Honest estimates", "What it costs, how long, and what we would cut."],
   ["We stay", "Launch is the start of the work."],
 ];
-const team = [["[Your name]", "CEO and CTO partner"], ["[Name]", "[Role]"], ["[Name]", "[Role]"]];
 
 export default function Page() {
   return (
@@ -36,15 +35,6 @@ export default function Page() {
           ))}
         </div>
       </Section></section>
-      <Section>
-        <H2>Meet the team</H2>
-        <div className="mt-10 grid gap-8 sm:grid-cols-3">
-          {team.map(([n, r], i) => (
-            <div key={i}><Placeholder label="[Photo]" className="aspect-square" />
-              <h3 className="mt-4 text-lg font-bold">{n}</h3><Eyebrow>{r}</Eyebrow></div>
-          ))}
-        </div>
-      </Section>
       <CtaBand />
     </main>
   );
