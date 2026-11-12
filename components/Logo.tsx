@@ -1,10 +1,11 @@
 import Link from "next/link";
+
+/** The 24 Design Co. mark (public/logo-mark.svg) with the name beside it, for the dark header. */
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-3 text-white">
-      <span className="font-display relative grid h-11 w-11 place-items-center rounded-lg border-2 border-white text-xl font-extrabold leading-none">
-        24<span className="absolute bottom-[7px] right-[7px] h-[5px] w-[5px] rounded-full bg-launch" />
-      </span>
+    <Link href="/" aria-label="24 Design Co. home" className="flex items-center gap-3 text-white">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-mark.svg" alt="" width={44} height={44} className="h-11 w-11" />
       <span className="font-display text-lg font-bold">Design Co.</span>
     </Link>
   );

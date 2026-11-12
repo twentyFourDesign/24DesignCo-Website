@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { CtaBand, PrimaryBtn, Section } from "@/components/ui";
 import MarkdownContent from "@/components/blog/MarkdownContent";
@@ -9,13 +10,13 @@ import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  return (await getAllPosts()).map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return { title: "Article not found" };
 
   const url = `${SITE_URL}/blog/${post.slug}`;
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       authors: [post.author],
       tags: post.keywords,
+      ...(post.image ? { images: [{ url: post.image, alt: post.imageAlt || post.title }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -52,12 +54,21 @@ function formatDate(iso: string) {
   });
 }
 
-export default async function BlogPostPage({ params }: Props) {
+// `params` is only awaited inside <Suspense>, so the static shell can be built without knowing the slug.
+export default function BlogPostPage({ params }: Props) {
+  return (
+    <Suspense fallback={<main className="min-h-[60vh]" aria-busy="true" />}>
+      <BlogPostContent params={params} />
+    </Suspense>
+  );
+}
+
+async function BlogPostContent({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const related = getRelatedPosts(post);
+  const related = await getRelatedPosts(post);
   const url = `${SITE_URL}/blog/${post.slug}`;
 
   const articleLd = {
@@ -170,10 +181,14 @@ export default async function BlogPostPage({ params }: Props) {
               </aside>
             )}
 
+            {post.image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={post.image} alt={post.imageAlt} className="mb-10 w-full rounded-2xl border border-slate-200" />
+            )}
             <MarkdownContent content={post.content} />
 
             <div className="mt-14 rounded-2xl bg-navy p-8 text-white md:p-10">
-              <h2 className="text-2xl font-extrabold md:text-3xl">Ready to turn this into a build plan?</h2>
+              <h2 className="text-2xl font-extrabold md:text-3xl">{post.ctaHeading}</h2>
               <p className="mt-3 max-w-2xl text-slate-300">
                 Book a free idea review. We will help you decide what belongs in version one and what can wait.
               </p>

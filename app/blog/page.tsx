@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  const posts = getAllPosts();
+export default async function Page() {
+  const posts = await getAllPosts();
   const categories = getBlogCategories(posts);
   const items = posts.map((p) => ({
     slug: p.slug,

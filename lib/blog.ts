@@ -1,8 +1,8 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-
-const BLOG_DIR = path.join(process.cwd(), "content/blog");
+import { cacheLife, cacheTag } from "next/cache";
+import { sql } from "@/lib/cms/db";
+import { TAGS } from "@/lib/cms/revalidate";
+import { BLOG_ZONE } from "@/lib/cms/blog-shared";
+import { zonedDateStr } from "@/lib/cms/time";
 
 export type BlogPost = {
   slug: string;
@@ -19,6 +19,11 @@ export type BlogPost = {
   readingMinutes: number;
   faqs: { question: string; answer: string }[];
   headings: { id: string; text: string }[];
+  // Added by the CMS
+  ctaHeading: string;
+  image: string;
+  imageAlt: string;
+  showInKeepReading: boolean;
 };
 
 function slugify(text: string) {
@@ -27,11 +32,6 @@ function slugify(text: string) {
     .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-");
-}
-
-function readingMinutes(text: string) {
-  const words = text.trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 220));
 }
 
 function extractFaqs(content: string) {
@@ -45,10 +45,7 @@ function extractFaqs(content: string) {
   for (const block of blocks) {
     const match = block.match(/^\*\*(.+?)\*\*\s*\n([\s\S]+)$/);
     if (!match) continue;
-    faqs.push({
-      question: match[1].trim(),
-      answer: match[2].trim().replace(/\n+/g, " "),
-    });
+    faqs.push({ question: match[1].trim(), answer: match[2].trim().replace(/\n+/g, " ") });
   }
   return faqs;
 }
@@ -64,66 +61,62 @@ function extractHeadings(content: string) {
   return headings;
 }
 
-function parsePost(slug: string, raw: string): BlogPost {
-  const { data, content } = matter(raw);
-  const keywords =
-    typeof data.keywords === "string"
-      ? data.keywords.split(",").map((k: string) => k.trim()).filter(Boolean)
-      : Array.isArray(data.keywords)
-        ? data.keywords
-        : [];
-  const related =
-    typeof data.related === "string"
-      ? data.related.split(",").map((k: string) => k.trim()).filter(Boolean)
-      : Array.isArray(data.related)
-        ? data.related
-        : [];
+type Row = {
+  slug: string; title: string; excerpt: string; body: string; category: string; authorName: string; publishedAt: Date | null; featuredImage: string;
+  featuredImageAlt: string; ctaHeading: string; seo: { metaTitle?: string; metaDescription?: string }; keywords: string[]; related: string[];
+  featured: boolean; faqSchema: boolean; showInKeepReading: boolean; readingMinutes: number;
+};
 
+function fromRow(p: Row): BlogPost {
+  const content = (p.body || "").trim();
   return {
-    slug,
-    title: String(data.title),
-    seoTitle: String(data.seoTitle || data.title),
-    description: String(data.description),
-    author: String(data.author || "24 Design Co."),
-    date: String(data.date),
-    category: String(data.category || "Guides"),
-    keywords,
-    related,
-    featured: Boolean(data.featured),
-    content: content.trim(),
-    readingMinutes: readingMinutes(content),
-    faqs: extractFaqs(content),
+    slug: p.slug,
+    title: p.title,
+    seoTitle: (p.seo?.metaTitle || "").replace(/\s*\|\s*24 Design Co\.?$/i, "").trim() || p.title,
+    description: p.seo?.metaDescription || p.excerpt,
+    author: p.authorName || "24 Design Co.",
+    date: zonedDateStr(new Date(p.publishedAt ?? Date.now()), BLOG_ZONE),
+    category: p.category || "Guides",
+    keywords: p.keywords ?? [],
+    related: p.related ?? [],
+    featured: p.featured,
+    content,
+    readingMinutes: p.readingMinutes || 1,
+    faqs: p.faqSchema === false ? [] : extractFaqs(content),
     headings: extractHeadings(content),
+    ctaHeading: p.ctaHeading || "Ready to turn this into a build plan?",
+    image: p.featuredImage || "",
+    imageAlt: p.featuredImageAlt || "",
+    showInKeepReading: p.showInKeepReading,
   };
 }
 
-export function getAllPosts(): BlogPost[] {
-  if (!fs.existsSync(BLOG_DIR)) return [];
-  return fs
-    .readdirSync(BLOG_DIR)
-    .filter((f) => f.endsWith(".md"))
-    .map((file) => {
-      const slug = file.replace(/\.md$/, "");
-      const raw = fs.readFileSync(path.join(BLOG_DIR, file), "utf8");
-      return parsePost(slug, raw);
-    })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+/** Published posts, plus scheduled ones whose time has passed. Newest first. */
+export async function getAllPosts(): Promise<BlogPost[]> {
+  "use cache";
+  cacheLife({ revalidate: 60, expire: 3600 });
+  cacheTag(TAGS.posts);
+  const rows = await sql<Row[]>`select * from cms_posts
+    where (status = 'published' or (status = 'scheduled' and published_at <= now()))
+    order by published_at desc nulls last, created_at desc`;
+  return rows.map(fromRow);
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
-  const file = path.join(BLOG_DIR, `${slug}.md`);
-  if (!fs.existsSync(file)) return null;
-  return parsePost(slug, fs.readFileSync(file, "utf8"));
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  "use cache";
+  cacheLife({ revalidate: 60, expire: 3600 });
+  cacheTag(TAGS.posts);
+  const [row] = await sql<Row[]>`select * from cms_posts
+    where slug = ${slug} and (status = 'published' or (status = 'scheduled' and published_at <= now())) limit 1`;
+  return row ? fromRow(row) : null;
 }
 
-export function getRelatedPosts(post: BlogPost, limit = 3): BlogPost[] {
-  const all = getAllPosts();
+export async function getRelatedPosts(post: BlogPost, limit = 3): Promise<BlogPost[]> {
+  const all = await getAllPosts();
   const bySlug = new Map(all.map((p) => [p.slug, p]));
   const related = post.related.map((slug) => bySlug.get(slug)).filter(Boolean) as BlogPost[];
   if (related.length >= limit) return related.slice(0, limit);
-  const extras = all.filter(
-    (p) => p.slug !== post.slug && !related.some((r) => r.slug === p.slug),
-  );
+  const extras = all.filter((p) => p.showInKeepReading && p.slug !== post.slug && !related.some((r) => r.slug === p.slug));
   return [...related, ...extras].slice(0, limit);
 }
 
