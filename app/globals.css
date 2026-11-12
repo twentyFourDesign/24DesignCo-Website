@@ -23,57 +23,58 @@ body { background: #fff; color: var(--navy); font-family: var(--font-sans); }
 h1, h2, h3, .font-display { font-family: var(--font-display); }
 
 /* ───────── CMS admin (the /admin screens) ─────────
-   The look follows the booking-hub dashboard: semantic tokens in a light and a dark theme. Everything is scoped to .cms so the
-   public site is untouched; the theme class (dark) is set on the .cms wrapper, not on <html>. */
-@custom-variant dark (&:is(.dark *));
-
+   The look is the client's original admin design: light canvas, navy sidebar with an orange active marker, blue buttons, Sora headings,
+   white cards with a hairline border. Everything is scoped to .cms so the public site is untouched. Components only use the semantic
+   names below (canvas, surface, ink, line, accent, nav…). */
 .cms {
-  --canvas: oklch(0.975 0.003 260);
-  --surface: oklch(1 0 0);
-  --surface-2: oklch(0.972 0.003 260);
-  --line: oklch(0.915 0.005 260);
-  --line-strong: oklch(0.86 0.006 260);
-  --ink: oklch(0.2 0.01 260);
-  --ink-2: oklch(0.33 0.01 260);
-  --muted: oklch(0.5 0.012 260);
-  --faint: oklch(0.66 0.01 260);
+  --canvas: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --line: #e5e7eb;
+  --line-strong: #cbd5e1;
+  --ink: #0f172a;
+  --ink-2: #374151;
+  --muted: #4b5563;
+  --faint: #64748b;
 
-  --accent: oklch(0.5 0.15 150);
-  --accent-hover: oklch(0.44 0.14 150);
-  --accent-soft: oklch(0.96 0.035 150);
-  --accent-line: oklch(0.86 0.07 150);
-  --on-accent: oklch(1 0 0);
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #dbeafe;
+  --accent-line: #93c5fd;
+  --on-accent: #ffffff;
+  --marker: #f59e0b;
 
-  --nav: oklch(0.995 0.001 260);
-  --nav-hover: oklch(0.965 0.004 260);
-  --nav-active: oklch(0.955 0.025 150);
-  --nav-line: oklch(0.915 0.005 260);
-  --nav-text: oklch(0.46 0.012 260);
-  --nav-ink: oklch(0.2 0.01 260);
+  --nav: #0f172a;
+  --nav-hover: #1e293b;
+  --nav-active: #1e293b;
+  --nav-line: #1e293b;
+  --nav-text: #cbd5e1;
+  --nav-ink: #ffffff;
 
-  --ok: oklch(0.45 0.13 150);
-  --ok-soft: oklch(0.965 0.04 150);
-  --ok-line: oklch(0.87 0.08 150);
-  --warn: oklch(0.5 0.13 65);
-  --warn-soft: oklch(0.97 0.045 90);
-  --warn-line: oklch(0.88 0.09 88);
-  --bad: oklch(0.5 0.19 25);
-  --bad-soft: oklch(0.97 0.02 25);
-  --bad-line: oklch(0.88 0.07 25);
-  --info: oklch(0.48 0.14 255);
-  --info-soft: oklch(0.965 0.02 250);
-  --info-line: oklch(0.87 0.05 250);
+  --ok: #15803d;
+  --ok-soft: #dcfce7;
+  --ok-line: #86efac;
+  --warn: #92400e;
+  --warn-soft: #fef3c7;
+  --warn-line: #fcd34d;
+  --bad: #b91c1c;
+  --bad-soft: #fee2e2;
+  --bad-line: #fca5a5;
+  --info: #1d4ed8;
+  --info-soft: #dbeafe;
+  --info-line: #93c5fd;
 
-  --chart-1: oklch(0.58 0.17 240);
-  --chart-2: oklch(0.55 0.16 150);
-  --chart-3: oklch(0.7 0.16 70);
-  --chart-4: oklch(0.58 0.2 25);
-  --chart-5: oklch(0.56 0.16 300);
+  --chart-1: #2563eb;
+  --chart-2: #15803d;
+  --chart-3: #f59e0b;
+  --chart-4: #b91c1c;
+  --chart-5: #7c3aed;
 
-  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow-pop: 0 16px 40px -8px rgb(16 24 40 / 0.2), 0 2px 6px rgb(16 24 40 / 0.08);
-  --scrim: rgb(16 24 40 / 0.45);
+  --shadow-card: none;
+  --shadow-pop: 0 20px 50px rgb(0 0 0 / 0.25);
+  --scrim: rgb(15 23 42 / 0.55);
   color-scheme: light;
+
   background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -81,55 +82,7 @@ h1, h2, h3, .font-display { font-family: var(--font-display); }
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
-.cms h1, .cms h2, .cms h3 { font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif; }
-.cms.dark {
-  --canvas: oklch(0.09 0.005 260);
-  --surface: oklch(0.12 0.005 260);
-  --surface-2: oklch(0.15 0.005 260);
-  --line: oklch(0.22 0.005 260);
-  --line-strong: oklch(0.3 0.006 260);
-  --ink: oklch(0.95 0 0);
-  --ink-2: oklch(0.85 0 0);
-  --muted: oklch(0.67 0 0);
-  --faint: oklch(0.52 0 0);
-
-  --accent: oklch(0.7 0.18 145);
-  --accent-hover: oklch(0.77 0.18 145);
-  --accent-soft: oklch(0.7 0.18 145 / 0.12);
-  --accent-line: oklch(0.7 0.18 145 / 0.32);
-  --on-accent: oklch(0.09 0.005 260);
-
-  --nav: oklch(0.11 0.005 260);
-  --nav-hover: oklch(0.16 0.005 260);
-  --nav-active: oklch(0.18 0.005 260);
-  --nav-line: oklch(0.22 0.005 260);
-  --nav-text: oklch(0.67 0 0);
-  --nav-ink: oklch(0.95 0 0);
-
-  --ok: oklch(0.76 0.17 145);
-  --ok-soft: oklch(0.7 0.18 145 / 0.12);
-  --ok-line: oklch(0.7 0.18 145 / 0.3);
-  --warn: oklch(0.8 0.15 78);
-  --warn-soft: oklch(0.78 0.16 70 / 0.12);
-  --warn-line: oklch(0.78 0.16 70 / 0.3);
-  --bad: oklch(0.72 0.18 25);
-  --bad-soft: oklch(0.65 0.2 25 / 0.12);
-  --bad-line: oklch(0.65 0.2 25 / 0.32);
-  --info: oklch(0.76 0.12 240);
-  --info-soft: oklch(0.7 0.15 240 / 0.12);
-  --info-line: oklch(0.7 0.15 240 / 0.3);
-
-  --chart-1: oklch(0.7 0.18 220);
-  --chart-2: oklch(0.7 0.18 145);
-  --chart-3: oklch(0.75 0.18 55);
-  --chart-4: oklch(0.65 0.2 25);
-  --chart-5: oklch(0.7 0.15 300);
-
-  --shadow-card: none;
-  --shadow-pop: 0 16px 40px -8px rgb(0 0 0 / 0.6), 0 0 0 1px oklch(0.25 0.005 260);
-  --scrim: rgb(0 0 0 / 0.6);
-  color-scheme: dark;
-}
+.cms h1, .cms h2, .cms h3 { font-family: var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif; }
 
 @theme inline {
 
@@ -148,6 +101,7 @@ h1, h2, h3, .font-display { font-family: var(--font-display); }
   --color-accent-soft: var(--accent-soft);
   --color-accent-line: var(--accent-line);
   --color-on-accent: var(--on-accent);
+  --color-marker: var(--marker);
 
   --color-nav: var(--nav);
   --color-nav-hover: var(--nav-hover);

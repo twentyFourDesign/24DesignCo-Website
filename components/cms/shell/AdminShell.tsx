@@ -7,7 +7,6 @@ import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/components/cms/ui/core";
 import { Avatar, Logo } from "@/components/cms/ui/brand";
 import { NavProgress } from "@/components/cms/shell/NavProgress";
-import { ThemeToggle } from "./ThemeToggle";
 
 type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; min?: "author" | "editor" | "admin" };
 const NAV: NavItem[] = [
@@ -45,7 +44,7 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
     <div className="flex h-full flex-col border-r border-nav-line bg-nav text-nav-text">
       <div className={cn("flex h-16 items-center border-b border-nav-line", narrow ? "justify-center" : "gap-3 px-4")}>
         <Logo size={36} />
-        {!narrow && <span className="whitespace-nowrap text-lg font-semibold text-nav-ink">24 Design Co.</span>}
+        {!narrow && <span className="whitespace-nowrap font-display text-base font-extrabold leading-tight text-nav-ink">24 Design Co.<small className="block text-[11px] font-semibold tracking-[0.1em] text-accent-line">WEBSITE ADMIN</small></span>}
       </div>
       <nav aria-label="Main" className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
         {items.map((n) => {
@@ -53,8 +52,8 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
           return (
             <Link key={n.href} href={n.href} onClick={() => setOpen(false)} aria-current={on ? "page" : undefined} title={narrow ? n.label : undefined}
               className={cn("group relative flex items-center rounded-lg py-2.5 text-sm font-medium transition-colors", narrow ? "justify-center px-0" : "gap-3 px-3", on ? "bg-nav-active text-nav-ink" : "hover:bg-nav-hover hover:text-nav-ink")}>
-              <span className={cn("absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-accent transition-opacity", on ? "opacity-100" : "opacity-0")} aria-hidden />
-              <n.icon className={cn("size-5 shrink-0 transition-transform", on ? "text-accent" : "group-hover:scale-110")} aria-hidden />
+              <span className={cn("absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-marker transition-opacity", on ? "opacity-100" : "opacity-0")} aria-hidden />
+              <n.icon className={cn("size-5 shrink-0 transition-transform", on ? "text-white" : "group-hover:scale-110")} aria-hidden />
               {!narrow && n.label}
             </Link>
           );
@@ -84,7 +83,7 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
       <Suspense fallback={null}><NavProgress /></Suspense>
       <aside className={cn("fixed inset-y-0 left-0 z-30 hidden transition-[width] duration-300 ease-out lg:block", collapsed ? "w-[72px]" : "w-[260px]")}>{sidebar(collapsed)}</aside>
       <div className={cn("flex min-h-screen min-w-0 flex-col transition-[padding] duration-300 ease-out", collapsed ? "lg:pl-[72px]" : "lg:pl-[260px]")}>
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-line bg-canvas/80 px-4 backdrop-blur-sm sm:px-6">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-line bg-surface px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <button type="button" onClick={() => setOpen(true)} aria-label="Open menu" className="rounded-lg p-1.5 text-ink-2 hover:bg-surface-2 lg:hidden"><Menu className="size-5" /></button>
             <p className="truncate text-xl font-semibold text-ink">{current}</p>
@@ -94,7 +93,6 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
               <Search className="pointer-events-none absolute left-3 size-4 text-muted" aria-hidden />
               <input name="q" type="search" placeholder="Search everything…" aria-label="Search" className="h-9 w-48 rounded-lg border border-line bg-surface-2 pl-9 pr-3 text-sm text-ink transition-all duration-300 placeholder:text-muted focus:w-64 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20" />
             </form>
-            <ThemeToggle />
             <Link href="/admin/activity" aria-label="Activity" title="Activity" className="flex size-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-ink"><Bell className="size-[18px]" aria-hidden /></Link>
             <Link href="/admin/profile" title={`${user} (${role})`}><Avatar name={user} size={36} /></Link>
           </div>
