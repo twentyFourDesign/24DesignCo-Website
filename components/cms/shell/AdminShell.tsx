@@ -1,23 +1,28 @@
 "use client";
 
-import { Bell, CalendarClock, ChevronLeft, ChevronRight, FileText, FolderKanban, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, Search, Settings, Users, X } from "lucide-react";
+import { Bell, CalendarClock, ExternalLink, ChevronLeft, ChevronRight, FileText, FolderKanban, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, Search, Settings, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/components/cms/ui/core";
 import { Avatar, Logo } from "@/components/cms/ui/brand";
+import { useSiteHost } from "@/components/cms/useSiteHost";
 import { NavProgress } from "@/components/cms/shell/NavProgress";
 
-type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; min?: "author" | "editor" | "admin" };
-const NAV: NavItem[] = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/admin/pages", label: "Pages", icon: FileText, min: "editor" },
-  { href: "/admin/blog", label: "Blog", icon: Newspaper },
-  { href: "/admin/work", label: "Our Work", icon: FolderKanban, min: "editor" },
-  { href: "/admin/team", label: "Team", icon: Users, min: "editor" },
-  { href: "/admin/media", label: "Media", icon: ImageIcon, min: "editor" },
-  { href: "/admin/bookings", label: "Idea reviews", icon: CalendarClock, min: "editor" },
-  { href: "/admin/settings", label: "Settings", icon: Settings, min: "admin" },
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; min?: "author" | "editor" | "admin"; badge?: "bookings" };
+type NavGroup = { group: string; min?: "author" | "editor" | "admin"; items: NavItem[] };
+// Same grouping as the original admin: CONTENT, BUSINESS, ADMIN.
+const GROUPS: NavGroup[] = [
+  { group: "CONTENT", items: [
+    { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+    { href: "/admin/pages", label: "Pages", icon: FileText, min: "editor" },
+    { href: "/admin/blog", label: "Blog", icon: Newspaper },
+    { href: "/admin/work", label: "Our Work", icon: FolderKanban, min: "editor" },
+    { href: "/admin/team", label: "Team", icon: Users, min: "editor" },
+    { href: "/admin/media", label: "Media library", icon: ImageIcon, min: "editor" },
+  ] },
+  { group: "BUSINESS", min: "editor", items: [{ href: "/admin/bookings", label: "Idea reviews", icon: CalendarClock, min: "editor", badge: "bookings" }] },
+  { group: "ADMIN", min: "admin", items: [{ href: "/admin/settings", label: "Settings", icon: Settings, min: "admin" }] },
 ];
 const RANK = { author: 0, editor: 1, admin: 2, owner: 3 } as const;
 
@@ -25,12 +30,14 @@ const RANK = { author: 0, editor: 1, admin: 2, owner: 3 } as const;
  * The frame around every admin page: a sidebar that collapses to icons (the choice is kept), a sticky top bar with the section
  * title, search, theme switch, activity link and the person, and a drawer on a phone. Pages are server components passed as children.
  */
-export function AdminShell({ user, role, children }: { user: string; role: keyof typeof RANK; children: ReactNode }) {
+export function AdminShell({ user, role, upcoming = 0, children }: { user: string; role: keyof typeof RANK; upcoming?: number; children: ReactNode }) {
+  const siteHost = useSiteHost();
   const path = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const items = NAV.filter((n) => RANK[role] >= RANK[n.min ?? "author"]);
+  const groups = GROUPS.filter((g) => RANK[role] >= RANK[g.min ?? "author"]).map((g) => ({ ...g, items: g.items.filter((n) => RANK[role] >= RANK[n.min ?? "author"]) }));
+  const items = groups.flatMap((g) => g.items);
   const active = (n: NavItem) => (n.exact ? path === n.href : path === n.href || path.startsWith(`${n.href}/`));
   const current = path.startsWith("/admin/profile") ? "Your profile" : path.startsWith("/admin/search") ? "Search" : path.startsWith("/admin/activity") ? "Activity" : items.find(active)?.label ?? "Admin";
 
@@ -46,18 +53,28 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
         <Logo size={36} />
         {!narrow && <span className="whitespace-nowrap font-display text-base font-extrabold leading-tight text-nav-ink">24 Design Co.<small className="block text-[11px] font-semibold tracking-[0.1em] text-accent-line">WEBSITE ADMIN</small></span>}
       </div>
-      <nav aria-label="Main" className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-        {items.map((n) => {
-          const on = active(n);
-          return (
-            <Link key={n.href} href={n.href} onClick={() => setOpen(false)} aria-current={on ? "page" : undefined} title={narrow ? n.label : undefined}
-              className={cn("group relative flex items-center rounded-lg py-2.5 text-sm font-medium transition-colors", narrow ? "justify-center px-0" : "gap-3 px-3", on ? "bg-nav-active text-nav-ink" : "hover:bg-nav-hover hover:text-nav-ink")}>
-              <span className={cn("absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-marker transition-opacity", on ? "opacity-100" : "opacity-0")} aria-hidden />
-              <n.icon className={cn("size-5 shrink-0 transition-transform", on ? "text-white" : "group-hover:scale-110")} aria-hidden />
-              {!narrow && n.label}
-            </Link>
-          );
-        })}
+      <nav aria-label="Main" className="flex-1 overflow-y-auto px-3 py-3">
+        {groups.map((g) => (
+          <div key={g.group}>
+            {narrow ? <div className="mx-2 my-3 border-t border-nav-line" aria-hidden /> : <div className="mb-1.5 ml-3 mt-5 text-[11px] font-semibold tracking-[0.12em] text-slate-400 first:mt-2">{g.group}</div>}
+            <div className="space-y-0.5">
+              {g.items.map((n) => {
+                const on = active(n);
+                return (
+                  <Link key={n.href} href={n.href} onClick={() => setOpen(false)} aria-current={on ? "page" : undefined} title={narrow ? n.label : undefined}
+                    className={cn("group relative flex items-center rounded-lg py-2.5 text-sm font-medium transition-colors", narrow ? "justify-center px-0" : "gap-3 px-3", on ? "bg-nav-active text-nav-ink" : "hover:bg-nav-hover hover:text-nav-ink")}>
+                    <span className={cn("absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-marker transition-opacity", on ? "opacity-100" : "opacity-0")} aria-hidden />
+                    <n.icon className={cn("size-5 shrink-0 transition-transform", on ? "text-white" : "group-hover:scale-110")} aria-hidden />
+                    {!narrow && n.label}
+                    {n.badge === "bookings" && upcoming > 0 && (
+                      <span className={cn("rounded-full bg-marker px-1.5 text-[11px] font-bold text-navy", narrow ? "absolute right-1.5 top-1" : "ml-auto")} aria-label={`${upcoming} this week`}>{upcoming}</span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
       <div className="space-y-1 border-t border-nav-line p-3">
         <div className={cn("flex items-center", narrow ? "flex-col gap-2" : "gap-2.5 px-1.5 py-1")}>
@@ -70,7 +87,13 @@ export function AdminShell({ user, role, children }: { user: string; role: keyof
           )}
           <button type="button" onClick={signOut} aria-label="Sign out" title="Sign out" className="rounded-lg p-1.5 text-nav-text transition-colors hover:bg-nav-hover hover:text-nav-ink"><LogOut className="size-4" /></button>
         </div>
-        <Link href="/" target="_blank" className={cn("block rounded-lg px-2 py-1 text-xs text-nav-text hover:text-nav-ink", narrow && "hidden")}>View website ↗</Link>
+        {!narrow && (
+          <div className="rounded-xl bg-nav-hover p-3.5 text-xs">
+            <b className="block text-[13px] text-white">{siteHost || "Your website"}</b>
+            <p className="mt-1 text-nav-text">Visitors see changes once you publish them.</p>
+            <Link href="/" target="_blank" className="mt-2 inline-flex items-center gap-1.5 text-accent-line hover:text-white"><ExternalLink className="size-3.5" aria-hidden /> View website</Link>
+          </div>
+        )}
         <button type="button" onClick={toggle} className="hidden w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-nav-text transition-colors hover:bg-nav-hover hover:text-nav-ink lg:flex" aria-label={narrow ? "Expand the sidebar" : "Collapse the sidebar"}>
           {narrow ? <ChevronRight className="size-5" /> : <><ChevronLeft className="size-5" /><span>Collapse</span></>}
         </button>
