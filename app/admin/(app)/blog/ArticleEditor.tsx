@@ -1,4 +1,5 @@
 "use client";
+import { useSiteHost } from "@/components/cms/useSiteHost";
 import { ExternalLink, Loader2, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -53,6 +54,7 @@ function ListInput({ label, hint, value, onChange, suggestions = [], disabled }:
 }
 
 export default function ArticleEditor({ post, role, userName, slugs, locked = false }: { post: EditorPost | null; role: string; userName: string; slugs: string[]; locked?: boolean }) {
+  const siteHost = useSiteHost();
   const router = useRouter();
   const toast = useToast();
   const editor = atLeast(role, "editor");
@@ -140,7 +142,7 @@ export default function ArticleEditor({ post, role, userName, slugs, locked = fa
           <Card>
             <div className="space-y-4">
               <Field label="Title" required><Input value={d.title} onChange={(e) => { set("title", e.target.value); if (!slugTouched) set("slug", slugify(e.target.value)); }} className="h-11 text-lg font-semibold" /></Field>
-              <Field label="Web address" hint={`24group.com.ng/blog/${d.slug || "your-article"}`}><Input value={d.slug} onChange={(e) => { setSlugTouched(true); set("slug", slugify(e.target.value)); }} className="font-mono text-[13px]" /></Field>
+              <Field label="Web address" hint={`/blog/${d.slug || "your-article"}`}><Input value={d.slug} onChange={(e) => { setSlugTouched(true); set("slug", slugify(e.target.value)); }} className="font-mono text-[13px]" /></Field>
               <Field label="Summary" hint="Shown on the blog page and article cards."><Textarea rows={2} value={d.excerpt} onChange={(e) => set("excerpt", e.target.value)} /></Field>
               <div>
                 <span className="mb-1 block text-[13px] font-medium text-ink-2">Article</span>
@@ -186,7 +188,7 @@ export default function ArticleEditor({ post, role, userName, slugs, locked = fa
               <div className="rounded-lg border border-line bg-surface-2 p-3">
                 <p className="mb-1 text-xs text-muted">Google preview</p>
                 <p className="truncate text-[17px] leading-snug text-info">{metaTitle}</p>
-                <p className="truncate text-xs text-ok">24group.com.ng › blog › {d.slug || "your-article"}</p>
+                <p className="truncate text-xs text-ok">{siteHost} › blog › {d.slug || "your-article"}</p>
                 <p className="mt-0.5 line-clamp-2 text-[13px] text-ink-2">{metaDesc || "No description yet."}</p>
               </div>
               <Check label="FAQ rich results (from the FAQ section)" checked={d.faqSchema} onChange={(e) => set("faqSchema", e.target.checked)} />

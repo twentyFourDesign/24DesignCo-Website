@@ -12,7 +12,7 @@ import FieldEditor from "./FieldEditor";
 import PreviewFrame from "./PreviewFrame";
 import type { SectionData } from "@/components/sections/Sections";
 import { BUILT_IN_PATHS, SECTION_TYPES, SECTION_TYPE_IDS, newSection, type Section, type SectionType, type Seo } from "@/lib/cms/sections";
-import { SITE_URL } from "@/lib/site";
+import { useSiteHost } from "@/components/cms/useSiteHost";
 
 export type PageRow = { id: string; title: string; path: string; status: "draft" | "published"; hasUnpublishedChanges: boolean; publishedAt: string | null; sections: Section[]; seo: Seo };
 
@@ -21,6 +21,7 @@ const btn = (v: "primary" | "secondary" | "ghost" | "danger" = "secondary") => b
 const small = "inline-flex size-7 items-center justify-center rounded-md text-muted hover:bg-surface-2 hover:text-ink disabled:opacity-35 disabled:hover:bg-transparent";
 
 export default function PageEditor({ initial, data }: { initial: PageRow; data: SectionData }) {
+  const siteHost = useSiteHost();
   const toast = useToast();
   const [page, setPage] = useState(initial);
   const [title, setTitle] = useState(initial.title);
@@ -195,7 +196,7 @@ export default function PageEditor({ initial, data }: { initial: PageRow; data: 
                 <Check label="Ask search engines not to list this page (noindex)" checked={!!seo.noIndex} onChange={(e) => edit(setSeo)({ ...seo, noIndex: e.target.checked })} />
                 <div className="rounded-lg border border-line bg-surface-2 p-4">
                   <p className="mb-2 text-xs font-medium text-muted">Google result preview</p>
-                  <p className="truncate text-xs text-ink-2">{SITE_URL.replace(/^https?:\/\//, "")}{path === "/" ? "" : path}</p>
+                  <p className="truncate text-xs text-ink-2">{siteHost}{path === "/" ? "" : path}</p>
                   <p className="truncate text-lg text-info">{gtitle}</p>
                   <p className="line-clamp-2 text-[13px] text-muted">{seo.metaDescription || "No description set. Search engines will pick text from the page, or the site default."}</p>
                 </div>
