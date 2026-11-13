@@ -39,9 +39,10 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">{d.intro}</p>
               <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3">
                 {d.meta.map(([k, v]) => (
-                  <div key={k}>
+                  <div key={k} className="min-w-0">
                     <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-300">{k}</dt>
-                    <dd className="mt-1 font-semibold">{v}</dd>
+                    {/* Long values such as booking.jarabeachresort.com must wrap, or phones scroll sideways. */}
+                    <dd className="mt-1 font-semibold [overflow-wrap:anywhere]">{v}</dd>
                   </div>
                 ))}
               </dl>
@@ -207,7 +208,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
             {d.run.liveTitle && (
               <div className="rounded-2xl bg-navy p-7 text-white">
                 <Eyebrow light>{d.url ? "Live at" : "Launch"}</Eyebrow>
-                <p className="font-display mt-2 text-xl font-bold">{d.run.liveTitle}</p>
+                <p className="font-display mt-2 text-xl font-bold [overflow-wrap:anywhere]">{d.run.liveTitle}</p>
                 {d.run.liveBody && <p className="mt-2 text-slate-300">{d.run.liveBody}</p>}
               </div>
             )}

@@ -2,6 +2,9 @@
 import { tzOffsetMinutes } from "./time";
 
 export const CATEGORIES = ["Costs", "MVP", "How to build", "Hiring", "After launch", "Case studies"] as const;
+/** Largest file the admin accepts. Vercel caps a request body at 4.5 MB, so files are sent one at a time and kept under 4 MB. */
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+export const MAX_UPLOAD_LABEL = "4 MB";
 export const FOLDERS = ["Logos", "Blog images", "Illustrations", "Team photos", "Client logos", "Icons", "Other"] as const;
 export const POST_STATUSES = ["draft", "review", "scheduled", "published"] as const;
 export type PostStatus = (typeof POST_STATUSES)[number];

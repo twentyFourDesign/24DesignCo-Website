@@ -37,7 +37,11 @@ export const PATCH = api(async (req: Request) => {
     if (b[key] === undefined) continue;
     const v = b[key];
     if (key === "navigation") s.navigation = links(v, "menu");
-    else if (key === "navButton") { const o = obj(v, key); s.navButton = { label: str(o.label, 80), url: str(o.url) }; }
+    else if (key === "navButton") {
+      const o = obj(v, key);
+      const [link] = links([{ label: o.label, url: o.url }], "menu button");
+      s.navButton = link;
+    }
     else if (key === "site") {
       const o = obj(v, key), cur = s.site;
       for (const k of Object.keys(DEFAULT_SETTINGS.site) as (keyof Settings["site"])[]) if (o[k] !== undefined) cur[k] = str(o[k], k === "tagline" ? 200 : 300);

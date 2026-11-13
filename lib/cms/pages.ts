@@ -2,6 +2,8 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Metadata } from "next";
 import { sql } from "./db";
 import { TAGS } from "./revalidate";
+import { SITE_NAME, SITE_URL, shareImages } from "@/lib/site";
+import { getSiteSafe } from "./site";
 import type { Section, Seo } from "./sections";
 
 export type PublicPage = { title: string; path: string; sections: Section[]; seo: Seo };
@@ -21,11 +23,17 @@ export async function pageMetadata(path: string): Promise<Metadata> {
   const page = await getPublishedPage(path);
   if (!page) return {};
   const { metaTitle, metaDescription, ogImage, noIndex } = page.seo;
-  const title = metaTitle || `${page.title} | 24 Design Co.`;
+  const site = await getSiteSafe();
+  const title = metaTitle || `${page.title}${site.seo.titleSuffix || " | 24 Design Co."}`;
+  const description = metaDescription || site.seo.defaultDescription || undefined;
+  const url = `${SITE_URL}${path === "/" ? "" : path}`;
+  const images = shareImages(ogImage || site.seo.ogImage, title);
   return {
     title,
-    ...(metaDescription ? { description: metaDescription } : {}),
-    ...(ogImage ? { openGraph: { title, description: metaDescription || undefined, images: [ogImage] } } : {}),
+    ...(description ? { description } : {}),
+    alternates: { canonical: url },
+    openGraph: { type: "website", url, title, description, siteName: SITE_NAME, locale: "en_NG", images },
+    twitter: { card: "summary_large_image", title, description, images: images.map((i) => i.url) },
     ...(noIndex ? { robots: { index: false, follow: false } } : {}),
   };
 }

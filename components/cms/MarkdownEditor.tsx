@@ -41,42 +41,43 @@ export default function MarkdownEditor({ value, onChange, rows = 14 }: { value: 
     onChange(r.value);
     requestAnimationFrame(() => { el.focus(); el.setSelectionRange(r.from, r.to); });
   }
-  const wrap = (before: string, after = before, placeholder = "text") => () => apply((v, a, b) => {
+  // Each toolbar button describes an edit; the edit runs only when the button is clicked (never while rendering).
+  const wrap = (before: string, after = before, placeholder = "text") => (v: string, a: number, b: number): Edit => {
     const sel = v.slice(a, b) || placeholder;
     return { value: v.slice(0, a) + before + sel + after + v.slice(b), from: a + before.length, to: a + before.length + sel.length };
-  });
-  const linePrefix = (prefix: string | ((i: number) => string)) => () => apply((v, a, b) => {
+  };
+  const linePrefix = (prefix: string | ((i: number) => string)) => (v: string, a: number, b: number): Edit => {
     const start = v.lastIndexOf("\n", a - 1) + 1;
     const endIdx = v.indexOf("\n", b);
     const end = endIdx === -1 ? v.length : endIdx;
     const lines = v.slice(start, end).split("\n").map((l, i) => (typeof prefix === "function" ? prefix(i) : prefix) + l);
     const text = lines.join("\n");
     return { value: v.slice(0, start) + text + v.slice(end), from: start, to: start + text.length };
-  });
-  const link = () => apply((v, a, b) => {
+  };
+  const link = (v: string, a: number, b: number): Edit => {
     const sel = v.slice(a, b) || "link text";
     const ins = `[${sel}](https://)`;
     const urlStart = a + sel.length + 3;
     return { value: v.slice(0, a) + ins + v.slice(b), from: urlStart, to: urlStart + 8 };
-  });
+  };
 
   const tools = [
-    { label: "Bold (Ctrl+B)", icon: Bold, run: wrap("**") },
-    { label: "Italic (Ctrl+I)", icon: Italic, run: wrap("*") },
-    { label: "Heading 2", icon: Heading2, run: linePrefix("## ") },
-    { label: "Heading 3", icon: Heading3, run: linePrefix("### ") },
-    { label: "Bulleted list", icon: List, run: linePrefix("- ") },
-    { label: "Numbered list", icon: ListOrdered, run: linePrefix((i) => `${i + 1}. `) },
-    { label: "Link (Ctrl+K)", icon: Link2, run: link },
-    { label: "Quote", icon: Quote, run: linePrefix("> ") },
-    { label: "Code", icon: Code, run: wrap("`", "`", "code") },
+    { label: "Bold (Ctrl+B)", icon: Bold, edit: wrap("**") },
+    { label: "Italic (Ctrl+I)", icon: Italic, edit: wrap("*") },
+    { label: "Heading 2", icon: Heading2, edit: linePrefix("## ") },
+    { label: "Heading 3", icon: Heading3, edit: linePrefix("### ") },
+    { label: "Bulleted list", icon: List, edit: linePrefix("- ") },
+    { label: "Numbered list", icon: ListOrdered, edit: linePrefix((i) => `${i + 1}. `) },
+    { label: "Link (Ctrl+K)", icon: Link2, edit: link },
+    { label: "Quote", icon: Quote, edit: linePrefix("> ") },
+    { label: "Code", icon: Code, edit: wrap("`", "`", "code") },
   ];
 
   return (
     <div className="overflow-hidden rounded-lg border border-line-strong bg-surface shadow-card focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
       <div className="flex flex-wrap items-center gap-0.5 border-b border-line bg-surface-2 px-2 py-1.5">
         {tools.map((t) => (
-          <button key={t.label} type="button" title={t.label} aria-label={t.label} disabled={preview} onClick={t.run}
+          <button key={t.label} type="button" title={t.label} aria-label={t.label} disabled={preview} onClick={() => apply(t.edit)}
             className="rounded-md p-1.5 text-ink-2 hover:bg-surface hover:text-ink disabled:opacity-40"><t.icon className="size-4" /></button>
         ))}
         <button type="button" onClick={() => setPreview((p) => !p)} aria-pressed={preview}
@@ -97,9 +98,9 @@ export default function MarkdownEditor({ value, onChange, rows = 14 }: { value: 
           onKeyDown={(e) => {
             if (!(e.ctrlKey || e.metaKey)) return;
             const k = e.key.toLowerCase();
-            if (k === "b") { e.preventDefault(); wrap("**")(); }
-            else if (k === "i") { e.preventDefault(); wrap("*")(); }
-            else if (k === "k") { e.preventDefault(); link(); }
+            if (k === "b") { e.preventDefault(); apply(wrap("**")); }
+            else if (k === "i") { e.preventDefault(); apply(wrap("*")); }
+            else if (k === "k") { e.preventDefault(); apply(link); }
           }}
           aria-label="Article body in Markdown"
           className="block w-full resize-y bg-surface px-4 py-3 font-mono text-[13px] leading-relaxed text-ink placeholder:text-faint focus:outline-none"

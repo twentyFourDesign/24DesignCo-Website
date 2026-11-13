@@ -108,21 +108,21 @@ export default function ArticleEditor({ post, role, userName, slugs, locked = fa
     catch (e) { toast((e as Error).message, "bad"); setBusy(null); }
   }
 
-  const Spin = ({ k }: { k: string }) => (busy === k ? <Loader2 className="size-4 animate-spin" /> : null);
+  const spin = (k: string) => (busy === k ? <Loader2 className="size-4 animate-spin" /> : null);
   const isLive = status === "published";
   const dis = locked || busy !== null;
 
   const actions = locked ? null : editor ? (
     <>
-      {!isLive && <button type="button" disabled={dis} onClick={() => save(status === "review" ? "review" : "draft", "Draft saved")} className={buttonClass("secondary", "md")}><Spin k="draft" /><Spin k="review" />{status === "review" ? "Save" : "Save draft"}</button>}
-      {isLive && <button type="button" disabled={dis} onClick={() => save("draft", "Moved back to draft")} className={buttonClass("secondary", "md")}><Spin k="draft" />Unpublish</button>}
-      {!isLive && !!d.publishedAt && fromLagosInput(d.publishedAt) > new Date().toISOString() && <button type="button" disabled={dis} onClick={() => save("scheduled", "Scheduled")} className={buttonClass("secondary", "md")}><Spin k="scheduled" />Schedule</button>}
-      <button type="button" disabled={dis} onClick={() => save("published", isLive ? "Updated" : "Published")} className={buttonClass("primary", "md")}><Spin k="published" />{isLive ? "Update" : "Publish now"}</button>
+      {!isLive && <button type="button" disabled={dis} onClick={() => save(status === "review" ? "review" : "draft", "Draft saved")} className={buttonClass("secondary", "md")}>{spin("draft")}{spin("review")}{status === "review" ? "Save" : "Save draft"}</button>}
+      {isLive && <button type="button" disabled={dis} onClick={() => save("draft", "Moved back to draft")} className={buttonClass("secondary", "md")}>{spin("draft")}Unpublish</button>}
+      {!isLive && !!d.publishedAt && fromLagosInput(d.publishedAt) > new Date().toISOString() && <button type="button" disabled={dis} onClick={() => save("scheduled", "Scheduled")} className={buttonClass("secondary", "md")}>{spin("scheduled")}Schedule</button>}
+      <button type="button" disabled={dis} onClick={() => save("published", isLive ? "Updated" : "Published")} className={buttonClass("primary", "md")}>{spin("published")}{isLive ? "Update" : "Publish now"}</button>
     </>
   ) : (
     <>
-      <button type="button" disabled={dis} onClick={() => save("draft", "Draft saved")} className={buttonClass("secondary", "md")}><Spin k="draft" />Save draft</button>
-      <button type="button" disabled={dis} onClick={() => save("review", "Sent for review")} className={buttonClass("primary", "md")}><Spin k="review" />Send for review</button>
+      <button type="button" disabled={dis} onClick={() => save("draft", "Draft saved")} className={buttonClass("secondary", "md")}>{spin("draft")}Save draft</button>
+      <button type="button" disabled={dis} onClick={() => save("review", "Sent for review")} className={buttonClass("primary", "md")}>{spin("review")}Send for review</button>
     </>
   );
 
@@ -200,7 +200,7 @@ export default function ArticleEditor({ post, role, userName, slugs, locked = fa
                 <div className="space-y-2 rounded-xl border border-bad-line bg-bad-soft p-4 text-[13px]">
                   <p className="text-ink">Delete &ldquo;{post.title}&rdquo; for good? It will be removed from the website.</p>
                   <div className="flex gap-2">
-                    <button type="button" disabled={busy !== null} onClick={remove} className={buttonClass("danger", "sm")}><Spin k="delete" />Yes, delete</button>
+                    <button type="button" disabled={busy !== null} onClick={remove} className={buttonClass("danger", "sm")}>{spin("delete")}Yes, delete</button>
                     <button type="button" onClick={() => setConfirmDelete(false)} className={buttonClass("secondary", "sm")}>Cancel</button>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/cms/auth";
 import { atLeast } from "@/lib/cms/roles";
 import { overview } from "@/lib/cms/dashboard";
 import { getSettings } from "@/lib/cms/settings";
-import { Card, ButtonLink, EmptyState, Flash, Stat, StatusBadge } from "@/components/cms/ui/core";
+import { Callout, Card, ButtonLink, EmptyState, Flash, Stat, StatusBadge } from "@/components/cms/ui/core";
 import { PageHeader } from "@/components/cms/ui/layout";
 import { Table, TBody, Td, Th, THead, Tr } from "@/components/cms/ui/table";
 
@@ -32,10 +32,13 @@ export default async function Overview({ searchParams }: { searchParams: Promise
       <PageHeader title={`${greeting}, ${first}`} description="Manage every page, article and booking on the website."
         actions={<><ButtonLink href="/admin/blog/new">New article</ButtonLink>{editor && <ButtonLink href="/admin/pages" variant="primary">Edit a page</ButtonLink>}</>} />
       <Flash error={sp.error} />
+      {editor && d.unreadMessages > 0 && (
+        <div className="mb-4"><Callout tone="info" title={`${d.unreadMessages} new message${d.unreadMessages === 1 ? "" : "s"} from the website`}><Link href="/admin/messages" className="font-medium text-accent hover:underline">Open Messages</Link> to read and reply.</Callout></div>
+      )}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {editor && <Stat label="Pages" value={d.pages.total} hint={`${d.pages.published} published${d.pages.changes ? ` · ${d.pages.changes} with unpublished changes` : ""}`} href="/admin/pages" icon={FileText} delay={0} />}
         <Stat label="Blog articles" value={d.posts.total} hint={postHint} href="/admin/blog" icon={Newspaper} delay={1} />
-        {editor && <Stat label="Projects in Our Work" value={d.projects.total} hint={`${d.projects.cases} case studies · ${d.projects.partners} partnerships`} href="/admin/work" icon={FolderKanban} delay={2} />}
+        {editor && <Stat label="Projects in Our Work" value={d.projects.total} hint={`${d.projects.cases} case ${d.projects.cases === 1 ? "study" : "studies"} · ${d.projects.partners} partnership${d.projects.partners === 1 ? "" : "s"}`} href="/admin/work" icon={FolderKanban} delay={2} />}
         {editor && <Stat label="Idea reviews this week" value={d.week} hint={d.upcoming[0] ? `Next: ${when.format(d.upcoming[0].startAt)}` : "None booked yet"} href="/admin/bookings" icon={CalendarClock} delay={3} />}
       </div>
 

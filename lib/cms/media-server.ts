@@ -2,7 +2,8 @@ import "server-only";
 import { sql } from "./db";
 import type { MediaItem, MediaUsage } from "./blog-shared";
 
-const COLS = sql`id, filename, original_name, mime_type, size, width, height, alt, folder, created_at`;
+// A function, not a constant: building the fragment at import time would open the database while the site is being built.
+const COLS = () => sql`id, filename, original_name, mime_type, size, width, height, alt, folder, created_at`;
 
 type Row = Omit<MediaItem, "url" | "createdAt"> & { createdAt: Date };
 const shape = (r: Row): MediaItem => ({ ...r, createdAt: new Date(r.createdAt).toISOString(), url: `/media/${r.id}/${r.filename}` });
@@ -13,7 +14,7 @@ export async function listMedia(opts: { folder?: string; q?: string; type?: stri
   const folder = opts.folder?.trim() || null;
   const q = opts.q?.trim() ? `%${likeEscape(opts.q.trim())}%` : null;
   const imagesOnly = opts.type === "image";
-  const rows = await sql<Row[]>`select ${COLS} from cms_media
+  const rows = await sql<Row[]>`select ${COLS()} from cms_media
     where (${folder}::text is null or folder = ${folder})
       and (${q}::text is null or original_name ilike ${q} or alt ilike ${q})
       and (${imagesOnly} = false or mime_type like 'image/%')
@@ -24,7 +25,7 @@ export async function listMedia(opts: { folder?: string; q?: string; type?: stri
 }
 
 export async function getMedia(id: string): Promise<MediaItem | null> {
-  const [r] = await sql<Row[]>`select ${COLS} from cms_media where id = ${id}`;
+  const [r] = await sql<Row[]>`select ${COLS()} from cms_media where id = ${id}`;
   return r ? shape(r) : null;
 }
 

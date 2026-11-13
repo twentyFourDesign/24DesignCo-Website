@@ -9,8 +9,11 @@ import { ToastProvider } from "@/components/cms/Toast";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
   // The orange count beside "Idea reviews": calls booked for the next seven days.
-  const upcoming = atLeast(user.role, "editor")
-    ? ((await sql`select count(*)::int as n from cms_bookings where start_at >= now() and start_at < now() + interval '7 days' and status in ('pending','confirmed')`)[0].n as number)
-    : 0;
-  return <ToastProvider><AdminShell user={user.name || user.email} role={user.role} upcoming={upcoming}>{children}</AdminShell></ToastProvider>;
+  // And beside "Messages": contact-form messages nobody has opened yet.
+  const [{ upcoming, unread }] = atLeast(user.role, "editor")
+    ? await sql`select
+        (select count(*)::int from cms_bookings where start_at >= now() and start_at < now() + interval '7 days' and status in ('pending','confirmed')) as upcoming,
+        (select count(*)::int from cms_messages where status = 'new') as unread`
+    : [{ upcoming: 0, unread: 0 }];
+  return <ToastProvider><AdminShell user={user.name || user.email} role={user.role} upcoming={upcoming} unread={unread}>{children}</AdminShell></ToastProvider>;
 }

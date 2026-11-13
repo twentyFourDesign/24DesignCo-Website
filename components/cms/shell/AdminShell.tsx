@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, CalendarClock, ExternalLink, ChevronLeft, ChevronRight, FileText, FolderKanban, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, Search, Settings, Users, X } from "lucide-react";
+import { Bell, CalendarClock, Inbox, ExternalLink, ChevronLeft, ChevronRight, FileText, FolderKanban, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, Search, Settings, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
@@ -9,7 +9,7 @@ import { Avatar, Logo } from "@/components/cms/ui/brand";
 import { useSiteHost } from "@/components/cms/useSiteHost";
 import { NavProgress } from "@/components/cms/shell/NavProgress";
 
-type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; min?: "author" | "editor" | "admin"; badge?: "bookings" };
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; min?: "author" | "editor" | "admin"; badge?: "bookings" | "messages" };
 type NavGroup = { group: string; min?: "author" | "editor" | "admin"; items: NavItem[] };
 // Same grouping as the original admin: CONTENT, BUSINESS, ADMIN.
 const GROUPS: NavGroup[] = [
@@ -21,7 +21,10 @@ const GROUPS: NavGroup[] = [
     { href: "/admin/team", label: "Team", icon: Users, min: "editor" },
     { href: "/admin/media", label: "Media library", icon: ImageIcon, min: "editor" },
   ] },
-  { group: "BUSINESS", min: "editor", items: [{ href: "/admin/bookings", label: "Idea reviews", icon: CalendarClock, min: "editor", badge: "bookings" }] },
+  { group: "BUSINESS", min: "editor", items: [
+    { href: "/admin/bookings", label: "Idea reviews", icon: CalendarClock, min: "editor", badge: "bookings" },
+    { href: "/admin/messages", label: "Messages", icon: Inbox, min: "editor", badge: "messages" },
+  ] },
   { group: "ADMIN", min: "admin", items: [{ href: "/admin/settings", label: "Settings", icon: Settings, min: "admin" }] },
 ];
 const RANK = { author: 0, editor: 1, admin: 2, owner: 3 } as const;
@@ -30,7 +33,7 @@ const RANK = { author: 0, editor: 1, admin: 2, owner: 3 } as const;
  * The frame around every admin page: a sidebar that collapses to icons (the choice is kept), a sticky top bar with the section
  * title, search, theme switch, activity link and the person, and a drawer on a phone. Pages are server components passed as children.
  */
-export function AdminShell({ user, role, upcoming = 0, children }: { user: string; role: keyof typeof RANK; upcoming?: number; children: ReactNode }) {
+export function AdminShell({ user, role, upcoming = 0, unread = 0, children }: { user: string; role: keyof typeof RANK; upcoming?: number; unread?: number; children: ReactNode }) {
   const siteHost = useSiteHost();
   const path = usePathname();
   const router = useRouter();
@@ -42,6 +45,8 @@ export function AdminShell({ user, role, upcoming = 0, children }: { user: strin
   const current = path.startsWith("/admin/profile") ? "Your profile" : path.startsWith("/admin/search") ? "Search" : path.startsWith("/admin/activity") ? "Activity" : items.find(active)?.label ?? "Admin";
 
   useEffect(() => {
+    // Read after hydration on purpose: localStorage does not exist on the server, so reading it while rendering would mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     try { setCollapsed(localStorage.getItem("cms-sidebar") === "collapsed"); } catch { /* not kept */ }
   }, []);
   const toggle = () => setCollapsed((c) => { try { localStorage.setItem("cms-sidebar", c ? "open" : "collapsed"); } catch { /* not kept */ } return !c; });
@@ -68,6 +73,9 @@ export function AdminShell({ user, role, upcoming = 0, children }: { user: strin
                     {!narrow && n.label}
                     {n.badge === "bookings" && upcoming > 0 && (
                       <span className={cn("rounded-full bg-marker px-1.5 text-[11px] font-bold text-navy", narrow ? "absolute right-1.5 top-1" : "ml-auto")} aria-label={`${upcoming} this week`}>{upcoming}</span>
+                    )}
+                    {n.badge === "messages" && unread > 0 && (
+                      <span className={cn("rounded-full bg-marker px-1.5 text-[11px] font-bold text-navy", narrow ? "absolute right-1.5 top-1" : "ml-auto")} aria-label={`${unread} new`}>{unread}</span>
                     )}
                   </Link>
                 );

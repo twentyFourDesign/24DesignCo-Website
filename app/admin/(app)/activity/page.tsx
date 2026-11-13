@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/cms/auth";
-import { activityKinds, listActivity } from "@/lib/cms/activity-feed";
+import { activityKinds, CONTENT_KINDS, listActivity } from "@/lib/cms/activity-feed";
+import { atLeast } from "@/lib/cms/roles";
 import { Card, EmptyState, ButtonLink } from "@/components/cms/ui/core";
 import { PageHeader, Toolbar } from "@/components/cms/ui/layout";
 import { FilterMenu } from "@/components/cms/ui/filter-menu";
@@ -9,11 +10,12 @@ import { Table, TBody, Td, Th, THead, Tr } from "@/components/cms/ui/table";
 const fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Lagos", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default async function ActivityPage({ searchParams }: { searchParams: Promise<{ kind?: string; page?: string }> }) {
-  await requireUser();
+  const user = await requireUser();
+  const contentOnly = !atLeast(user.role, "editor");
   const sp = await searchParams;
-  const kinds = await activityKinds();
+  const kinds = (await activityKinds()).filter((k) => !contentOnly || CONTENT_KINDS.includes(k));
   const kind = kinds.includes(sp.kind ?? "") ? sp.kind! : "";
-  const { items, total, page, pages } = await listActivity({ kind, page: Number(sp.page) || 1 });
+  const { items, total, page, pages } = await listActivity({ kind, page: Number(sp.page) || 1, contentOnly });
   const href = (p: number) => `/admin/activity?${new URLSearchParams({ ...(kind ? { kind } : {}), page: String(p) })}`;
   return (
     <>

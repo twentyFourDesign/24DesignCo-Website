@@ -9,9 +9,14 @@ export async function activityKinds() {
   return rows.map((r) => r.kind as string);
 }
 
-export async function listActivity({ kind = "", page = 1 }: { kind?: string; page?: number }) {
+/** Content changes only: what an author may see. Bookings, messages, users and settings are for editors and above. */
+export const CONTENT_KINDS = ["page", "post", "project", "team", "media"];
+
+export async function listActivity({ kind = "", page = 1, contentOnly = false }: { kind?: string; page?: number; contentOnly?: boolean }) {
   const p = Math.max(1, Math.floor(page));
-  const where = kind ? sql`where kind = ${kind}` : sql``;
+  const where = kind && contentOnly && !CONTENT_KINDS.includes(kind) ? sql`where false`
+    : kind ? sql`where kind = ${kind}`
+    : contentOnly ? sql`where kind in ${sql(CONTENT_KINDS)}` : sql``;
   const [rows, [c]] = await Promise.all([
     sql`select id, user_name, kind, action, subject, link, created_at from cms_activity ${where} order by created_at desc, id desc limit ${ACTIVITY_PAGE_SIZE} offset ${(p - 1) * ACTIVITY_PAGE_SIZE}`,
     sql`select count(*)::int as n from cms_activity ${where}`,

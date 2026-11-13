@@ -6,6 +6,7 @@ import { buttonClass } from "@/components/cms/ui/button-style";
 import { cn } from "@/components/cms/ui/core";
 import { useToast } from "@/components/cms/Toast";
 import { apiFetch } from "@/lib/cms/client";
+import { uploadFiles } from "@/lib/cms/upload";
 import { FOLDERS, type MediaItem } from "@/lib/cms/blog-shared";
 
 const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url) || url.startsWith("data:image/");
@@ -17,8 +18,9 @@ const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url) |
 export default function MediaPicker({ label = "Image", value, onChange, folder = "Other", alt, onAltChange }: { label?: string; value: string; onChange: (url: string) => void; folder?: string; alt?: string; onAltChange?: (alt: string) => void }) {
   const dlg = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
-  const [broken, setBroken] = useState(false);
-  useEffect(() => setBroken(false), [value]);
+  // Remembers which address failed to load, so choosing a new image clears the error without an effect.
+  const [brokenUrl, setBrokenUrl] = useState("");
+  const broken = brokenUrl === value;
 
   return (
     <div className="space-y-2">
@@ -27,7 +29,7 @@ export default function MediaPicker({ label = "Image", value, onChange, folder =
         <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-line bg-surface-2 text-faint">
           {value && !broken && isImage(value) ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt={alt || ""} onError={() => setBroken(true)} className="size-full object-contain" />
+            <img src={value} alt={alt || ""} onError={() => setBrokenUrl(value)} className="size-full object-contain" />
           ) : value ? <FileText className="size-6" aria-hidden /> : <ImageIcon className="size-6" aria-hidden />}
         </div>
         <div className="min-w-0 flex-1 space-y-2">
@@ -72,15 +74,11 @@ function Library({ initialFolder, onPick }: { initialFolder: string; onPick: (m:
   async function upload(list: FileList | File[]) {
     const arr = Array.from(list);
     if (!arr.length) return;
-    const fd = new FormData();
-    arr.forEach((f) => fd.append("files", f));
-    fd.append("folder", folder || initialFolder);
     setBusy(true);
-    try {
-      const r = await apiFetch<{ files: MediaItem[]; errors: string[] }>("/api/cms/media", { method: "POST", body: fd });
-      r.errors?.forEach((m) => toast(m, "bad"));
-      if (r.files.length === 1) onPick(r.files[0]); else { toast(`${r.files.length} files uploaded`); await load(); }
-    } catch (e) { toast((e as Error).message, "bad"); }
+    const r = await uploadFiles(arr, folder || initialFolder);
+    r.errors.forEach((m) => toast(m, "bad"));
+    if (r.files.length === 1 && arr.length === 1) onPick(r.files[0]);
+    else if (r.files.length) { toast(`${r.files.length} file${r.files.length > 1 ? "s" : ""} uploaded`); await load(); }
     setBusy(false);
   }
 

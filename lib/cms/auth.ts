@@ -27,8 +27,13 @@ export const passwordOk = (p: unknown): p is string => typeof p === "string" && 
 export const hashToken = (t: string) => crypto.createHash("sha256").update(String(t)).digest("hex");
 export const newToken = () => crypto.randomBytes(32).toString("hex");
 
+/** Ends every session the user has open (other devices included). */
+export const endSessions = (userId: string) => sql`update cms_users set session_version = session_version + 1 where id = ${userId}`;
+
+/** Signs a session for the user. The token carries the user's session_version, so bumping that number ends every old session. */
 export async function issueSession(userId: string) {
-  const token = await new SignJWT({}).setProtectedHeader({ alg: "HS256" }).setSubject(userId).setIssuedAt().setExpirationTime(`${SESSION_DAYS}d`).sign(secret());
+  const [row] = await sql`select session_version from cms_users where id = ${userId}`;
+  const token = await new SignJWT({ v: Number(row?.sessionVersion ?? 0) }).setProtectedHeader({ alg: "HS256" }).setSubject(userId).setIssuedAt().setExpirationTime(`${SESSION_DAYS}d`).sign(secret());
   (await cookies()).set(COOKIE, token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: SESSION_DAYS * 86400, path: "/" });
 }
 
@@ -42,14 +47,17 @@ export const getUser = cache(async (): Promise<SessionUser | null> => {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
   let sub: string | undefined;
+  let v: unknown;
   try {
-    ({ payload: { sub } } = await jwtVerify(token, secret()));
+    ({ payload: { sub, v } } = await jwtVerify(token, secret()));
   } catch {
     return null;
   }
   if (!sub || !/^[0-9a-f-]{36}$/i.test(sub)) return null;
-  const [u] = await sql`select id, name, email, role, status from cms_users where id = ${sub}`;
-  return u && u.status === "active" ? (u as unknown as SessionUser) : null;
+  const [u] = await sql`select id, name, email, role, status, session_version from cms_users where id = ${sub}`;
+  // A password change or a disabled account bumps session_version, which signs out sessions made before it.
+  if (!u || u.status !== "active" || Number(v ?? 0) !== Number(u.sessionVersion)) return null;
+  return { id: u.id, name: u.name, email: u.email, role: u.role, status: u.status } as SessionUser;
 });
 
 /** For admin pages: send people who are not signed in to the login page, and people without the role back to the overview. */

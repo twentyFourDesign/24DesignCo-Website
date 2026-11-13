@@ -1,3 +1,4 @@
+import { SITE_NAME, SITE_URL, shareImages } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -16,9 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = await getProject(slug);
   if (!p) return { title: "Not found" };
+  const title = p.seo?.metaTitle || `${p.name} case study | 24 Design Co.`;
+  const description = p.seo?.metaDescription || p.summary;
+  const url = `${SITE_URL}/our-work/${p.slug}`;
+  const images = shareImages(p.coverImage || p.logo, p.name);
   return {
-    title: p.seo?.metaTitle || `${p.name} case study | 24 Design Co.`,
-    description: p.seo?.metaDescription || p.summary,
+    title, description,
+    alternates: { canonical: url },
+    openGraph: { type: "article", url, title, description, siteName: SITE_NAME, locale: "en_NG", images },
+    twitter: { card: "summary_large_image", title, description, images: images.map((i) => i.url) },
   };
 }
 

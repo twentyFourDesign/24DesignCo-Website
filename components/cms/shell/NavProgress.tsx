@@ -19,6 +19,8 @@ export function NavProgress() {
   const stop = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clear = () => { if (delay.current) clearTimeout(delay.current); if (stop.current) clearTimeout(stop.current); delay.current = stop.current = null; };
+  // The address changed, so the navigation the bar was showing has finished.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { clear(); setOn(false); }, [path, search]);
   useEffect(() => {
     const begin = () => {

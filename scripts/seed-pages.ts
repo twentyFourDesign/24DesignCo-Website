@@ -110,7 +110,7 @@ pages.push({
 // ── Service detail pages ──
 const detail = (label: string, title: string, bullets: string[], extra: Record<string, unknown> = {}) => item({ label, title, bullets, ...extra });
 pages.push({
-  path: "/services/discovery-sprint", title: "Discovery Sprint", seo: { metaTitle: "Discovery Sprint | 24 Design Co.", metaDescription: "" },
+  path: "/services/discovery-sprint", title: "Discovery Sprint", seo: { metaTitle: "Discovery Sprint | 24 Design Co.", metaDescription: "A 1 to 2 week Discovery Sprint turns your app idea into a clickable prototype, a clear feature list and a fixed quote before you build." },
   sections: [
     hero("Discovery Sprint", "Turn your idea into a clear plan", "In one to two weeks, we shape your idea into a scoped, costed plan you can build with us, fund, or hand to any team."),
     S("cards", "Details", { variant: "detail", columns: "3", items: [
@@ -123,7 +123,7 @@ pages.push({
   ],
 });
 pages.push({
-  path: "/services/mvp-development", title: "MVP Development", seo: { metaTitle: "MVP Development | 24 Design Co.", metaDescription: "" },
+  path: "/services/mvp-development", title: "MVP Development", seo: { metaTitle: "MVP Development | 24 Design Co.", metaDescription: "Launch the first version of your app in 8 to 12 weeks: design, build, testing and app store launch, with a working demo every two weeks." },
   sections: [
     hero("MVP Development", "Launch your first version in 8 to 12 weeks", "The smallest version of your idea that real users can use, designed, built, tested and launched."),
     S("cards", "Details", { variant: "detail", columns: "3", items: [
@@ -139,7 +139,7 @@ pages.push({
   ],
 });
 pages.push({
-  path: "/services/cto-as-a-service", title: "CTO as a Service", seo: { metaTitle: "CTO as a Service | 24 Design Co.", metaDescription: "" },
+  path: "/services/cto-as-a-service", title: "CTO as a Service", seo: { metaTitle: "CTO as a Service | 24 Design Co.", metaDescription: "Senior technical leadership without a full-time CTO: roadmap, engineering oversight, security and hiring support for growing startups." },
   sections: [
     hero("CTO as a Service", "Senior technical leadership without the full-time salary", "A technical partner who owns the technology side of your business, so you can focus on customers and growth."),
     S("cards", "Details", { variant: "detail", columns: "2", items: [
@@ -157,7 +157,7 @@ pages.push({
 
 // ── How we work ──
 pages.push({
-  path: "/how-we-work", title: "How We Work", seo: { metaTitle: "How We Work | 24 Design Co.", metaDescription: "" },
+  path: "/how-we-work", title: "How We Work", seo: { metaTitle: "How We Work | 24 Design Co.", metaDescription: "How we take founders from idea to launch: a free idea review, a Discovery Sprint, the MVP build and ongoing CTO support, with no surprises." },
   sections: [
     hero("How we work", "How we take you from idea to launch", "No surprises: what happens, what it costs and what we need from you."),
     S("cards", "Steps", { variant: "bordered", columns: "4", items: [
@@ -208,7 +208,7 @@ pages.push({
 
 // ── Our work ──
 pages.push({
-  path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work | 24 Design Co.", metaDescription: "" },
+  path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work | 24 Design Co.", metaDescription: "Products we have taken from idea to launch, from the Nexuss family history platform to booking systems for Jara Beach Resort and Lufasi Lodges." },
   sections: [
     hero("Our work", "Products we have taken from idea to launch", "From the first idea to a live product, and in many cases beyond launch as the technical partner."),
     S("projects", "Startups", { heading: "Startups: idea to launch", show: "case-study", layout: "cards", columns: "2", mobileCount: "all" }),

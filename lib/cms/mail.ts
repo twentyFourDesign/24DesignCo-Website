@@ -1,4 +1,5 @@
 import "server-only";
+import { SITE_URL } from "@/lib/site";
 import nodemailer, { type Transporter } from "nodemailer";
 import { getSettings } from "./settings";
 
@@ -10,6 +11,9 @@ function getTransport() {
   return (transport ??= nodemailer.createTransport(process.env.SMTP_URL));
 }
 
+/** "Lagos time" for Africa/Lagos, otherwise the zone's own city name. */
+const zoneLabel = (tz: string) => `${(tz.split("/").pop() ?? tz).replace(/_/g, " ")} time`;
+
 const fmt = (d: Date, tz: string) =>
   new Intl.DateTimeFormat("en-GB", { timeZone: tz, weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(d);
 
@@ -20,15 +24,14 @@ export async function sendBookingEmails(b: MailBooking) {
   if (!t) return;
   const s = await getSettings();
   const from = process.env.MAIL_FROM || `${s.site.name} <${s.site.email}>`;
-  const when = `${fmt(b.startAt, s.availability.timezone)} (Lagos time)`;
+  const when = `${fmt(b.startAt, s.availability.timezone)} (${zoneLabel(s.availability.timezone)})`;
   const meet = b.meetLink ? `\nJoin with Google Meet: ${b.meetLink}` : "";
-  const site = (process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
   await Promise.all([
     s.availability.alertEmail &&
       t.sendMail({
         from, to: s.availability.alertEmail, replyTo: b.email,
         subject: `New idea review: ${b.name}, ${when}`,
-        text: `${b.name} (${b.email}${b.phone ? `, ${b.phone}` : ""}) booked a free idea review for ${when}.\n\nIdea: ${b.idea}\nStage: ${b.stage}\nBudget: ${b.budget}\nFound us: ${b.source || "-"}${meet}\n\nOpen in the admin: ${site}/admin/bookings`,
+        text: `${b.name} (${b.email}${b.phone ? `, ${b.phone}` : ""}) booked a free idea review for ${when}.\n\nIdea: ${b.idea}\nStage: ${b.stage}\nBudget: ${b.budget}\nFound us: ${b.source || "-"}${meet}\n\nOpen in the admin: ${SITE_URL}/admin/bookings`,
       }),
     t.sendMail({
       from, to: b.email, replyTo: s.site.email,
@@ -36,4 +39,22 @@ export async function sendBookingEmails(b: MailBooking) {
       text: `Hi ${b.name.split(" ")[0]},\n\nThanks for booking a free idea review. We will talk on ${when}.${meet}\n\nIf you need to change the time, reply to this email.\n\n${s.site.name}\n${s.site.phone}`,
     }),
   ]);
+}
+
+export type MailMessage = { name: string; email: string; whatsapp: string; message: string; stage: string; page: string };
+
+/** Emails a contact-form message to the alert address set in the admin (Messages). Reply goes straight to the sender. */
+export async function sendMessageEmail(m: MailMessage) {
+  const t = getTransport();
+  if (!t) return false;
+  const s = await getSettings();
+  const to = s.messages.alertEmail;
+  if (!to) return false;
+  const from = process.env.MAIL_FROM || `${s.site.name} <${s.site.email}>`;
+  await t.sendMail({
+    from, to, replyTo: m.email,
+    subject: `New message from ${m.name} (website)`,
+    text: `${m.name} sent a message from the website${m.page ? ` (${m.page})` : ""}.\n\nEmail: ${m.email}\nWhatsApp: ${m.whatsapp || "-"}\nStage: ${m.stage || "-"}\n\nWhat they are building:\n${m.message}\n\nReply to this email to answer them, or open the admin: ${SITE_URL}/admin/messages`,
+  });
+  return true;
 }

@@ -1,4 +1,4 @@
-import { api, badRequest, HttpError, readJson, requireFields } from "@/lib/cms/http";
+import { api, HttpError, readJson, requireFields } from "@/lib/cms/http";
 import { sql } from "@/lib/cms/db";
 import { allow, clientIp } from "@/lib/cms/rate";
 import { checkPassword, issueSession } from "@/lib/cms/auth";

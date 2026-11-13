@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Header, { HeaderView } from "@/components/Header";
 import StickyBar from "@/components/StickyBar";
 import Script from "next/script";
-import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_TAGLINE, SITE_URL, shareImages } from "@/lib/site";
 import { getSiteSafe } from "@/lib/cms/site";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -31,9 +31,11 @@ export const metadata: Metadata = {
     locale: "en_NG",
     url: SITE_URL,
     siteName: SITE_NAME,
+    images: shareImages(null),
   },
   twitter: {
     card: "summary_large_image",
+    images: shareImages(null).map((i) => i.url),
   },
 };
 

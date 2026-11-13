@@ -29,7 +29,8 @@ export function Combo({ name, options, placeholder = "Choose…", required }: { 
   }, [open]);
   const chosen = options.find((o) => o.value === value);
   const shown = q ? options.filter((o) => `${o.label} ${o.hint ?? ""} ${o.group ?? ""}`.toLowerCase().includes(q.toLowerCase())) : options;
-  let last = "";
+  // The group heading shows above the first option of each group.
+  const heads = shown.map((o, i) => (o.group && o.group !== shown.slice(0, i).reverse().find((x) => x.group)?.group ? o.group : null));
   return (
     <div ref={box} className="relative">
       <input type="text" name={name} value={value} required={required} readOnly tabIndex={-1} aria-hidden className="pointer-events-none absolute inset-0 h-full w-full opacity-0" onFocus={() => setOpen(true)} />
@@ -45,9 +46,8 @@ export function Combo({ name, options, placeholder = "Choose…", required }: { 
           </div>
           <ul className="max-h-64 overflow-y-auto p-1">
             {shown.length === 0 && <li className="px-2.5 py-3 text-[13px] text-muted">Nothing matches.</li>}
-            {shown.map((o) => {
-              const head = o.group && o.group !== last ? o.group : null;
-              last = o.group ?? last;
+            {shown.map((o, i) => {
+              const head = heads[i];
               return (
                 <li key={o.value}>
                   {head && <div className="px-2.5 pt-2 pb-1 text-[11px] font-semibold tracking-wide text-muted uppercase">{head}</div>}

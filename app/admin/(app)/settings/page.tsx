@@ -21,7 +21,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
   else if (tab === "seo") body = <SeoForm initial={s.seoDefaults} />;
   else if (tab === "integrations") body = <IntegrationsForm initial={s.integrations} configured={googleCalendarConfigured()} />;
   else {
-    const rows = await sql`select ${USER_COLUMNS} from cms_users order by created_at asc`;
+    const rows = await sql`select ${USER_COLUMNS()} from cms_users order by created_at asc`;
     const users: UserItem[] = rows.map((u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, status: u.status, lastLoginAt: u.lastLoginAt ? new Date(u.lastLoginAt).toISOString().slice(0, 10) : "" }));
     body = <UsersPanel users={users} meId={me.id} meRole={me.role} />;
   }

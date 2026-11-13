@@ -90,7 +90,9 @@ export default function BookingFlow() {
   const [meet, setMeet] = useState("");
 
   useEffect(() => {
+    // "Today" is set after hydration on purpose: the server's clock and the visitor's page load can fall on different days.
     const t = watNow();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToday(t);
     setView({ y: t.y, m: t.m });
   }, []);
@@ -272,7 +274,7 @@ export default function BookingFlow() {
               </div>
               <label className="flex gap-3 text-sm text-slate-700">
                 <input required type="checkbox" checked={f.consent} onChange={(x) => set("consent", x.target.checked)} className="mt-1 h-4 w-4" />
-                <span>I agree that 24 Design Co. may use these details to arrange and prepare for this call. See our Privacy Policy.</span>
+                <span>I agree that 24 Design Co. may use these details to arrange and prepare for this call. See our <a href="/privacy" target="_blank" className="font-semibold text-signal hover:underline">Privacy Policy</a>.</span>
               </label>
               {err && <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{err}</p>}
               <div className="flex justify-between border-t border-slate-200 pt-6">

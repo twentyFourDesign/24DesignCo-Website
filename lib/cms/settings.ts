@@ -14,6 +14,8 @@ export type Settings = {
     timezone: string; slotMinutes: number; bufferMinutes: number; minNoticeHours: number; maxDaysAhead: number; alertEmail: string;
     days: Record<"mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun", Day>;
   };
+  /** Where messages from the website's contact form are emailed. */
+  messages: { alertEmail: string };
   integrations: {
     googleCalendar: { enabled: boolean; calendarId: string };
     googleAnalytics: { measurementId: string };
@@ -32,12 +34,13 @@ export const DEFAULT_SETTINGS: Settings = {
     { label: "Blog", url: "/blog" }, { label: "About", url: "/about" },
   ],
   navButton: { label: "Book a free idea review", url: "/contact" },
-  footer: { text: "24 Design Co. is a trading name of 24 Discovery Limited, RC 1733408.", links: [{ label: "Contact", url: "/contact" }], social: { linkedin: "", x: "", instagram: "" } },
+  footer: { text: "24 Design Co. is a trading name of 24 Discovery Limited, RC 1733408.", links: [{ label: "Contact", url: "/contact" }, { label: "Privacy", url: "/privacy" }], social: { linkedin: "", x: "", instagram: "" } },
   seoDefaults: { titleSuffix: " | 24 Design Co.", defaultDescription: "We help founders in Lagos turn ideas into launched mobile and web products, and stay on as their technical partner.", ogImage: "" },
   availability: {
     timezone: "Africa/Lagos", slotMinutes: 30, bufferMinutes: 15, minNoticeHours: 12, maxDaysAhead: 42, alertEmail: "wole@24group.com.ng",
     days: { mon: day(true), tue: day(true), wed: day(true), thu: day(true), fri: day(true), sat: day(false), sun: day(false) },
   },
+  messages: { alertEmail: "wole@24group.com.ng" },
   integrations: { googleCalendar: { enabled: false, calendarId: "" }, googleAnalytics: { measurementId: "" }, searchConsole: { verification: "" }, newsletter: { provider: "", listId: "" } },
 };
 

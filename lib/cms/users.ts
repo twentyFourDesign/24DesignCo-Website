@@ -37,4 +37,5 @@ export function inviteUrl(req: Request, token: string) {
   return `${base.replace(/\/$/, "")}/admin/accept-invite?token=${token}`;
 }
 
-export const USER_COLUMNS = sql`id, name, email, role, status, last_login_at, invite_expires_at, created_at`;
+// A function so importing this file never opens the database (that broke builds without DATABASE_URL).
+export const USER_COLUMNS = () => sql`id, name, email, role, status, last_login_at, invite_expires_at, created_at`;

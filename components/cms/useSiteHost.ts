@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-/** The address the site is being served from (for example 24designweb.vercel.app), for "Google result" previews. Empty until the page has loaded. */
+const noop = () => () => {};
+
+/** The address the site is being served from (for example 24designweb.vercel.app), for "Google result" previews. Empty while rendering on the server. */
 export function useSiteHost() {
-  const [host, setHost] = useState("");
-  useEffect(() => setHost(window.location.host), []);
-  return host;
+  return useSyncExternalStore(noop, () => window.location.host, () => "");
 }

@@ -26,31 +26,45 @@ const overlaps = (aStart: number, aEnd: number, bStart: number, bEnd: number) =>
 
 export type Slot = { start: string; end: string };
 
-/** Free slots for one date (YYYY-MM-DD in the business time zone). `av` may be passed to avoid re-reading settings. */
-export async function freeSlots(dateStr: string, opts: { now?: Date; excludeId?: string; av?: Availability } = {}): Promise<Slot[]> {
+/**
+ * Free slots for each day in a range (dates are YYYY-MM-DD in the business time zone). One database query and one Google
+ * Calendar call cover the whole range, so a 6-week calendar costs two round trips instead of one (or two) per day.
+ */
+export async function freeSlotsRange(dates: string[], opts: { now?: Date; excludeId?: string; av?: Availability } = {}): Promise<Record<string, Slot[]>> {
   const now = opts.now ?? new Date();
   const av = opts.av ?? (await getSettings()).availability;
   const today = zonedDateStr(now, av.timezone);
-  if (dateStr < today || dateStr > addDays(today, av.maxDaysAhead)) return [];
-
-  const starts = candidateStarts(dateStr, av);
-  if (!starts.length) return [];
+  const lastDay = addDays(today, av.maxDaysAhead);
   const len = av.slotMinutes * 60000;
   const buffer = av.bufferMinutes * 60000;
-  const dayStart = starts[0];
-  const dayEnd = new Date(starts[starts.length - 1].getTime() + len);
+  const out: Record<string, Slot[]> = {};
+  const days = dates.map((d) => ({ d, starts: d < today || d > lastDay ? [] : candidateStarts(d, av) }));
+  for (const { d } of days) out[d] = [];
+  const all = days.flatMap((x) => x.starts);
+  if (!all.length) return out;
 
+  const rangeStart = new Date(Math.min(...all.map((x) => x.getTime())) - buffer);
+  const rangeEnd = new Date(Math.max(...all.map((x) => x.getTime())) + len + buffer);
   const taken = opts.excludeId
-    ? await sql`select start_at, end_at from cms_bookings where status in ('pending','confirmed') and id <> ${opts.excludeId} and start_at < ${new Date(dayEnd.getTime() + buffer)} and end_at > ${new Date(dayStart.getTime() - buffer)}`
-    : await sql`select start_at, end_at from cms_bookings where status in ('pending','confirmed') and start_at < ${new Date(dayEnd.getTime() + buffer)} and end_at > ${new Date(dayStart.getTime() - buffer)}`;
-  const busy = await googleBusy(dayStart, dayEnd).catch(() => []);
-  const blocks: Block[] = [...taken.map((t) => ({ start: t.startAt as Date, end: t.endAt as Date })), ...busy];
+    ? await sql`select start_at, end_at from cms_bookings where status in ('pending','confirmed') and id <> ${opts.excludeId} and start_at < ${rangeEnd} and end_at > ${rangeStart}`
+    : await sql`select start_at, end_at from cms_bookings where status in ('pending','confirmed') and start_at < ${rangeEnd} and end_at > ${rangeStart}`;
+  const busy = await googleBusy(rangeStart, rangeEnd).catch(() => []);
+  const blocks = [...taken.map((t) => ({ start: t.startAt as Date, end: t.endAt as Date })), ...busy]
+    .map((b: Block) => [new Date(b.start).getTime(), new Date(b.end).getTime()] as const);
   const earliest = now.getTime() + av.minNoticeHours * 3600000;
 
-  return starts
-    .filter((s) => s.getTime() >= earliest)
-    .filter((s) => !blocks.some((b) => overlaps(s.getTime() - buffer, s.getTime() + len + buffer, new Date(b.start).getTime(), new Date(b.end).getTime())))
-    .map((s) => ({ start: s.toISOString(), end: new Date(s.getTime() + len).toISOString() }));
+  for (const { d, starts } of days) {
+    out[d] = starts
+      .filter((st) => st.getTime() >= earliest)
+      .filter((st) => !blocks.some(([bs, be]) => overlaps(st.getTime() - buffer, st.getTime() + len + buffer, bs, be)))
+      .map((st) => ({ start: st.toISOString(), end: new Date(st.getTime() + len).toISOString() }));
+  }
+  return out;
+}
+
+/** Free slots for one date (YYYY-MM-DD in the business time zone). `av` may be passed to avoid re-reading settings. */
+export async function freeSlots(dateStr: string, opts: { now?: Date; excludeId?: string; av?: Availability } = {}): Promise<Slot[]> {
+  return (await freeSlotsRange([dateStr], opts))[dateStr] ?? [];
 }
 
 export async function isSlotFree(start: Date, av?: Availability) {

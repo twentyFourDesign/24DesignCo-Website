@@ -6,7 +6,7 @@ import { CtaBand, PrimaryBtn, Section } from "@/components/ui";
 import MarkdownContent from "@/components/blog/MarkdownContent";
 import JsonLd from "@/components/blog/JsonLd";
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL, shareImages } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -35,12 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       authors: [post.author],
       tags: post.keywords,
-      ...(post.image ? { images: [{ url: post.image, alt: post.imageAlt || post.title }] } : {}),
+      images: shareImages(post.image, post.imageAlt || post.title),
     },
     twitter: {
       card: "summary_large_image",
       title: post.seoTitle,
       description: post.description,
+      images: shareImages(post.image).map((i) => i.url),
     },
     robots: { index: true, follow: true },
   };

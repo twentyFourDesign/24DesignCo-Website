@@ -4,11 +4,10 @@ import { requireApi } from "@/lib/cms/auth";
 import { sql } from "@/lib/cms/db";
 import { bust, TAGS } from "@/lib/cms/revalidate";
 import { logActivity } from "@/lib/cms/activity";
-import { FOLDERS } from "@/lib/cms/blog-shared";
+import { FOLDERS, MAX_UPLOAD_BYTES, MAX_UPLOAD_LABEL } from "@/lib/cms/blog-shared";
 import { sniff, svgIsSafe, svgSize } from "@/lib/cms/image-size";
 import { listMedia } from "@/lib/cms/media-server";
 
-const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_FILES = 20;
 
 // Authors may list and upload (they add images to their articles); changing and deleting is for editors.
@@ -33,7 +32,7 @@ export const POST = api(async (req: Request) => {
   const errors: string[] = [];
   for (const f of files) {
     if (f.size === 0) { errors.push(`${f.name}: the file is empty`); continue; }
-    if (f.size > MAX_BYTES) { errors.push(`${f.name}: larger than 10 MB`); continue; }
+    if (f.size > MAX_UPLOAD_BYTES) { errors.push(`${f.name}: larger than ${MAX_UPLOAD_LABEL}. Resize or compress it first.`); continue; }
     const bytes = new Uint8Array(await f.arrayBuffer());
     const kind = sniff(bytes);
     if (!kind) { errors.push(`${f.name}: only PNG, JPG, WEBP, GIF, SVG or PDF files`); continue; }

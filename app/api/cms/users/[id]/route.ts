@@ -1,5 +1,5 @@
 import { api, badRequest, forbidden, notFound, readJson, uuid } from "@/lib/cms/http";
-import { requireApi } from "@/lib/cms/auth";
+import { endSessions, requireApi } from "@/lib/cms/auth";
 import { sql } from "@/lib/cms/db";
 import { logActivity } from "@/lib/cms/activity";
 import { assertCanAssign, canManage, ownerCount, USER_COLUMNS } from "@/lib/cms/users";
@@ -31,7 +31,8 @@ export const PATCH = api(async (req: Request, { params }: Ctx) => {
   if (b.name !== undefined) name = String(b.name).trim();
   // The last active owner can be neither demoted nor disabled, so someone always keeps full access.
   if (u.role === "owner" && (role !== "owner" || status !== "active") && (await ownerCount()) <= 1) throw badRequest("You cannot change the last owner");
-  const [user] = await sql`update cms_users set role = ${role}, status = ${status}, name = ${name}, updated_at = now() where id = ${u.id} returning ${USER_COLUMNS}`;
+  const [user] = await sql`update cms_users set role = ${role}, status = ${status}, name = ${name}, updated_at = now() where id = ${u.id} returning ${USER_COLUMNS()}`;
+  if (status === "disabled" && u.status !== "disabled") await endSessions(u.id);
   await logActivity(me, "user", role !== u.role ? `changed role to ${role} for` : status !== u.status ? `${status === "disabled" ? "disabled" : "re-enabled"}` : "updated", u.email, "/admin/settings?tab=users");
   return { user };
 });

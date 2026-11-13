@@ -7,6 +7,7 @@ import { Field, Input, Select } from "@/components/cms/ui/form";
 import { buttonClass } from "@/components/cms/ui/button-style";
 import { useToast } from "@/components/cms/Toast";
 import { apiFetch } from "@/lib/cms/client";
+import { uploadFiles } from "@/lib/cms/upload";
 import { FOLDERS, fmtBytes, type MediaItem, type MediaUsage } from "@/lib/cms/blog-shared";
 
 type List = { files: MediaItem[]; counts: Record<string, number>; total: number };
@@ -38,17 +39,14 @@ export default function MediaLibrary({ initial }: { initial: List }) {
   async function upload(list: FileList | File[]) {
     const arr = Array.from(list);
     if (!arr.length) return;
-    const fd = new FormData();
-    arr.forEach((f) => fd.append("files", f));
-    fd.append("folder", folder || "Other");
     setBusy(true);
-    try {
-      const r = await apiFetch<{ files: MediaItem[]; errors: string[] }>("/api/cms/media", { method: "POST", body: fd });
-      r.errors?.forEach((m) => toast(m, "bad"));
+    const r = await uploadFiles(arr, folder || "Other");
+    r.errors.forEach((m) => toast(m, "bad"));
+    if (r.files.length) {
       toast(`${r.files.length} file${r.files.length > 1 ? "s" : ""} uploaded`);
       await load();
       if (r.files.length === 1) setSel(r.files[0]);
-    } catch (e) { toast((e as Error).message, "bad"); }
+    }
     setBusy(false);
   }
 

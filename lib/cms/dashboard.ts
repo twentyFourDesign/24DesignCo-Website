@@ -42,7 +42,11 @@ export async function overview(canEdit: boolean) {
   const [media] = await sql`select count(*)::int n from cms_media`;
   const upcoming = canEdit ? await sql`select id, name, email, idea, start_at, status from cms_bookings where start_at >= now() and status in ('pending','confirmed') order by start_at limit 5` : [];
   const [week] = canEdit ? await sql`select count(*)::int n from cms_bookings where start_at >= now() and start_at < now() + interval '7 days' and status in ('pending','confirmed')` : [{ n: 0 }];
-  const activity = await sql`select id, user_name, kind, action, subject, link, created_at from cms_activity order by created_at desc limit 8`;
+  const [msgs] = canEdit ? await sql`select count(*)::int n from cms_messages where status = 'new'` : [{ n: 0 }];
+  // Authors see content changes only, not who booked a call, sent a message or was invited.
+  const activity = canEdit
+    ? await sql`select id, user_name, kind, action, subject, link, created_at from cms_activity order by created_at desc limit 8`
+    : await sql`select id, user_name, kind, action, subject, link, created_at from cms_activity where kind in ('page','post','project','team','media') order by created_at desc limit 8`;
   const issues = canEdit ? await contentHealth() : [];
-  return { pages, posts, projects, team: team.n as number, media: media.n as number, upcoming, week: week.n as number, activity, issues };
+  return { pages, posts, projects, team: team.n as number, media: media.n as number, upcoming, week: week.n as number, activity, issues, unreadMessages: msgs.n as number };
 }
