@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #0f172a;
+  --navy-2: #1e293b;
+  --blue: #2563eb;
+  --orange: #f59e0b;
+  --cloud: #f3f4f6;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-signal: var(--blue);
+  --color-launch: var(--orange);
+  --color-cloud: var(--cloud);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-inter), sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: #fff; color: var(--navy); font-family: var(--font-sans); }
+h1, h2, h3, .font-display { font-family: var(--font-display); }
+
+/* ───────── CMS admin (the /admin screens) ─────────
+   The look is the client's original admin design: light canvas, navy sidebar with an orange active marker, blue buttons, Sora headings,
+   white cards with a hairline border. Everything is scoped to .cms so the public site is untouched. Components only use the semantic
+   names below (canvas, surface, ink, line, accent, nav…). */
+.cms {
+  --canvas: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --line: #e5e7eb;
+  --line-strong: #cbd5e1;
+  --ink: #0f172a;
+  --ink-2: #374151;
+  --muted: #4b5563;
+  --faint: #64748b;
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #dbeafe;
+  --accent-line: #93c5fd;
+  --on-accent: #ffffff;
+  --marker: #f59e0b;
+
+  --nav: #0f172a;
+  --nav-hover: #1e293b;
+  --nav-active: #1e293b;
+  --nav-line: #1e293b;
+  --nav-text: #cbd5e1;
+  --nav-ink: #ffffff;
+
+  --ok: #15803d;
+  --ok-soft: #dcfce7;
+  --ok-line: #86efac;
+  --warn: #92400e;
+  --warn-soft: #fef3c7;
+  --warn-line: #fcd34d;
+  --bad: #b91c1c;
+  --bad-soft: #fee2e2;
+  --bad-line: #fca5a5;
+  --info: #1d4ed8;
+  --info-soft: #dbeafe;
+  --info-line: #93c5fd;
+
+  --chart-1: #2563eb;
+  --chart-2: #15803d;
+  --chart-3: #f59e0b;
+  --chart-4: #b91c1c;
+  --chart-5: #7c3aed;
+
+  --shadow-card: none;
+  --shadow-pop: 0 20px 50px rgb(0 0 0 / 0.25);
+  --scrim: rgb(15 23 42 / 0.55);
+  color-scheme: light;
+
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+.cms h1, .cms h2, .cms h3 { font-family: var(--font-sora), var(--font-inter), ui-sans-serif, system-ui, sans-serif; }
+
+@theme inline {
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-on-accent: var(--on-accent);
+  --color-marker: var(--marker);
+
+  --color-nav: var(--nav);
+  --color-nav-hover: var(--nav-hover);
+  --color-nav-active: var(--nav-active);
+  --color-nav-line: var(--nav-line);
+  --color-nav-text: var(--nav-text);
+  --color-nav-ink: var(--nav-ink);
+
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-line: var(--ok-line);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-line: var(--warn-line);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-bad-line: var(--bad-line);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-line: var(--info-line);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+}
+
+/* Anything you can press shows the hand (Tailwind's reset turns it into an arrow); anything switched off says so. */
+.cms button:not(:disabled),
+.cms [role="button"],
+.cms a[href],
+.cms summary,
+.cms select:not(:disabled),
+.cms label:has(input[type="checkbox"], input[type="radio"]),
+.cms input[type="checkbox"]:not(:disabled),
+.cms input[type="radio"]:not(:disabled),
+.cms input[type="date"]:not(:disabled)::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+.cms button:disabled,
+.cms select:disabled,
+.cms input:disabled {
+  cursor: not-allowed;
+}
+
+/* Numbers line up in columns. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.cms :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.cms dialog::backdrop {
+  background: var(--scrim);
+}
+
+/* Native form controls (select lists, date pickers, scrollbars) follow the theme. */
+.cms select option {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* Cards and pages ease in, as in the reference; not for people who ask for less motion. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hubbar {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+.rise {
+  animation: rise 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The public header and sticky bar are not shown on the admin screens. */
+body:has(#cms-root) .site-chrome { display: none; }
