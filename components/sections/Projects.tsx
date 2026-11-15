@@ -39,7 +39,7 @@ export default function Projects({ f, projects }: { f: Fields; projects: Project
                 <Bullets items={p.services ?? []} />
                 {(p.stats?.length ?? 0) > 0 && (
                   <dl className="mt-7 grid grid-cols-2 gap-4 border-t border-slate-200 pt-6">
-                    {p.stats.map((s) => <div key={s.label}><dt className="sr-only">{s.label}</dt><dd className="font-display text-2xl font-extrabold">{s.value}</dd><p className="text-sm text-slate-600">{s.label}</p></div>)}
+                    {p.stats.map((s) => <div key={s.label}><dt className="sr-only">{s.label}</dt><dd className="font-display text-2xl font-extrabold">{s.display ?? s.value}</dd><p className="text-sm text-slate-600">{s.label}</p></div>)}
                   </dl>
                 )}
                 <div className="mt-6 flex justify-end"><Link href={`/our-work/${p.slug}`} className="text-base font-semibold text-signal">Read the story →</Link></div>
