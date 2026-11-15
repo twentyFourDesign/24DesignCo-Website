@@ -14,7 +14,7 @@ export type CaseStudyData = {
   challenge: { title: string; items: [string, string][] };
   stages: { no: string; name: string; title: string; points: string[] }[];
   look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
-  design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; gallery?: { title?: string; shots: [string, string][] }; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
+  design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; gallery?: { title?: string; phone?: boolean; shots: [string, string][] }; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
   extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
   run: { eyebrow?: string; title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
@@ -170,12 +170,12 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         {d.design.gallery && d.design.gallery.shots.length > 0 && (
           <div className="mt-14">
             {d.design.gallery.title && <h3 className="text-xl font-bold">{d.design.gallery.title}</h3>}
-            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className={`mt-5 grid gap-5 ${d.design.gallery.phone ? "grid-cols-2 md:grid-cols-4" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
               {d.design.gallery.shots.map(([caption, src]) => (
                 <li key={src}>
                   <a href={src} target="_blank" rel="noopener noreferrer" className="group block">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={src} alt={caption} loading="lazy" className="aspect-[4/3] w-full rounded-xl border border-slate-200 object-cover object-top shadow-sm transition group-hover:shadow-lg" />
+                    <img src={src} alt={caption} loading="lazy" className={`w-full border border-slate-200 shadow-sm transition group-hover:shadow-lg ${d.design.gallery!.phone ? "h-auto rounded-2xl" : "aspect-[4/3] rounded-xl object-cover object-top"}`} />
                     <span className="mt-2 block text-sm font-semibold text-slate-700 group-hover:text-signal">{caption}<span className="sr-only"> (opens the full screenshot)</span></span>
                   </a>
                 </li>
@@ -193,7 +193,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               </div>
               {!todo(f.shot) && (isImage(f.shot)
                 // eslint-disable-next-line @next/next/no-img-element
-                ? <img src={f.shot} alt={f.title} className="h-auto w-full rounded-xl shadow-lg" />
+                ? <img src={f.shot} alt={f.title} className="mx-auto h-auto max-h-[640px] w-auto max-w-full rounded-xl shadow-lg" />
                 : <Placeholder label={f.shot} className="aspect-[4/3]" />)}
             </div>
           ))}
