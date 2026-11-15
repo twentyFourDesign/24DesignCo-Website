@@ -14,7 +14,7 @@ export type CaseStudyData = {
   challenge: { title: string; items: [string, string][] };
   stages: { no: string; name: string; title: string; points: string[] }[];
   look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
-  design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
+  design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; gallery?: { title?: string; shots: [string, string][] }; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
   extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
   run: { eyebrow?: string; title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
@@ -157,7 +157,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{d.design.title}</h2>
         <p className="mt-4 max-w-2xl text-lg text-slate-600">{d.design.body}</p>
         {d.design.steps && (
-          <ol className="mt-8 grid gap-4 md:grid-cols-4">
+          <ol className={`mt-8 grid gap-4 sm:grid-cols-2 ${d.design.steps.length === 5 ? "lg:grid-cols-5" : "md:grid-cols-4"}`}>
             {d.design.steps.map(([n, t, b]) => (
               <li key={n} className="rounded-2xl bg-cloud p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-signal">{n}</p>
@@ -166,6 +166,22 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               </li>
             ))}
           </ol>
+        )}
+        {d.design.gallery && d.design.gallery.shots.length > 0 && (
+          <div className="mt-14">
+            {d.design.gallery.title && <h3 className="text-xl font-bold">{d.design.gallery.title}</h3>}
+            <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {d.design.gallery.shots.map(([caption, src]) => (
+                <li key={src}>
+                  <a href={src} target="_blank" rel="noopener noreferrer" className="group block">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt={caption} loading="lazy" className="aspect-[4/3] w-full rounded-xl border border-slate-200 object-cover object-top shadow-sm transition group-hover:shadow-lg" />
+                    <span className="mt-2 block text-sm font-semibold text-slate-700 group-hover:text-signal">{caption}<span className="sr-only"> (opens the full screenshot)</span></span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         <div className="mt-16 space-y-16">
           {d.design.features.map((f, i) => (
