@@ -47,10 +47,20 @@ export const data: CaseStudyData = {
     eyebrow: "Stage 03 · Product design",
     title: "What we designed, and why",
     body: "We designed the whole product before writing code, so the build team had an answer for every screen. Here are the parts that matter most.",
+    gallery: {
+      title: "The mobile app, screen by screen",
+      phone: true,
+      shots: [
+        ["First screen: one name starts the tree", "/work/nexuss/app-onboarding.jpg"],
+        ["Home: what to add next", "/work/nexuss/app-home.jpg"],
+        ["Archive: official history and family records", "/work/nexuss/app-archive.jpg"],
+        ["Time Capsule: a message that opens in a chosen year", "/work/nexuss/app-time-capsule.jpg"],
+      ],
+    },
     features: [
-      { eyebrow: "Family tree", title: "A tree the whole family builds together", body: ["Relatives join by invite, claim their own profile and add who they know. Editors and viewers have separate roles, so the tree grows without anyone losing control of it.", "Weekly hints suggest matches from census, church and family records, each with a confidence score."], shot: "[Family tree screenshot]" },
+      { eyebrow: "Family tree", title: "A tree the whole family builds together", body: ["Relatives join by invite, claim their own profile and add who they know. Editors and viewers have separate roles, so the tree grows without anyone losing control of it.", "Weekly hints suggest matches from census, church and family records, each with a confidence score."], shot: "/work/nexuss/app-tree.jpg" },
       { eyebrow: "Oral history", title: "Stories kept in the voice that told them", body: ["Families record elders straight from the app, with guided questions to start the conversation. Recordings are saved on the phone first and upload later, so a weak signal never loses a story.", "Each recording is tagged with its language, including Pidgin and Yoruba."], shot: "[Oral history screenshot]" },
-      { eyebrow: "Public timeline and country history", title: "Family memories next to national history", body: ["Families can share a story to the public Timeline. Country history is a separate, admin-run section for news, dates, events, government, politics and people.", "Users can suggest entries with a source. An admin checks each one before it goes public, and every verified entry links to the families who remember it."], shot: "[Timeline and country history screenshot]" },
+      { eyebrow: "Public timeline and country history", title: "Family memories next to national history", body: ["Families can share a story to the public Timeline. Country history is a separate, admin-run section for news, dates, events, government, politics and people.", "Users can suggest entries with a source. An admin checks each one before it goes public, and every verified entry links to the families who remember it."], shot: "/work/nexuss/app-person-weave.jpg" },
       { eyebrow: "Built for Nigeria", title: "Works offline, priced in Naira", body: ["The tree is saved on the phone and changes sync when a connection returns. A data saver mode waits for Wi-Fi before uploading photos and video.", "The store turns a family tree into things to hold: posters, family books, and printed programmes for funerals, weddings and naming ceremonies."], shot: "[Offline and store screenshot]" },
     ],
   },
@@ -58,7 +68,7 @@ export const data: CaseStudyData = {
     eyebrow: "The web app",
     title: "The same family, on a bigger screen",
     body: ["Most family research happens at a desk. The web app has every mobile feature, plus a desktop dashboard for the admins who check Country history."],
-    shots: [["nexussapp.com/tree", "/work/nexuss-web-tree.jpg"], ["nexussapp.com/history", "/work/nexuss-web-history.jpg"], ["nexussapp.com/admin/review", "/work/nexuss-web-admin.jpg"]],
+    shots: [["nexussapp.com/tree", "/work/nexuss-web-tree.jpg"], ["nexussapp.com/history", "/work/nexuss-web-history.jpg"], ["nexussapp.com/admin/review", "/work/nexuss-web-admin.jpg"], ["Admin review queue", "/work/nexuss/web-review-queue.jpg"], ["Memorable dates", "/work/nexuss/web-memorable-dates.jpg"]],
   },
   run: {
     eyebrow: "Stage 04 · The build",
