@@ -25,15 +25,15 @@ async function main() {
     const date = String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date);
     const seo = { metaTitle: String(data.seoTitle || ""), metaDescription: String(data.description || "") };
     const v = {
-      title: String(data.title), excerpt: String(data.description || ""), body, category: String(data.category || "How to build"),
+      title: String(data.title), excerpt: String(data.summary || data.description || ""), body, category: String(data.category || "How to build"),
       author: String(data.author || "24 Design Co."), publishedAt: zonedTime(date, "08:00", "Africa/Lagos"), words,
       minutes: Math.max(1, Math.ceil(words / 220)), featured: Boolean(data.featured),
     };
     const done = await sql`insert into cms_posts (title, slug, excerpt, body, category, author_name, status, published_at, cta_heading, seo, keywords, related, featured, faq_schema, show_in_keep_reading, reading_minutes, word_count)
-      values (${v.title}, ${slug}, ${v.excerpt}, ${v.body}, ${v.category}, ${v.author}, 'published', ${v.publishedAt}, 'Ready to turn this into a build plan?', ${sql.json(seo)},
+      values (${v.title}, ${slug}, ${v.excerpt}, ${v.body}, ${v.category}, ${v.author}, 'published', ${v.publishedAt}, ${String(data.cta || "Ready to turn this into a build plan?")}, ${sql.json(seo)},
         ${list(data.keywords)}, ${list(data.related)}, ${v.featured}, true, true, ${v.minutes}, ${v.words})
       on conflict (slug) do ${force ? sql`update set title = excluded.title, excerpt = excluded.excerpt, body = excluded.body, category = excluded.category,
-        author_name = excluded.author_name, status = 'published', published_at = excluded.published_at, seo = excluded.seo, keywords = excluded.keywords,
+        cta_heading = excluded.cta_heading, author_name = excluded.author_name, status = 'published', published_at = excluded.published_at, seo = excluded.seo, keywords = excluded.keywords,
         related = excluded.related, featured = excluded.featured, reading_minutes = excluded.reading_minutes, word_count = excluded.word_count, updated_at = now()` : sql`nothing`}
       returning slug`;
     console.log(done.length ? `${force ? "Replaced" : "Added"} ${slug}` : `skip ${slug} (already in the database)`);

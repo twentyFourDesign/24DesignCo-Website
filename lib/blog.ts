@@ -9,6 +9,8 @@ export type BlogPost = {
   title: string;
   seoTitle: string;
   description: string;
+  /** Short summary for cards; falls back to the meta description. */
+  excerpt: string;
   author: string;
   date: string;
   category: string;
@@ -74,9 +76,10 @@ function fromRow(p: Row): BlogPost {
     title: p.title,
     seoTitle: (p.seo?.metaTitle || "").replace(/\s*\|\s*24 Design Co\.?$/i, "").trim() || p.title,
     description: p.seo?.metaDescription || p.excerpt,
+    excerpt: (p.excerpt || "").trim() || p.seo?.metaDescription || "",
     author: p.authorName || "24 Design Co.",
     date: zonedDateStr(new Date(p.publishedAt ?? Date.now()), BLOG_ZONE),
-    category: p.category || "Guides",
+    category: p.category === "Guides" || !p.category ? "How to build" : p.category,
     keywords: p.keywords ?? [],
     related: p.related ?? [],
     featured: p.featured,
@@ -115,9 +118,12 @@ export async function getRelatedPosts(post: BlogPost, limit = 3): Promise<BlogPo
   const all = await getAllPosts();
   const bySlug = new Map(all.map((p) => [p.slug, p]));
   const related = post.related.map((slug) => bySlug.get(slug)).filter(Boolean) as BlogPost[];
-  if (related.length >= limit) return related.slice(0, limit);
   const extras = all.filter((p) => p.showInKeepReading && p.slug !== post.slug && !related.some((r) => r.slug === p.slug));
-  return [...related, ...extras].slice(0, limit);
+  // Hand-picked articles first, then others; within those, the same category comes first.
+  const same = (p: BlogPost) => (p.category === post.category ? 0 : 1);
+  const picks = [...related].sort((a, b) => same(a) - same(b));
+  const rest = [...extras].sort((a, b) => same(a) - same(b));
+  return [...picks, ...rest].slice(0, limit);
 }
 
 export function getBlogCategories(posts: BlogPost[]) {

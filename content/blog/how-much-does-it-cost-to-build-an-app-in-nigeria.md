@@ -1,6 +1,8 @@
 ---
 title: "How much does it cost to build an app in Nigeria?"
 seoTitle: "How Much Does It Cost to Build an App in Nigeria?"
+summary: "What drives the cost, what an MVP involves and how to get a quote you can trust."
+cta: "Want a clear number for your idea?"
 description: "What drives app development cost in Nigeria, MVP pricing ranges, hidden costs, how to get an accurate quote, and questions to ask before you hire a team."
 author: "Oluwole Olarewaju"
 date: "2026-09-22"

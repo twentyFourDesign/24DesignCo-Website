@@ -1,10 +1,12 @@
 ---
 title: "How to build a ridesharing app: features and cost"
 seoTitle: "How to Build a Ridesharing App: Features and Cost"
+summary: "Rider app, driver app and admin: what to build first, and the risks in Nigeria."
+cta: "Have an idea for a mobility product?"
 description: "Build a rider app, driver app and admin dashboard. Must-have features, Nigeria challenges, tech stack in plain terms, cost range and common mistakes."
 author: "Oluwole Olarewaju"
 date: "2026-10-20"
-category: "Guides"
+category: "How to build"
 keywords: "build a ridesharing app, ride hailing app features, rideshare app cost Nigeria, Uber-like app MVP"
 related: "how-much-does-it-cost-to-build-an-app-in-nigeria, what-is-an-mvp, how-to-build-a-streaming-app"
 featured: false

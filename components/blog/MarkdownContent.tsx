@@ -64,22 +64,22 @@ const components: Components = {
     const text = String(children);
     const id = slugify(text);
     return (
-      <h2 id={id} className="mt-12 scroll-mt-28 text-2xl font-extrabold tracking-tight md:text-3xl">
+      <h2 id={id} className="mb-3.5 mt-10 scroll-mt-28 text-2xl font-extrabold tracking-tight text-navy md:text-[28px]">
         {children}
       </h2>
     );
   },
   h3: ({ children }) => (
-    <h3 className="mt-8 text-xl font-bold tracking-tight md:text-2xl">{children}</h3>
+    <h3 className="mb-3 mt-8 text-xl font-bold tracking-tight text-navy">{children}</h3>
   ),
   p: ({ children }) => (
-    <p className="mt-4 text-base leading-relaxed text-slate-700 md:text-lg">
+    <p className="mb-[18px] text-base leading-[1.7] text-slate-700 md:text-[17px]">
       {mapChildren(children, "p")}
     </p>
   ),
-  ul: ({ children }) => <ul className="mt-4 list-disc space-y-2 pl-6 text-slate-700">{children}</ul>,
-  ol: ({ children }) => <ol className="mt-4 list-decimal space-y-2 pl-6 text-slate-700">{children}</ol>,
-  li: ({ children }) => <li className="leading-relaxed">{mapChildren(children, "li")}</li>,
+  ul: ({ children }) => <ul className="mb-5 list-disc space-y-1.5 pl-6 leading-[1.7] text-slate-700 md:text-[17px]">{children}</ul>,
+  ol: ({ children }) => <ol className="mb-5 list-decimal space-y-1.5 pl-6 leading-[1.7] text-slate-700 md:text-[17px]">{children}</ol>,
+  li: ({ children }) => <li>{mapChildren(children, "li")}</li>,
   strong: ({ children }) => <strong className="font-semibold text-navy">{children}</strong>,
   a: ({ href, children }) => (
     <Link href={href || "#"} className="font-medium text-signal underline-offset-2 hover:underline">
@@ -87,24 +87,29 @@ const components: Components = {
     </Link>
   ),
   table: ({ children }) => (
-    <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200">
-      <table className="min-w-full border-collapse text-left text-sm md:text-base">{children}</table>
+    <div className="mb-6 mt-1.5 overflow-x-auto">
+      <table className="min-w-full border-collapse text-left text-[15px]">{children}</table>
     </div>
   ),
-  thead: ({ children }) => <thead className="bg-cloud">{children}</thead>,
+  thead: ({ children }) => <thead className="bg-navy">{children}</thead>,
   th: ({ children }) => (
-    <th className="border-b border-slate-200 px-4 py-3 font-semibold text-navy">{children}</th>
+    <th className="px-3.5 py-3 text-sm font-semibold text-white">{children}</th>
   ),
   td: ({ children }) => (
-    <td className="border-b border-slate-100 px-4 py-3 align-top text-slate-700">{children}</td>
+    <td className="border-b border-slate-200 px-3.5 py-3 align-top text-slate-700">{children}</td>
   ),
   hr: () => <hr className="my-10 border-slate-200" />,
 };
 
-export default function MarkdownContent({ content }: { content: string }) {
+const ledeComponents: Components = {
+  ...components,
+  p: ({ children }) => <p>{mapChildren(children, "lede")}</p>,
+};
+
+export default function MarkdownContent({ content, lede = false }: { content: string; lede?: boolean }) {
   return (
     <div className="blog-prose">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={lede ? ledeComponents : components}>
         {content}
       </ReactMarkdown>
     </div>

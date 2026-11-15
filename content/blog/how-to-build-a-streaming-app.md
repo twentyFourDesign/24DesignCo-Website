@@ -1,10 +1,12 @@
 ---
 title: "How to build a streaming app: features and cost"
 seoTitle: "How to Build a Streaming App: Features and Cost"
+summary: "Content rights, delivery on slow connections and the MVP to start with."
+cta: "Have a streaming idea?"
 description: "Plan content rights, MVP streaming features, bandwidth costs, Nigeria connectivity challenges, monetization and a practical first-version build path."
 author: "Oluwole Olarewaju"
 date: "2026-10-27"
-category: "Guides"
+category: "How to build"
 keywords: "build a streaming app, video streaming app features, streaming app cost, VOD app MVP"
 related: "how-to-build-a-fitness-app, how-much-does-it-cost-to-build-an-app-in-nigeria, what-is-an-mvp"
 featured: false

@@ -1,10 +1,12 @@
 ---
 title: "How to build a CRM for agriculture: a founder's guide"
 seoTitle: "How to Build an Agriculture CRM | Founder's Guide"
+summary: "Offline-first field apps, farmer records and how to scope version one."
+cta: "Building for agriculture?"
 description: "Learn who needs an agriculture CRM, must-have MVP features, offline-first design, farmer outreach, privacy, cost and common mistakes for agribusiness founders."
 author: "Oluwole Olarewaju"
 date: "2026-09-08"
-category: "Guides"
+category: "How to build"
 keywords: "agriculture CRM, agribusiness CRM, offline first CRM, farmer management app, build agriculture CRM"
 related: "how-to-build-a-crm-version-one, what-is-an-mvp, how-much-does-it-cost-to-build-an-app-in-nigeria"
 featured: false

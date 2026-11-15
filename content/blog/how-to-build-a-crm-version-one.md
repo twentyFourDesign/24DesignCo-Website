@@ -1,10 +1,12 @@
 ---
 title: "How to build a CRM: what to include in version one"
 seoTitle: "How to Build a CRM: Version One Features"
+summary: "Off-the-shelf or custom, and the features that belong in version one."
+cta: "Need a CRM built around how you work?"
 description: "Decide off-the-shelf vs custom CRM, then scope version one: contacts, pipeline, tasks, reports, integrations, security, cost and adoption pitfalls."
 author: "Oluwole Olarewaju"
 date: "2026-09-15"
-category: "Guides"
+category: "How to build"
 keywords: "build a CRM, custom CRM MVP, CRM features version one, off-the-shelf vs custom CRM"
 related: "how-to-build-a-crm-for-agriculture, what-is-an-mvp, what-happens-in-a-discovery-sprint"
 featured: false

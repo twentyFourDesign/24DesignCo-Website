@@ -1,6 +1,8 @@
 ---
 title: "What is an MVP, and what should yours include?"
 seoTitle: "What Is an MVP? What to Include and Cut"
+summary: "The smallest version of your product that real users can use, and how to scope it."
+cta: "Ready to scope your MVP?"
 description: "Clear definition of an MVP vs prototype and full product, how to decide features, types of MVP, timeline, success signals and what comes after launch."
 author: "Oluwole Olarewaju"
 date: "2026-10-13"

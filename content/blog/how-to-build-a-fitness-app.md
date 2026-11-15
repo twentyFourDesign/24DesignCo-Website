@@ -1,10 +1,12 @@
 ---
 title: "How to build a fitness app: features and cost"
 seoTitle: "How to Build a Fitness App: Features and Cost"
+summary: "Choose one job first, then build the core loop that keeps people coming back."
+cta: "Have a fitness or wellness idea?"
 description: "Choose one job for your fitness app, pick MVP features, plan Nigeria-specific challenges, monetization, cost drivers and a step-by-step build plan."
 author: "Oluwole Olarewaju"
 date: "2026-10-06"
-category: "Guides"
+category: "How to build"
 keywords: "build a fitness app, fitness app features, fitness app cost, workout app MVP"
 related: "how-much-does-it-cost-to-build-an-app-in-nigeria, what-is-an-mvp, how-to-build-a-streaming-app"
 featured: false

@@ -1,6 +1,8 @@
 ---
 title: "What happens in a Discovery Sprint, step by step"
 seoTitle: "Discovery Sprint Explained: Step-by-Step Process"
+summary: "Day by day: the workshop, the prototype, the plan and the fixed quote."
+cta: "Ready to turn your idea into a plan?"
 description: "See what happens in a one-to-two-week Discovery Sprint: workshop, journeys, prototype, user feedback, technical approach, timeline and fixed quote."
 author: "Oluwole Olarewaju"
 date: "2026-09-29"
