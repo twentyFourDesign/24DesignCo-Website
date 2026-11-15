@@ -1,0 +1,51 @@
+# Copies the whole website database from one Neon database to another (used to move to a new Neon project).
+# Run it from GitHub: Actions › Copy database › Run workflow. It only runs when started by hand.
+#
+# Needs two repository secrets (Settings › Secrets and variables › Actions):
+#   OLD_DATABASE_URL  the database to copy FROM
+#   NEW_DATABASE_URL  the database to copy TO (should be empty)
+# Use the direct connection strings (without "-pooler" in the address).
+name: Copy database
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type COPY to copy everything from OLD_DATABASE_URL into NEW_DATABASE_URL'
+        required: true
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    container: postgres:18  # pg_dump 18 can copy from any older Postgres too
+    steps:
+      - name: Check
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          OLD: ${{ secrets.OLD_DATABASE_URL }}
+          NEW: ${{ secrets.NEW_DATABASE_URL }}
+        run: |
+          [ "$CONFIRM" = "COPY" ] || { echo "Type COPY to run the copy."; exit 1; }
+          [ -n "$OLD" ] && [ -n "$NEW" ] || { echo "Add the OLD_DATABASE_URL and NEW_DATABASE_URL secrets first."; exit 1; }
+          [ "$OLD" != "$NEW" ] || { echo "The two addresses are the same."; exit 1; }
+          echo "Tables in the old database:"; psql "$OLD" -Atc "select count(*) from information_schema.tables where table_schema = 'public'"
+          echo "Tables already in the new database:"; psql "$NEW" -Atc "select count(*) from information_schema.tables where table_schema = 'public'"
+      - name: Copy
+        env:
+          OLD: ${{ secrets.OLD_DATABASE_URL }}
+          NEW: ${{ secrets.NEW_DATABASE_URL }}
+        run: |
+          pg_dump "$OLD" --format=custom --no-owner --no-privileges --file=site.dump
+          pg_restore --dbname="$NEW" --no-owner --no-privileges --clean --if-exists site.dump || true
+      - name: Compare row counts
+        env:
+          OLD: ${{ secrets.OLD_DATABASE_URL }}
+          NEW: ${{ secrets.NEW_DATABASE_URL }}
+        run: |
+          for t in cms_users cms_pages cms_posts cms_projects cms_team cms_media cms_bookings cms_messages cms_migrations; do
+            o=$(psql "$OLD" -Atc "select count(*) from $t" 2>/dev/null || echo "-")
+            n=$(psql "$NEW" -Atc "select count(*) from $t" 2>/dev/null || echo "-")
+            echo "$t: old $o, new $n"
+            [ "$o" = "$n" ] || bad=1
+          done
+          [ -z "$bad" ] && echo "Everything copied." || { echo "Some tables differ. Check the log above."; exit 1; }
