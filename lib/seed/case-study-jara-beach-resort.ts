@@ -45,10 +45,20 @@ export const data: CaseStudyData = {
   design: {
     eyebrow: "Stage 03 · The booking flow",
     title: "What we designed, and why",
-    body: "Guests pick how they're coming, then move through four clear steps. A pending reservation panel follows them the whole way, so they always know what they've chosen and what it costs.",
-    steps: [["Step 1", "Guest details", "Who's coming, and how to reach them."], ["Step 2", "Dates and rooms", "Available dates first, then the rooms free for them."], ["Step 3", "Alcohol and meals", "Food and drinks packages added before arrival."], ["Step 4", "Extras and experiences", "Spa, cakes, riding and personalised touches."]],
+    body: "Guests pick how they're coming, then move through five clear steps. A booking panel follows them the whole way, so they always know what they've chosen and what it costs.",
+    steps: [["Step 1", "Guests", "Who's coming, with children's ages to set the price and which rooms fit."], ["Step 2", "Dates and room", "Available dates first, then the rooms free for them."], ["Step 3", "Food and drinks", "Meal and drinks packages added before arrival."], ["Step 4", "Extras", "Spa, experiences and activities, each with a day and time."], ["Step 5", "Your details", "Contact details and a photo ID, to speed up check-in."]],
+    gallery: {
+      title: "The guest side, screen by screen",
+      shots: [
+        ["Home: four ways to book", "/work/jara/home.jpg"],
+        ["Overnight stay: who's coming", "/work/jara/guests.jpg"],
+        ["Day pass: date, rates and extras", "/work/jara/day-pass-date-extras.jpg"],
+        ["Extras: a day and time for each", "/work/jara/extras.jpg"],
+        ["Your details: photo ID before arrival", "/work/jara/day-pass-details.jpg"],
+      ],
+    },
     features: [
-      { eyebrow: "Dates and rooms", title: "Weekday deals the guest can see", body: ["A “See available dates” button shows open dates before a guest tries to pick, so nobody gets stuck on a full weekend.", "The reservation panel counts off-peak nights (Sunday to Thursday, 10% off) and peak nights (Friday and Saturday, 10% more) as the dates change, so the price never needs explaining."], shot: "[Dates and rooms screenshot]" },
+      { eyebrow: "Dates and rooms", title: "Weekday deals the guest can see", body: ["A “See available dates” button shows open dates before a guest tries to pick, so nobody gets stuck on a full weekend.", "The reservation panel counts off-peak nights (Sunday to Thursday, 10% off) and peak nights (Friday and Saturday, 10% more) as the dates change, so the price never needs explaining."], shot: "/work/jara/rooms.jpg" },
       { eyebrow: "The back office", title: "The whole resort, run from one dashboard", body: ["Thirteen modules cover bookings, booking logs, guests, blacklisted guests, staff, tasks, vouchers and discounts, payments, the Club 100 membership, settings and an admin audit log."], shot: "[Back-office dashboard screenshot]" },
       { eyebrow: "Dashboard", title: "The numbers a hotel manager actually uses", body: ["Beyond bookings and revenue, the dashboard tracks average daily rate, GOPPAR and TRevPAR, occupancy against cancellations, average length of stay and how far ahead guests book.", "Occupancy is broken down by room type, and day passes, retreats and manual bookings each get their own count."], shot: "[Dashboard metrics screenshot]" },
       { eyebrow: "Guest record", title: "Every guest, remembered", body: ["Each booking opens into one page: who the guest is, how they found Jara, how they like to be contacted, the full cost breakdown and the payment.", "Staff add special-occasion notes and “The Usual”, like a 2 pm spa session on day one, so a returning guest is looked after without asking twice.", "Check-in, check-out and post-stay feedback all happen from the same screen."], shot: "[Guest record screenshot]" },
