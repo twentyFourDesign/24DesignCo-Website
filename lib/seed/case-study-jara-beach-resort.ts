@@ -10,7 +10,7 @@ export const data: CaseStudyData = {
   hero: "/work/jara-hero.jpg",
   intro: "We took Jara Beach Resort from an idea to one booking system for overnight stays, day passes, retreats and live events. That meant the guest booking flow, the back office behind it, the build, and running it after launch.",
   meta: [["Client", "Jara Beach Resort"], ["Platforms", "Web: guest booking and back office"], ["Services", "Discovery, UI/UX, web app build, launch, CTO as a Service"], ["Live at", "booking.jarabeachresort.com"]],
-  stats: [["4", "Ways to book: overnight, day pass, retreats and live events"], ["13", "Back-office modules, from guests and staff to payments and Club 100"], ["[X]", "Weeks from idea to launch"], ["[N]", "Bookings taken online since launch"]],
+  stats: [["4", "Ways to book: overnight, day pass, retreats and live events"], ["13", "Back-office modules, from guests and staff to payments and Club 100"], ["12", "Weeks from the old booking system to a new property management system"]],
   idea: {
     title: "A beach resort sells far more than rooms",
     paras: [
@@ -68,11 +68,11 @@ export const data: CaseStudyData = {
     ],
     liveTitle: "booking.jarabeachresort.com",
     liveBody: "Overnight stays, day passes, retreats and live events, all booked and paid for online.",
-    stack: ["MongoDB", "Express", "React", "Node.js", "[Payment gateway]", "Back office"],
+    stack: ["MongoDB", "Express", "React", "Node.js", "Paystack", "Squadco", "Back office"],
     note: { label: "Help, one tap away", text: "A WhatsApp “Need Help?” button sits on every page, so a guest with a question reaches the resort without leaving the booking." },
   },
   resultTitle: "Live, and filling the beach",
-  results: [["Stays", "[N]", "Overnight bookings taken online since launch"], ["Day passes", "[N]", "Day pass and retreat tickets sold"], ["Direct", "[N]%", "Of stays booked direct, with no commission"], ["Occupancy", "[N]%", "Average room occupancy in [period]"]],
+  results: [],
   quote: "[Quote from the Jara Beach Resort team about working with 24 Design Co.]",
   quoteBy: "[Name], [role], Jara Beach Resort",
   next: { title: "Lufasi Lodges: a night in the forest, booked online", href: "/our-work/lufasi-lodges" },

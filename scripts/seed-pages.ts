@@ -108,6 +108,7 @@ pages.push({
 });
 
 // ── Service detail pages ──
+const PRICE_TEXT = "Tell us your budget on the free idea review. We shape the sprint to fit it and agree a fixed price before we start, credited toward your build if you go ahead with us.";
 const detail = (label: string, title: string, bullets: string[], extra: Record<string, unknown> = {}) => item({ label, title, bullets, ...extra });
 pages.push({
   path: "/services/discovery-sprint", title: "Discovery Sprint", seo: { metaTitle: "Discovery Sprint | 24 Design Co.", metaDescription: "A 1 to 2 week Discovery Sprint turns your app idea into a clickable prototype, a clear feature list and a fixed quote before you build." },
@@ -116,7 +117,7 @@ pages.push({
     S("cards", "Details", { variant: "detail", columns: "3", items: [
       detail("What you get", "Deliverables", ["Founder workshop", "User flows and clickable prototype", "Prioritized feature list", "Technical approach in plain language", "Timeline and fixed quote"]),
       detail("Who it is for", "Founders who", ["Have an idea but no clear scope", "Need a prototype for investors", "Have quotes they cannot compare"]),
-      detail("Price", "Starting from [price]", [], { text: "Credited toward your build if you sign within [30] days.", highlight: true }),
+      detail("Price", "Sized to your budget", [], { text: PRICE_TEXT, highlight: true }),
     ] }),
     S("cards", "How it works", { background: "cloud", heading: "How it works", variant: "tinted", columns: "3", titleSize: "xl", items: [item({ label: "Days 1 to 2", title: "Workshop", text: "Users, problem and priorities." }), item({ label: "Days 3 to 7", title: "Design", text: "User journeys and the prototype." }), item({ label: "Week 2", title: "Plan and quote", text: "Scope, approach and fixed quote, presented to you." })] }),
     CTA(),
@@ -132,9 +133,9 @@ pages.push({
       detail("Payment", "Milestone payments", [], { text: "Tied to working deliverables. You own the code on final payment.", highlight: true }),
     ] }),
     S("cards", "What it costs", { background: "cloud", heading: "What it costs", variant: "tinted", columns: "3", titleSize: "2xl", items: [
-      item({ label: "Lean", title: "From [price]", text: "One platform, one main user type, basic admin." }), item({ label: "Standard", title: "From [price]", text: "Mobile app plus admin dashboard, accounts, payments or one integration." }), item({ label: "Advanced", title: "From [price]", text: "Marketplace, several user roles, multiple integrations." }),
+      item({ label: "Lean", title: "Sized to your budget", text: "One platform, one main user type, basic admin." }), item({ label: "Standard", title: "Sized to your budget", text: "Mobile app plus admin dashboard, accounts, payments or one integration." }), item({ label: "Advanced", title: "Sized to your budget", text: "Marketplace, several user roles, multiple integrations." }),
     ] }),
-    S("cards", "Proof", { variant: "detail", columns: "1", items: [detail("Proof", "Nexuss", [], { text: "From idea to live on iOS, Android and web, with 165 screens designed and built.", link: "/our-work/nexuss", linkText: "Read the story →" })] }),
+    S("cards", "Proof", { variant: "detail", columns: "1", items: [detail("Proof", "Nexuss", [], { text: "From idea to a working MVP on iOS, Android and web in 14 weeks, with 165 screens designed and built.", link: "/our-work/nexuss", linkText: "Read the story →" })] }),
     CTA(),
   ],
 });
@@ -146,10 +147,10 @@ pages.push({
       detail("What your CTO partner does", "Every month", ["Plans your roadmap", "Oversees engineering", "Keeps your product secure and online", "Advises on hiring and vendors", "Prepares you for investor due diligence"]),
       detail("Who it is for", "Founders who", ["Need someone to make technical decisions with them", "Have a launched product that needs oversight", "Want to manage developers with confidence"]),
     ] }),
-    S("cards", "Plans", { background: "cloud", heading: "Plans", variant: "tinted", columns: "3", titleSize: "2xl", footnote: "[6 or 12] month minimum. [60 to 90] days notice to end.", items: [
-      item({ label: "Maintain", title: "[price] a month", text: "Hosting oversight, security updates, bug fixes, monitoring, monthly check-in." }),
-      item({ label: "Grow", title: "[price] a month", text: "Everything in Maintain, plus [X] development hours and roadmap planning." }),
-      item({ label: "Lead", title: "[price] a month", text: "Everything in Grow, plus senior engineering time and hiring support." }),
+    S("cards", "Plans", { background: "cloud", heading: "Plans", variant: "tinted", columns: "3", titleSize: "2xl", footnote: "6 month minimum. 30 days notice to end. We agree the monthly fee with you on the free idea review.", items: [
+      item({ label: "Maintain", title: "Sized to your budget", text: "Hosting oversight, security updates, bug fixes, monitoring, monthly check-in." }),
+      item({ label: "Grow", title: "Sized to your budget", text: "Everything in Maintain, plus 10 development hours a month and roadmap planning." }),
+      item({ label: "Lead", title: "Sized to your budget", text: "Everything in Grow, plus senior engineering time and hiring support." }),
     ] }),
     CTA(),
   ],
@@ -207,13 +208,18 @@ pages.push({
 });
 
 // ── Our work ──
+const BRANDS = [
+  { label: "BRAND AND WEBSITE", title: "Ileri Labs", image: "/work/brands/ileri-labs.svg", imageAlt: "Ileri Labs logo", text: "Brand identity and website for Nigeria’s pioneering organic private label manufacturer, which formulates and packages natural skincare and haircare for beauty brands." },
+  { label: "BRAND, WEBSITE AND ORDERING", title: "Grillz & Moore", image: "/work/brands/grillz-and-moore.jpg", imageAlt: "Grillz & Moore logo", text: "Brand identity and a website with an online food ordering system for this grill restaurant." },
+  { label: "BRAND, WEBSITE AND APP", title: "EveryCation", image: "/work/brands/everycation.svg", imageAlt: "EveryCation logo", text: "Taken from idea to MVP: brand identity, website and mobile app." },
+];
 pages.push({
   path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work | 24 Design Co.", metaDescription: "Products we have taken from idea to launch, from the Nexuss family history platform to booking systems for Jara Beach Resort and Lufasi Lodges." },
   sections: [
     hero("Our work", "Products we have taken from idea to launch", "From the first idea to a live product, and in many cases beyond launch as the technical partner."),
     S("projects", "Startups", { heading: "Startups: idea to launch", show: "case-study", layout: "cards", columns: "2", mobileCount: "all" }),
     S("projects", "Ongoing partnerships", { background: "cloud", eyebrow: "Long-term clients", heading: "Ongoing partnerships", intro: "We built these products from scratch, and we are still their technical partner today.", show: "partnership", layout: "partners", linkText: "Talk to us about CTO support →", linkUrl: "/services/cto-as-a-service" }),
-    S("cards", "Brand and design work", { heading: "Brand and design work", variant: "bordered", columns: "3", items: ["ileri Labs", "Grillz & Moore", "EveryCation"].map((t) => item({ label: "BRAND AND WEBSITE", title: t, text: "[What you did.]" })) }),
+    S("cards", "Brand and design work", { heading: "Brand and design work", variant: "bordered", columns: "3", items: BRANDS.map((b) => item(b)) }),
     CTA(),
   ],
 });

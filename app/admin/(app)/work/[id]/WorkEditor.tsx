@@ -68,11 +68,11 @@ export default function WorkEditor({ project }: { project: P }) {
           <Field label="App Store link"><Input value={p.links.appStore ?? ""} onChange={(e) => set("links", { ...p.links, appStore: e.target.value })} placeholder="https://" /></Field>
           <Field label="Google Play link"><Input value={p.links.googlePlay ?? ""} onChange={(e) => set("links", { ...p.links, googlePlay: e.target.value })} placeholder="https://" /></Field>
         </FormGrid>
-        <p className="mb-2 mt-5 text-[13px] font-medium text-ink-2">Headline numbers <span className="font-normal text-muted">(shown on partnership cards, for example 5 · Years supported)</span></p>
+        <p className="mb-2 mt-5 text-[13px] font-medium text-ink-2">Headline numbers <span className="font-normal text-muted">(shown on partnership cards, for example 99% · Uptime. Type “since 2022-02” as the number to show a counter that updates itself every month)</span></p>
         <div className="space-y-2">
           {p.stats.map((s, i) => (
             <div key={i} className="flex gap-2">
-              <Input className="w-28" value={s.value} placeholder="99%" onChange={(e) => set("stats", p.stats.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))} />
+              <Input className="w-36" value={s.value} placeholder="99% or since 2022-02" title="Type since YYYY-MM to show a counter that updates every month, e.g. since 2022-02 shows 4 yrs 9 mos" onChange={(e) => set("stats", p.stats.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))} />
               <Input value={s.label} placeholder="Uptime" onChange={(e) => set("stats", p.stats.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))} />
               <Button type="button" variant="ghost" aria-label="Remove" onClick={() => set("stats", p.stats.filter((_, j) => j !== i))}><Trash2 className="size-4" /></Button>
             </div>

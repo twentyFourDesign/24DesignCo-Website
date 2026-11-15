@@ -109,6 +109,18 @@ function CardItem({ it, i, variant, bg, tSize, row }: { it: Item; i: number; var
     default:
       return (
         <article className="rounded-2xl border border-slate-200 p-7 md:p-8">
+          {str(it, "image") && (
+            // SVG logos sit centred on a light tile; a photo or JPG logo (often on its own background) fills the tile.
+            /\.svg($|\?)/i.test(str(it, "image")) ? (
+              <div className="mb-6 flex h-28 items-center justify-center rounded-xl bg-cloud p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={str(it, "image")} alt={str(it, "imageAlt") || `${title} logo`} className="max-h-full max-w-[70%] object-contain" />
+              </div>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={str(it, "image")} alt={str(it, "imageAlt") || `${title} logo`} className="mb-6 h-28 w-full rounded-xl object-cover" />
+            )
+          )}
           {label && <p className="text-sm font-bold uppercase tracking-wider text-signal">{label}</p>}
           <h3 className="mt-2 text-xl font-bold">{title}</h3>
           {(text || str(it, "textShort")) && <Both long={text} short={str(it, "textShort")} className="mt-3 leading-relaxed text-slate-600" />}

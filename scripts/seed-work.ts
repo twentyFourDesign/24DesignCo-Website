@@ -6,12 +6,13 @@ import { data as nexuss, meta as nexussMeta } from "../lib/seed/case-study-nexus
 
 // Starting content for Our Work and the founder. Safe to re-run: existing rows (matched by slug / the founder flag) are left alone.
 const partnerServices = ["Booking system built from scratch", "Maintenance, security monitoring and backups", "Ongoing CTO support and roadmap"];
-const partnerStats = [{ value: "5", label: "Years supported" }, { value: "99%", label: "Uptime" }];
+// "since YYYY-MM" values show a counter that updates every month (see lib/stat-value.ts).
+const partnerStats = (since: string) => [{ value: `since ${since}`, label: "As their technology partner" }, { value: "99%", label: "Uptime" }];
 
 const projects = [
-  { slug: "nexuss", name: "Nexuss", type: "case-study", tag: "HERITAGE PLATFORM · MOBILE AND WEB", summary: "One home for Nigeria’s family stories. 165 screens, live on iOS, Android and web.", services: [], logo: "", coverImage: "/work/nexuss-hero.jpg", links: { website: "https://nexussapp.com" }, stats: [], caseStudy: nexuss, meta: nexussMeta, featured: true },
-  { slug: "jara-beach-resort", name: "Jara Beach Resort", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system for a beach resort, designed around how the resort actually runs, and supported by us since launch.", services: partnerServices, logo: "/work/logo-jara.jpg", coverImage: "/work/jara-hero.jpg", links: { website: "https://booking.jarabeachresort.com" }, stats: partnerStats, caseStudy: jara, meta: jaraMeta, featured: true },
-  { slug: "lufasi-lodges", name: "Lufasi Lodges", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system built from scratch for Lufasi Lodges, and supported by us since launch.", services: partnerServices, logo: "/work/logo-lufasi.jpg", coverImage: "/work/lufasi-hero.jpg", links: { website: "https://booking.lufasilodges.com" }, stats: partnerStats, caseStudy: lufasi, meta: lufasiMeta, featured: true },
+  { slug: "nexuss", name: "Nexuss", type: "case-study", tag: "HERITAGE PLATFORM · MOBILE AND WEB", summary: "One home for Nigeria’s family stories. 165 screens and a working MVP for iOS, Android and web.", services: [], logo: "", coverImage: "/work/nexuss-hero.jpg", links: { website: "https://nexussapp.com" }, stats: [], caseStudy: nexuss, meta: nexussMeta, featured: true },
+  { slug: "jara-beach-resort", name: "Jara Beach Resort", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system for a beach resort, designed around how the resort actually runs, and supported by us since launch.", services: partnerServices, logo: "/work/logo-jara.jpg", coverImage: "/work/jara-hero.jpg", links: { website: "https://booking.jarabeachresort.com" }, stats: partnerStats("2022-02"), caseStudy: jara, meta: jaraMeta, featured: true },
+  { slug: "lufasi-lodges", name: "Lufasi Lodges", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system built from scratch for Lufasi Lodges, and supported by us since launch.", services: partnerServices, logo: "/work/logo-lufasi.jpg", coverImage: "/work/lufasi-hero.jpg", links: { website: "https://booking.lufasilodges.com" }, stats: partnerStats("2026-04"), caseStudy: lufasi, meta: lufasiMeta, featured: true },
 ];
 
 const founder = {

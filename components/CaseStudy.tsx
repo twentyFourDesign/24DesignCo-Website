@@ -16,7 +16,7 @@ export type CaseStudyData = {
   look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
   design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
   extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
-  run: { title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
+  run: { eyebrow?: string; title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
   results: [string, string, string][]; // [label, value, description]
   quote: string;
@@ -24,7 +24,14 @@ export type CaseStudyData = {
   next: { title: string; href: string };
 };
 
+/** True while a value still holds an unfilled "[placeholder]". Those parts stay hidden on the live site until they're filled in. */
+const todo = (...v: (string | undefined)[]) => v.some((x) => !x || /\[[^\]]*\]/.test(x));
+const isImage = (s: string) => /^(https?:\/\/|\/)/.test(s);
+
 export default function CaseStudy({ d }: { d: CaseStudyData }) {
+  const stats = d.stats.filter(([v, l]) => !todo(v, l));
+  const results = d.results.filter(([l, v, t]) => !todo(l, v, t));
+  const showQuote = !todo(d.quote, d.quoteBy);
   return (
     <main>
       <section className="bg-navy text-white">
@@ -50,16 +57,14 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
             {d.hero ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={d.hero} alt={`${d.name} screenshot`} className="h-auto w-full rounded-xl shadow-2xl shadow-black/40" />
-            ) : (
-              <Placeholder label={`[${d.name} hero screenshot]`} className="aspect-[16/10]" />
-            )}
+            ) : null}
           </div>
         </div>
       </section>
 
       <Section className="pb-0 md:pb-0">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {d.stats.map(([v, l]) => (
+        <div className={`grid grid-cols-2 gap-6 ${stats.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"}`}>
+          {stats.map(([v, l]) => (
             <div key={l}>
               <p className="font-display text-4xl font-extrabold md:text-5xl">{v}</p>
               <p className="mt-2 text-slate-600">{l}</p>
@@ -113,7 +118,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-signal">{s.no} · {s.name}</p>
               <h3 className="mt-2 text-lg font-bold leading-snug">{s.title}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
-                {s.points.map((p) => <li key={p}>{p}</li>)}
+                {s.points.filter((p) => !todo(p)).map((p) => <li key={p}>{p}</li>)}
               </ul>
             </li>
           ))}
@@ -164,13 +169,16 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         )}
         <div className="mt-16 space-y-16">
           {d.design.features.map((f, i) => (
-            <div key={f.title} className="grid items-center gap-10 lg:grid-cols-2">
-              <div className={i % 2 ? "lg:order-2" : ""}>
+            <div key={f.title} className={todo(f.shot) ? "max-w-3xl" : "grid items-center gap-10 lg:grid-cols-2"}>
+              <div className={i % 2 && !todo(f.shot) ? "lg:order-2" : ""}>
                 <Eyebrow>{f.eyebrow}</Eyebrow>
                 <h3 className="mt-2 text-2xl font-extrabold tracking-tight md:text-3xl">{f.title}</h3>
                 {f.body.map((p) => <p key={p} className="mt-4 text-lg leading-relaxed text-slate-600">{p}</p>)}
               </div>
-              <Placeholder label={f.shot} className="aspect-[4/3]" />
+              {!todo(f.shot) && (isImage(f.shot)
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={f.shot} alt={f.title} className="h-auto w-full rounded-xl shadow-lg" />
+                : <Placeholder label={f.shot} className="aspect-[4/3]" />)}
             </div>
           ))}
         </div>
@@ -183,8 +191,9 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{d.extra.title}</h2>
             {d.extra.body.map((p) => <p key={p} className="mt-4 max-w-2xl text-lg text-slate-600">{p}</p>)}
             <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {d.extra.shots.map((s, i) => typeof s === "string" ? (
-                <Placeholder key={s} label={s} className="aspect-[16/10] bg-white" />
+              {d.extra.shots.filter((s) => typeof s !== "string" || !todo(s)).map((s, i) => typeof s === "string" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={s} src={s} alt="" className="h-auto w-full rounded-xl shadow-lg" />
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img key={s[1]} src={s[1]} alt={s[0]} className={`h-auto w-full rounded-xl shadow-lg ${i === 0 && d.extra!.shots.length === 3 ? "md:col-span-2" : ""}`} />
@@ -197,17 +206,17 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
       <Section>
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <Eyebrow>Stages 04 and 05 · {d.name === "Nexuss" ? "Build and launch" : "Launch and run"}</Eyebrow>
+            <Eyebrow>{d.run.eyebrow || "Stages 04 and 05 · Launch and run"}</Eyebrow>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{d.run.title}</h2>
             {d.run.paras.map((p) => <p key={p} className="mt-5 text-lg leading-relaxed text-slate-600">{p}</p>)}
             <ul className="mt-6 flex flex-wrap gap-2">
-              {d.run.stack.map((s) => <li key={s} className="rounded-full bg-cloud px-4 py-1.5 text-sm font-semibold">{s}</li>)}
+              {d.run.stack.filter((s) => !todo(s)).map((s) => <li key={s} className="rounded-full bg-cloud px-4 py-1.5 text-sm font-semibold">{s}</li>)}
             </ul>
           </div>
           <div className="space-y-4">
             {d.run.liveTitle && (
               <div className="rounded-2xl bg-navy p-7 text-white">
-                <Eyebrow light>{d.url ? "Live at" : "Launch"}</Eyebrow>
+                <Eyebrow light>{d.url && !/soon/i.test(d.run.liveTitle) ? "Live at" : "Launch"}</Eyebrow>
                 <p className="font-display mt-2 text-xl font-bold [overflow-wrap:anywhere]">{d.run.liveTitle}</p>
                 {d.run.liveBody && <p className="mt-2 text-slate-300">{d.run.liveBody}</p>}
               </div>
@@ -219,25 +228,25 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         </div>
       </Section>
 
-      <section className="bg-cloud">
+      {(results.length > 0 || showQuote) && <section className="bg-cloud">
         <Section>
           <Eyebrow>The result</Eyebrow>
           <H2>{d.resultTitle}</H2>
-          <div className="mt-8 grid gap-4 md:grid-cols-4">
-            {d.results.map(([l, v, t]) => (
+          {results.length > 0 && <div className="mt-8 grid gap-4 md:grid-cols-4">
+            {results.map(([l, v, t]) => (
               <div key={l} className="rounded-2xl bg-white p-6">
                 <Eyebrow>{l}</Eyebrow>
                 <p className="font-display mt-2 text-4xl font-extrabold">{v}</p>
                 <p className="mt-1 text-slate-600">{t}</p>
               </div>
             ))}
-          </div>
-          <blockquote className="font-display mt-14 border-l-4 border-launch pl-6 text-2xl font-bold">
+          </div>}
+          {showQuote && <blockquote className={`font-display ${results.length ? "mt-14" : "mt-8"} border-l-4 border-launch pl-6 text-2xl font-bold`}>
             “{d.quote}”
             <span className="block pt-3 text-base font-normal text-slate-600">{d.quoteBy}</span>
-          </blockquote>
+          </blockquote>}
         </Section>
-      </section>
+      </section>}
 
       <Section>
         <Link href={d.next.href} className="group flex flex-col gap-3 rounded-2xl border border-slate-200 p-8 transition hover:border-signal md:flex-row md:items-center md:justify-between">
