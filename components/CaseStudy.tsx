@@ -16,7 +16,7 @@ export type CaseStudyData = {
   look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
   design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
   extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
-  run: { title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
+  run: { eyebrow?: string; title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
   results: [string, string, string][]; // [label, value, description]
   quote: string;
@@ -29,6 +29,7 @@ const todo = (...v: (string | undefined)[]) => v.some((x) => !x || /\[[^\]]*\]/.
 const isImage = (s: string) => /^(https?:\/\/|\/)/.test(s);
 
 export default function CaseStudy({ d }: { d: CaseStudyData }) {
+  const stats = d.stats.filter(([v, l]) => !todo(v, l));
   const results = d.results.filter(([l, v, t]) => !todo(l, v, t));
   const showQuote = !todo(d.quote, d.quoteBy);
   return (
@@ -62,8 +63,8 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
       </section>
 
       <Section className="pb-0 md:pb-0">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {d.stats.filter(([v, l]) => !todo(v, l)).map(([v, l]) => (
+        <div className={`grid grid-cols-2 gap-6 ${stats.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"}`}>
+          {stats.map(([v, l]) => (
             <div key={l}>
               <p className="font-display text-4xl font-extrabold md:text-5xl">{v}</p>
               <p className="mt-2 text-slate-600">{l}</p>
@@ -117,7 +118,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-signal">{s.no} · {s.name}</p>
               <h3 className="mt-2 text-lg font-bold leading-snug">{s.title}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
-                {s.points.map((p) => <li key={p}>{p}</li>)}
+                {s.points.filter((p) => !todo(p)).map((p) => <li key={p}>{p}</li>)}
               </ul>
             </li>
           ))}
@@ -205,7 +206,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
       <Section>
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <Eyebrow>Stages 04 and 05 · {d.name === "Nexuss" ? "Build and launch" : "Launch and run"}</Eyebrow>
+            <Eyebrow>{d.run.eyebrow || "Stages 04 and 05 · Launch and run"}</Eyebrow>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{d.run.title}</h2>
             {d.run.paras.map((p) => <p key={p} className="mt-5 text-lg leading-relaxed text-slate-600">{p}</p>)}
             <ul className="mt-6 flex flex-wrap gap-2">
@@ -215,7 +216,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
           <div className="space-y-4">
             {d.run.liveTitle && (
               <div className="rounded-2xl bg-navy p-7 text-white">
-                <Eyebrow light>{d.url ? "Live at" : "Launch"}</Eyebrow>
+                <Eyebrow light>{d.url && !/soon/i.test(d.run.liveTitle) ? "Live at" : "Launch"}</Eyebrow>
                 <p className="font-display mt-2 text-xl font-bold [overflow-wrap:anywhere]">{d.run.liveTitle}</p>
                 {d.run.liveBody && <p className="mt-2 text-slate-300">{d.run.liveBody}</p>}
               </div>
@@ -231,7 +232,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         <Section>
           <Eyebrow>The result</Eyebrow>
           <H2>{d.resultTitle}</H2>
-          <div className="mt-8 grid gap-4 md:grid-cols-4">
+          {results.length > 0 && <div className="mt-8 grid gap-4 md:grid-cols-4">
             {results.map(([l, v, t]) => (
               <div key={l} className="rounded-2xl bg-white p-6">
                 <Eyebrow>{l}</Eyebrow>
@@ -239,8 +240,8 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
                 <p className="mt-1 text-slate-600">{t}</p>
               </div>
             ))}
-          </div>
-          {showQuote && <blockquote className="font-display mt-14 border-l-4 border-launch pl-6 text-2xl font-bold">
+          </div>}
+          {showQuote && <blockquote className={`font-display ${results.length ? "mt-14" : "mt-8"} border-l-4 border-launch pl-6 text-2xl font-bold`}>
             “{d.quote}”
             <span className="block pt-3 text-base font-normal text-slate-600">{d.quoteBy}</span>
           </blockquote>}

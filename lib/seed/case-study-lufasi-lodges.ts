@@ -10,7 +10,7 @@ export const data: CaseStudyData = {
   hero: "/work/lufasi-hero.jpg",
   intro: "We took Lufasi Lodges from an idea to a live booking system. That meant the guest booking flow, the admin dashboard behind it, the build, and running it after launch.",
   meta: [["Client", "Lufasi Lodges"], ["Platforms", "Web: guest booking and admin"], ["Services", "Discovery, UI/UX, web app build, launch, CTO as a Service"], ["Live at", "booking.lufasilodges.com"]],
-  stats: [["6", "Steps from picking dates to a confirmed booking"], ["9", "Admin modules, from bookings and pricing to vouchers and reports"], ["[X]", "Weeks from idea to launch"], ["[N]", "Bookings taken online since launch"]],
+  stats: [["6", "Steps from picking dates to a confirmed booking"], ["9", "Admin modules, from bookings and pricing to vouchers and reports"], ["10", "Weeks from idea to launch"]],
   idea: {
     title: "A forest stay deserves more than a phone call to book",
     paras: [
@@ -67,11 +67,11 @@ export const data: CaseStudyData = {
     ],
     liveTitle: "booking.lufasilodges.com",
     liveBody: "Overnight stays and day dome hire, booked and paid for online, with Manage Booking for changes.",
-    stack: ["[Frontend]", "[Backend]", "[Database]", "[Payment gateway]", "Admin dashboard"],
+    stack: ["MongoDB", "Express", "React", "Node.js", "Paystack", "Squadco", "Admin dashboard"],
     note: { label: "In progress", text: "A channel manager link with Channex, so rates and dome availability stay in step between the booking site and the travel sites the lodge lists on." },
   },
   resultTitle: "Live, and booking guests into the forest",
-  results: [["Bookings", "[N]", "Bookings taken online since launch"], ["Direct", "[N]%", "Of stays booked direct, with no commission"], ["Extras", "[N]%", "Of bookings that add at least one extra"], ["Occupancy", "[N]%", "Average dome occupancy in [period]"]],
+  results: [],
   quote: "[Quote from the Lufasi Lodges team about working with 24 Design Co.]",
   quoteBy: "[Name], [role], Lufasi Lodges",
   next: { title: "Nexuss: one home for Nigeria's family stories", href: "/our-work/nexuss" },

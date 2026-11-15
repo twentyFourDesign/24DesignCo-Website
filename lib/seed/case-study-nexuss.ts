@@ -1,16 +1,16 @@
 import type { CaseStudyData } from "@/components/CaseStudy";
 
-export const meta = { title: "Nexuss case study | 24 Design Co.", description: "How we took Nexuss from a founder's idea to a live heritage platform: brand, 165 screens, the build and the launch campaign." };
+export const meta = { title: "Nexuss case study | 24 Design Co.", description: "How we took Nexuss from a founder's idea to a working MVP in 14 weeks: the brand, 165 screens across mobile and web, and the build." };
 
 export const data: CaseStudyData = {
   name: "Nexuss",
   eyebrow: "Case study · Heritage platform · Mobile and web",
-  title: "Nexuss: one home for Nigeria's family stories, from idea to launch",
+  title: "Nexuss: one home for Nigeria's family stories, from idea to MVP",
   url: "nexussapp.com",
   hero: "/work/nexuss-hero.jpg",
-  intro: "We took Nexuss from a founder's idea to a live product. That meant the brand, 165 screens across mobile and web, the build, and the launch campaign.",
-  meta: [["Client", "Nexuss"], ["Platforms", "iOS, Android, web"], ["Services", "Discovery, brand, UI/UX, MVP build, launch"], ["Live at", "nexussapp.com"]],
-  stats: [["165", "Screens designed: 113 for the mobile app and 52 for the web app"], ["5", "Stages from first workshop to public launch"], ["[X]", "Weeks from idea to launch"], ["[N]", "Families signed up in the first [period]"]],
+  intro: "We took Nexuss from a founder's idea to a working MVP in 14 weeks. That meant the brand, 165 screens across mobile and web, and the build, ready for its public launch.",
+  meta: [["Client", "Nexuss"], ["Platforms", "iOS, Android, web"], ["Services", "Discovery, brand, UI/UX, MVP build"], ["Status", "MVP built, launching soon"]],
+  stats: [["165", "Screens designed: 113 for the mobile app and 52 for the web app"], ["4", "Stages from first workshop to a working MVP"], ["14", "Weeks from idea to MVP"]],
   idea: {
     title: "Family history in Nigeria lives in people, not records",
     paras: [
@@ -34,7 +34,7 @@ export const data: CaseStudyData = {
     { no: "02", name: "Brand", title: "Give it a face", points: ["Logo and lockups", "Colour and type", "Brand manual", "Sizes for web and mobile"] },
     { no: "03", name: "Design", title: "Design every screen", points: ["113 mobile screens", "52 web screens", "Admin review tools", "Light and dark modes"] },
     { no: "04", name: "Build", title: "Build the MVP", points: ["React Native for iOS and Android", "Web app", "Supabase backend", "Offline sync"] },
-    { no: "05", name: "Launch", title: "Put it in people's hands", points: ["nexussapp.com live", "Independence 66 campaign", "Launch merchandise", "App store release [date]"] },
+    { no: "05", name: "Next", title: "Get ready to launch", points: ["Launch merchandise designed", "App store listings", "Public launch on iOS, Android and web"] },
   ],
   look: {
     title: "Roots and branches, woven around one family",
@@ -61,19 +61,20 @@ export const data: CaseStudyData = {
     shots: [["nexussapp.com/tree", "/work/nexuss-web-tree.jpg"], ["nexussapp.com/history", "/work/nexuss-web-history.jpg"], ["nexussapp.com/admin/review", "/work/nexuss-web-admin.jpg"]],
   },
   run: {
-    title: "Built lean, launched on a date that matters",
+    eyebrow: "Stage 04 · The build",
+    title: "Built lean, ready for launch",
     paras: [
       "We built the first version with React Native for iOS and Android, a web app, and a Supabase backend for accounts, data and media. One backend serves every platform.",
-      "The launch was tied to Nigeria's 66th Independence anniversary. The Independence 66 campaign invited families to add what their parents and grandparents remembered of 1 October 1960.",
+      "The MVP is complete and being prepared for public launch, with the brand, the store listings and launch merchandise designed alongside it.",
     ],
-    liveTitle: "Independence 66",
-    liveBody: "A launch campaign built around the one date every Nigerian family has a story about.",
+    liveTitle: "Launching soon",
+    liveBody: "Nexuss is getting ready for its public launch on iOS, Android and the web.",
     stack: ["React Native", "Web app", "Supabase", "Offline sync", "Admin dashboard"],
     note: { label: "Launch merchandise", text: "A white tee with the mark and a family-tree graphic on the front. The back carries a QR code to nexussapp.com and the line Made to Preserve. Lineage. Culture. Milestone. History." },
   },
-  resultTitle: "Live, and growing family by family",
-  results: [["Families", "[N]", "Families with a tree in the first [period]"], ["Stories", "[N]", "Stories and recordings saved"], ["History", "[N]", "Verified Country history entries"], ["Abroad", "[N]%", "Of users outside Nigeria"]],
-  quote: "[Quote from the Nexuss team about working with 24 Design Co.]",
-  quoteBy: "[Name], [role], Nexuss",
+  resultTitle: "An MVP ready for families",
+  results: [],
+  quote: "Nexuss started with one worry: that our families' stories disappear with the elders who carry them. In 14 weeks, it went from that idea to a brand, 165 designed screens and a working app that families can use to save those stories.",
+  quoteBy: "Oluwole Olarewaju, Founder, Nexuss",
   next: { title: "Jara Beach Resort: a booking system built from scratch", href: "/our-work/jara-beach-resort" },
 };

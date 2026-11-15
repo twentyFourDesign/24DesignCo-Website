@@ -133,9 +133,9 @@ pages.push({
       detail("Payment", "Milestone payments", [], { text: "Tied to working deliverables. You own the code on final payment.", highlight: true }),
     ] }),
     S("cards", "What it costs", { background: "cloud", heading: "What it costs", variant: "tinted", columns: "3", titleSize: "2xl", items: [
-      item({ label: "Lean", title: "From [price]", text: "One platform, one main user type, basic admin." }), item({ label: "Standard", title: "From [price]", text: "Mobile app plus admin dashboard, accounts, payments or one integration." }), item({ label: "Advanced", title: "From [price]", text: "Marketplace, several user roles, multiple integrations." }),
+      item({ label: "Lean", title: "Sized to your budget", text: "One platform, one main user type, basic admin." }), item({ label: "Standard", title: "Sized to your budget", text: "Mobile app plus admin dashboard, accounts, payments or one integration." }), item({ label: "Advanced", title: "Sized to your budget", text: "Marketplace, several user roles, multiple integrations." }),
     ] }),
-    S("cards", "Proof", { variant: "detail", columns: "1", items: [detail("Proof", "Nexuss", [], { text: "From idea to live on iOS, Android and web, with 165 screens designed and built.", link: "/our-work/nexuss", linkText: "Read the story →" })] }),
+    S("cards", "Proof", { variant: "detail", columns: "1", items: [detail("Proof", "Nexuss", [], { text: "From idea to a working MVP on iOS, Android and web in 14 weeks, with 165 screens designed and built.", link: "/our-work/nexuss", linkText: "Read the story →" })] }),
     CTA(),
   ],
 });
@@ -147,10 +147,10 @@ pages.push({
       detail("What your CTO partner does", "Every month", ["Plans your roadmap", "Oversees engineering", "Keeps your product secure and online", "Advises on hiring and vendors", "Prepares you for investor due diligence"]),
       detail("Who it is for", "Founders who", ["Need someone to make technical decisions with them", "Have a launched product that needs oversight", "Want to manage developers with confidence"]),
     ] }),
-    S("cards", "Plans", { background: "cloud", heading: "Plans", variant: "tinted", columns: "3", titleSize: "2xl", footnote: "[6 or 12] month minimum. [60 to 90] days notice to end.", items: [
-      item({ label: "Maintain", title: "[price] a month", text: "Hosting oversight, security updates, bug fixes, monitoring, monthly check-in." }),
-      item({ label: "Grow", title: "[price] a month", text: "Everything in Maintain, plus [X] development hours and roadmap planning." }),
-      item({ label: "Lead", title: "[price] a month", text: "Everything in Grow, plus senior engineering time and hiring support." }),
+    S("cards", "Plans", { background: "cloud", heading: "Plans", variant: "tinted", columns: "3", titleSize: "2xl", footnote: "6 month minimum. 30 days notice to end. We agree the monthly fee with you on the free idea review.", items: [
+      item({ label: "Maintain", title: "Sized to your budget", text: "Hosting oversight, security updates, bug fixes, monitoring, monthly check-in." }),
+      item({ label: "Grow", title: "Sized to your budget", text: "Everything in Maintain, plus 10 development hours a month and roadmap planning." }),
+      item({ label: "Lead", title: "Sized to your budget", text: "Everything in Grow, plus senior engineering time and hiring support." }),
     ] }),
     CTA(),
   ],
