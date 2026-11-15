@@ -86,5 +86,5 @@ export const data: CaseStudyData = {
   results: [],
   quote: "Nexuss started with one worry: that our families' stories disappear with the elders who carry them. In 14 weeks, it went from that idea to a brand, 165 designed screens and a working app that families can use to save those stories.",
   quoteBy: "Oluwole Olarewaju, Founder, Nexuss",
-  next: { title: "Jara Beach Resort: a booking system built from scratch", href: "/our-work/jara-beach-resort" },
+  next: { title: "EveryCation: a travel app taken from a logo to a working MVP", href: "/our-work/everycation" },
 };
