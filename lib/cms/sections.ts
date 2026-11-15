@@ -88,7 +88,7 @@ export const FIELD_OPTIONS: Record<string, { value: string; label: string }[]> =
   columns: opt("1", "2", "3", "4"),
   titleSize: opt("lg", "xl", "2xl"),
   "cards.variant": [
-    { value: "bordered", label: "Bordered card (label, title, text)" }, { value: "tinted", label: "White tile for grey bands (label, title, text)" },
+    { value: "bordered", label: "Bordered card (logo, label, title, text)" }, { value: "tinted", label: "White tile for grey bands (label, title, text)" },
     { value: "detail", label: "Detail card (label, title, checklist or text)" }, { value: "image", label: "Image on top" },
     { value: "icon", label: "Icon beside text" }, { value: "iconTop", label: "Icon on top (white tile)" },
     { value: "numbered", label: "Numbered 01, 02 …" }, { value: "feature", label: "Large rows with image (alternating)" },
@@ -107,7 +107,7 @@ export const optionsFor = (type: string, field: string) => FIELD_OPTIONS[`${type
 
 /** Which item fields matter for each card variant (the editor hides the rest). */
 export const CARD_ITEM_FIELDS: Record<string, string[]> = {
-  bordered: ["label", "title", "text", "textShort"],
+  bordered: ["image", "imageAlt", "label", "title", "text", "textShort"],
   tinted: ["label", "title", "text"],
   detail: ["label", "title", "bullets", "text", "highlight", "link", "linkText"],
   image: ["image", "imageAlt", "label", "title", "text", "bullets"],
