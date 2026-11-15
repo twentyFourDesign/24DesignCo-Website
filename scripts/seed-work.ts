@@ -3,6 +3,7 @@ import postgres from "postgres";
 import { data as jara, meta as jaraMeta } from "../lib/seed/case-study-jara-beach-resort";
 import { data as lufasi, meta as lufasiMeta } from "../lib/seed/case-study-lufasi-lodges";
 import { data as nexuss, meta as nexussMeta } from "../lib/seed/case-study-nexuss";
+import { data as everycation, meta as everycationMeta } from "../lib/seed/case-study-everycation";
 
 // Starting content for Our Work and the founder. Safe to re-run: existing rows (matched by slug / the founder flag) are left alone.
 const partnerServices = ["Booking system built from scratch", "Maintenance, security monitoring and backups", "Ongoing CTO support and roadmap"];
@@ -11,6 +12,7 @@ const partnerStats = (since: string) => [{ value: `since ${since}`, label: "As t
 
 const projects = [
   { slug: "nexuss", name: "Nexuss", type: "case-study", tag: "HERITAGE PLATFORM · MOBILE AND WEB", summary: "One home for Nigeria’s family stories. 165 screens and a working MVP for iOS, Android and web.", services: [], logo: "", coverImage: "/work/nexuss-hero.jpg", links: { website: "https://nexussapp.com" }, stats: [], caseStudy: nexuss, meta: nexussMeta, featured: true },
+  { slug: "everycation", name: "EveryCation", type: "case-study", tag: "TRAVEL APP · BRAND, MOBILE AND WEB", summary: "A travel app taken from a logo to a working MVP in 12 weeks: the brand, 45 app screens and the console behind them.", services: [], logo: "/work/brands/everycation.svg", coverImage: "/work/everycation/hero.jpg", links: {}, stats: [], caseStudy: everycation, meta: everycationMeta, featured: false },
   { slug: "jara-beach-resort", name: "Jara Beach Resort", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system for a beach resort, designed around how the resort actually runs, and supported by us since launch.", services: partnerServices, logo: "/work/logo-jara.jpg", coverImage: "/work/jara-hero.jpg", links: { website: "https://booking.jarabeachresort.com" }, stats: partnerStats("2022-02"), caseStudy: jara, meta: jaraMeta, featured: true },
   { slug: "lufasi-lodges", name: "Lufasi Lodges", type: "partnership", tag: "BOOKING PLATFORM · ONGOING CTO SUPPORT", summary: "A custom booking system built from scratch for Lufasi Lodges, and supported by us since launch.", services: partnerServices, logo: "/work/logo-lufasi.jpg", coverImage: "/work/lufasi-hero.jpg", links: { website: "https://booking.lufasilodges.com" }, stats: partnerStats("2026-04"), caseStudy: lufasi, meta: lufasiMeta, featured: true },
 ];

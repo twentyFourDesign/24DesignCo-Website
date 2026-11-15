@@ -107,7 +107,7 @@ export const optionsFor = (type: string, field: string) => FIELD_OPTIONS[`${type
 
 /** Which item fields matter for each card variant (the editor hides the rest). */
 export const CARD_ITEM_FIELDS: Record<string, string[]> = {
-  bordered: ["image", "imageAlt", "label", "title", "text", "textShort"],
+  bordered: ["image", "imageAlt", "label", "title", "text", "textShort", "link", "linkText"],
   tinted: ["label", "title", "text"],
   detail: ["label", "title", "bullets", "text", "highlight", "link", "linkText"],
   image: ["image", "imageAlt", "label", "title", "text", "bullets"],

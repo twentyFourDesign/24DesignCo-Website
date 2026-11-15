@@ -211,7 +211,7 @@ pages.push({
 const BRANDS = [
   { label: "BRAND AND WEBSITE", title: "Ileri Labs", image: "/work/brands/ileri-labs.svg", imageAlt: "Ileri Labs logo", text: "Brand identity and website for Nigeria’s pioneering organic private label manufacturer, which formulates and packages natural skincare and haircare for beauty brands." },
   { label: "BRAND, WEBSITE AND ORDERING", title: "Grillz & Moore", image: "/work/brands/grillz-and-moore.jpg", imageAlt: "Grillz & Moore logo", text: "Brand identity and a website with an online food ordering system for this grill restaurant." },
-  { label: "BRAND, WEBSITE AND APP", title: "EveryCation", image: "/work/brands/everycation.svg", imageAlt: "EveryCation logo", text: "Taken from idea to MVP: brand identity, website and mobile app." },
+  { label: "BRAND, WEBSITE AND APP", title: "EveryCation", image: "/work/brands/everycation.svg", imageAlt: "EveryCation logo", text: "Taken from idea to MVP: brand identity, website and mobile app.", link: "/our-work/everycation", linkText: "Read the case study →" },
 ];
 pages.push({
   path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work | 24 Design Co.", metaDescription: "Products we have taken from idea to launch, from the Nexuss family history platform to booking systems for Jara Beach Resort and Lufasi Lodges." },

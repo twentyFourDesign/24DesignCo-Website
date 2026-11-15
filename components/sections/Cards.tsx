@@ -124,6 +124,7 @@ function CardItem({ it, i, variant, bg, tSize, row }: { it: Item; i: number; var
           {label && <p className="text-sm font-bold uppercase tracking-wider text-signal">{label}</p>}
           <h3 className="mt-2 text-xl font-bold">{title}</h3>
           {(text || str(it, "textShort")) && <Both long={text} short={str(it, "textShort")} className="mt-3 leading-relaxed text-slate-600" />}
+          {link && <A href={link} className={`${linkCls} mt-4 inline-block`}>{str(it, "linkText") || "Read more →"}</A>}
         </article>
       );
   }

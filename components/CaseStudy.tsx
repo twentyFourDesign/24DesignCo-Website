@@ -12,10 +12,11 @@ export type CaseStudyData = {
   stats: [string, string][]; // [value, label]
   idea: { title: string; paras: string[]; brief: string; who: string };
   challenge: { title: string; items: [string, string][] };
+  stagesTitle?: string;
   stages: { no: string; name: string; title: string; points: string[] }[];
-  look: { title: string; body: string; tagline?: string; swatches: [string, string, string?][]; fonts?: [string, string][] };
+  look: { eyebrow?: string; title: string; body: string; tagline?: string; image?: string; swatches: [string, string, string?][]; fonts?: [string, string][]; aside?: { label: string; text: string } };
   design: { eyebrow: string; title: string; body: string; steps?: [string, string, string][]; gallery?: { title?: string; phone?: boolean; shots: [string, string][] }; features: { eyebrow: string; title: string; body: string[]; shot: string }[] };
-  extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[] };
+  extra?: { eyebrow: string; title: string; body: string[]; shots: (string | [string, string])[]; caption?: string };
   run: { eyebrow?: string; title: string; paras: string[]; liveTitle?: string; liveBody?: string; stack: string[]; note?: { label: string; text: string } };
   resultTitle: string;
   results: [string, string, string][]; // [label, value, description]
@@ -111,7 +112,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
 
       <Section>
         <Eyebrow>How we did it</Eyebrow>
-        <H2>From idea to launch in five stages</H2>
+        <H2>{d.stagesTitle || "From idea to launch in five stages"}</H2>
         <ol className="mt-10 grid gap-4 md:grid-cols-5">
           {d.stages.map((s) => (
             <li key={s.no} className="rounded-2xl border border-slate-200 p-5">
@@ -127,11 +128,15 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
 
       <section className="bg-cloud">
         <Section>
-          <Eyebrow>Stage 02 · {d.look.title.startsWith("Roots") ? "Brand identity" : "Look and feel"}</Eyebrow>
+          <Eyebrow>{d.look.eyebrow || `Stage 02 · ${d.look.title.startsWith("Roots") ? "Brand identity" : "Look and feel"}`}</Eyebrow>
           <h2 className="mt-3 max-w-3xl text-3xl font-extrabold tracking-tight md:text-4xl">{d.look.title}</h2>
           <p className="mt-4 max-w-2xl text-lg text-slate-600">{d.look.body}</p>
           {d.look.tagline && <p className="font-display mt-6 text-2xl font-bold">{d.look.tagline}</p>}
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {d.look.image && !todo(d.look.image) && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={d.look.image} alt={`${d.name} logo suite`} className="mt-8 h-auto w-full rounded-2xl" />
+          )}
+          <div className={`mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 ${d.look.swatches.length > 5 ? "lg:grid-cols-7" : "lg:grid-cols-5"}`}>
             {d.look.swatches.map(([n, hex, note]) => (
               <div key={n} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
                 <div className="h-24" style={{ backgroundColor: hex }} />
@@ -142,11 +147,12 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
               </div>
             ))}
           </div>
-          {d.look.fonts && (
+          {(d.look.fonts || d.look.aside) && (
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {d.look.fonts.map(([f, sample]) => (
+              {d.look.fonts?.map(([f, sample]) => (
                 <Card key={f} className="bg-white"><Eyebrow>{f}</Eyebrow><p className="font-display mt-2 text-2xl font-bold">{sample}</p></Card>
               ))}
+              {d.look.aside && <Card className="bg-white"><Eyebrow>{d.look.aside.label}</Eyebrow><p className="mt-3 text-slate-600">{d.look.aside.text}</p></Card>}
             </div>
           )}
         </Section>
@@ -215,6 +221,7 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
                 <img key={s[1]} src={s[1]} alt={s[0]} className={`h-auto w-full rounded-xl shadow-lg ${i === 0 && d.extra!.shots.length === 3 ? "md:col-span-2" : ""}`} />
               ))}
             </div>
+            {d.extra.caption && <p className="mt-4 text-sm text-slate-600">{d.extra.caption}</p>}
           </Section>
         </section>
       )}
@@ -248,11 +255,11 @@ export default function CaseStudy({ d }: { d: CaseStudyData }) {
         <Section>
           <Eyebrow>The result</Eyebrow>
           <H2>{d.resultTitle}</H2>
-          {results.length > 0 && <div className="mt-8 grid gap-4 md:grid-cols-4">
+          {results.length > 0 && <div className={`mt-8 grid gap-4 ${results.length === 2 ? "md:grid-cols-2" : results.length === 3 ? "md:grid-cols-3" : "md:grid-cols-4"}`}>
             {results.map(([l, v, t]) => (
               <div key={l} className="rounded-2xl bg-white p-6">
                 <Eyebrow>{l}</Eyebrow>
-                <p className="font-display mt-2 text-4xl font-extrabold">{v}</p>
+                <p className={`font-display mt-2 font-extrabold ${v.length > 8 ? "text-2xl" : "text-4xl"}`}>{v}</p>
                 <p className="mt-1 text-slate-600">{t}</p>
               </div>
             ))}
