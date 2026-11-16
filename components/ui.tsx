@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { whatsappLink } from "@/components/WhatsAppButton";
+import { Mail, Phone } from "lucide-react";
+import { WhatsAppIcon, whatsappLink } from "@/components/WhatsAppButton";
 import type { ReactNode } from "react";
 import { getSiteSafe } from "@/lib/cms/site";
 
@@ -69,12 +70,12 @@ export async function Footer() {
   // The main menu plus the footer's own links (Contact, Privacy), each address once.
   const links = [...s.navigation, ...s.footer.links].filter((l, i, all) => l.url && all.findIndex((x) => x.url === l.url) === i);
   return (
-    <footer className="border-t border-white/10 bg-navy pb-24 text-center text-sm text-slate-300 md:pb-0">
+    <footer className="border-t border-white/10 bg-navy pb-44 text-center text-sm text-slate-300 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-5 py-8 md:px-8">
-        <p className="flex flex-wrap justify-center gap-x-4 gap-y-1">
-          {s.phone && <a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`} className="hover:text-white">{s.phone}</a>}
-          {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-white">WhatsApp<span className="sr-only"> (opens in a new tab)</span></a>}
-          {s.email && <a href={`mailto:${s.email}`} className="hover:text-white">{s.email}</a>}
+        <p className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          {s.phone && <a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`} className="inline-flex items-center gap-2 hover:text-white"><Phone aria-hidden="true" className="h-4 w-4" />{s.phone}</a>}
+          {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-white"><WhatsAppIcon className="h-4 w-4" />WhatsApp<span className="sr-only"> (opens in a new tab)</span></a>}
+          {s.email && <a href={`mailto:${s.email}`} className="inline-flex items-center gap-2 hover:text-white"><Mail aria-hidden="true" className="h-4 w-4" />{s.email}</a>}
         </p>
         {links.length > 0 && (
           <nav aria-label="Footer" className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1">
