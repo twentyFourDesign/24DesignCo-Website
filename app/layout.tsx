@@ -7,6 +7,10 @@ import StickyBar from "@/components/StickyBar";
 import Script from "next/script";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL, shareImages } from "@/lib/site";
 import { getSiteSafe } from "@/lib/cms/site";
+import Analytics from "@/components/Analytics";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import JsonLd from "@/components/blog/JsonLd";
+import { businessData } from "@/lib/structured-data";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const sora = Sora({ variable: "--font-sora", subsets: ["latin"], weight: ["600", "700", "800"] });
@@ -45,11 +49,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={`${inter.variable} ${sora.variable}`}>
       <head>{site.searchConsole ? <meta name="google-site-verification" content={site.searchConsole} /> : null}</head>
       <body className="antialiased">
+        <a href="#main" className="site-chrome sr-only z-[100] rounded-lg bg-white px-4 py-3 font-semibold text-navy focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+        <JsonLd data={businessData(site)} />
         <Suspense fallback={<HeaderView navigation={site.navigation} button={site.navButton} path="" />}>
           <Header navigation={site.navigation} button={site.navButton} />
         </Suspense>
-        {children}
+        <div id="main" tabIndex={-1} className="outline-none">{children}</div>
+        <WhatsAppButton phone={site.phone} />
         <StickyBar label={site.navButton.label} url={site.navButton.url} />
+        <Analytics />
         {site.gaId && /^[A-Za-z0-9-]+$/.test(site.gaId) && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`} strategy="afterInteractive" />

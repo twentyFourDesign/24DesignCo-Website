@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CaseStudy from "@/components/CaseStudy";
+import JsonLd from "@/components/blog/JsonLd";
+import { breadcrumbData } from "@/lib/structured-data";
 import MarkdownContent from "@/components/blog/MarkdownContent";
 import { CtaBand, Eyebrow, PageHero, Section } from "@/components/ui";
 import { getProject, getProjects } from "@/lib/cms/projects";
@@ -34,9 +36,11 @@ export default async function Page({ params }: Props) {
   const p = await getProject(slug);
   if (!p) notFound();
   // Projects with the full designed case study use the rich template; projects added from the admin form get a simpler page.
-  if (p.caseStudy) return <CaseStudy d={p.caseStudy} />;
+  const crumbs = <JsonLd data={breadcrumbData([{ name: "Our Work", path: "/our-work" }, { name: p.name, path: `/our-work/${p.slug}` }])} />;
+  if (p.caseStudy) return <>{crumbs}<CaseStudy d={p.caseStudy} /></>;
   return (
     <main>
+      {crumbs}
       <PageHero eyebrow={p.tag || "Case study"} title={p.name}>{p.summary}</PageHero>
       <Section>
         {p.coverImage && (

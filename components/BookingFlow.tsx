@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { track } from "@/lib/analytics";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -167,6 +168,7 @@ export default function BookingFlow() {
         return;
       }
       if (!res.ok) { setErr(data.error || "Something went wrong. Please try again."); return; }
+      track("booking_submit", { stage: f.stage, source: f.heard || "" });
       setMeet(data.meetLink || "");
       done(`IR-${String(data.id).slice(-6).toUpperCase()}`);
     } catch {

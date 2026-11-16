@@ -1,6 +1,6 @@
 import type { CaseStudyData } from "@/components/CaseStudy";
 
-export const meta = { title: "Lufasi Lodges case study | 24 Design Co.", description: "How we took Lufasi Lodges from an idea to a live booking system for named geo-domes, extras and day hire." };
+export const meta = { title: "Lufasi Lodges Case Study: Booking Platform | 24 Design Co.", description: "How we took Lufasi Lodges from an idea to a live booking system for named geo-domes, extras and day hire, built in 10 weeks." };
 
 export const data: CaseStudyData = {
   name: "Lufasi Lodges",

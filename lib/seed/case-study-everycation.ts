@@ -1,6 +1,6 @@
 import type { CaseStudyData } from "@/components/CaseStudy";
 
-export const meta = { title: "EveryCation case study | 24 Design Co.", description: "How we took EveryCation, a travel app, from a logo to a working MVP in 12 weeks: the brand, 45 app screens, an admin console and the platform behind them." };
+export const meta = { title: "EveryCation Case Study: Travel App to MVP | 24 Design Co.", description: "How we took EveryCation, a travel app, from a logo to a working MVP in 12 weeks: the brand, 45 app screens, an admin console and the platform behind them." };
 
 export const data: CaseStudyData = {
   name: "EveryCation",
