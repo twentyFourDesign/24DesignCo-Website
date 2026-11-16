@@ -59,7 +59,7 @@ export const PATCH = api(async (req: Request) => {
       const o = obj(v, key), i = s.integrations;
       if (o.googleCalendar) { const g = obj(o.googleCalendar, "googleCalendar"); if (g.enabled !== undefined) i.googleCalendar.enabled = Boolean(g.enabled); if (g.calendarId !== undefined) i.googleCalendar.calendarId = str(g.calendarId, 200); }
       if (o.googleAnalytics) { const g = obj(o.googleAnalytics, "googleAnalytics"); if (g.measurementId !== undefined) { const id = str(g.measurementId, 40); if (id && !/^[A-Za-z0-9-]+$/.test(id)) throw badRequest("The Google Analytics id looks wrong, for example G-XXXXXXXXXX"); i.googleAnalytics.measurementId = id; } }
-      if (o.searchConsole) { const g = obj(o.searchConsole, "searchConsole"); if (g.verification !== undefined) i.searchConsole.verification = str(g.verification, 200); }
+      if (o.searchConsole) { const g = obj(o.searchConsole, "searchConsole"); if (g.verification !== undefined) { const raw = str(g.verification, 300).trim(); i.searchConsole.verification = (raw.match(/content\s*=\s*["']?([^"'\s>]+)/i)?.[1] ?? raw.replace(/^google-site-verification=/i, "")).replace(/["'<>\s]/g, "").slice(0, 200); } }
       if (o.newsletter) { const g = obj(o.newsletter, "newsletter"); if (g.provider !== undefined) i.newsletter.provider = str(g.provider, 60); if (g.listId !== undefined) i.newsletter.listId = str(g.listId, 120); }
     }
     changed.push(key);
