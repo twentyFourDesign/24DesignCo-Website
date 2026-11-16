@@ -26,7 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const url = `${SITE_URL}/blog/${post.slug}`;
   return {
-    title: `${post.seoTitle} | ${SITE_NAME}`,
+    // Search results show about 60 characters; the brand is added only when it still fits.
+    title: `${post.seoTitle} | ${SITE_NAME}`.length <= 60 ? `${post.seoTitle} | ${SITE_NAME}` : post.seoTitle,
     description: post.description,
     keywords: post.keywords,
     authors: [{ name: post.author }],
@@ -96,7 +97,7 @@ async function BlogPostContent({ params }: Props) {
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updated,
     author: {
       "@type": "Person",
       name: post.author,

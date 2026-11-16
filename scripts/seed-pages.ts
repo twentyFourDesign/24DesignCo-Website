@@ -50,7 +50,7 @@ pages.push({
 const IMG = "/services";
 pages.push({
   path: "/services", title: "Services",
-  seo: { metaTitle: "Services | 24 Design Co.", metaDescription: "Everything you need to launch and grow your product: Discovery Sprint, MVP development, CTO as a Service and more." },
+  seo: { metaTitle: "App Development Services for Startups | 24 Design Co.", metaDescription: "Everything you need to launch and grow your product: Discovery Sprint, MVP development, CTO as a Service and more." },
   sections: [
     S("hero", "Hero", { eyebrow: "Services", heading: "Everything you need to launch and grow your product", text: "Choose where you are: a rough idea, a first build, or a live product that needs a technical partner.", primaryButtonText: "Book a free idea review", primaryButtonLink: "/contact", secondaryButtonText: "Find your starting point", secondaryButtonLink: "#start", image: `${IMG}/hero.jpg`, imageAlt: "A product dashboard and mobile app, live on both stores" }),
     S("cards", "Pick your starting point", {
@@ -111,7 +111,7 @@ pages.push({
 const PRICE_TEXT = "Tell us your budget on the free idea review. We shape the sprint to fit it and agree a fixed price before we start, credited toward your build if you go ahead with us.";
 const detail = (label: string, title: string, bullets: string[], extra: Record<string, unknown> = {}) => item({ label, title, bullets, ...extra });
 pages.push({
-  path: "/services/discovery-sprint", title: "Discovery Sprint", seo: { metaTitle: "Discovery Sprint | 24 Design Co.", metaDescription: "A 1 to 2 week Discovery Sprint turns your app idea into a clickable prototype, a clear feature list and a fixed quote before you build." },
+  path: "/services/discovery-sprint", title: "Discovery Sprint", seo: { metaTitle: "Discovery Sprint for Startups in Lagos | 24 Design Co.", metaDescription: "A 1 to 2 week Discovery Sprint turns your app idea into a clickable prototype, a clear feature list and a fixed quote before you build." },
   sections: [
     hero("Discovery Sprint", "Turn your idea into a clear plan", "In one to two weeks, we shape your idea into a scoped, costed plan you can build with us, fund, or hand to any team."),
     S("cards", "Details", { variant: "detail", columns: "3", items: [
@@ -124,7 +124,7 @@ pages.push({
   ],
 });
 pages.push({
-  path: "/services/mvp-development", title: "MVP Development", seo: { metaTitle: "MVP Development | 24 Design Co.", metaDescription: "Launch the first version of your app in 8 to 12 weeks: design, build, testing and app store launch, with a working demo every two weeks." },
+  path: "/services/mvp-development", title: "MVP Development", seo: { metaTitle: "MVP Development in Lagos for Startups | 24 Design Co.", metaDescription: "Launch the first version of your app in 8 to 12 weeks: design, build, testing and app store launch, with a working demo every two weeks." },
   sections: [
     hero("MVP Development", "Launch your first version in 8 to 12 weeks", "The smallest version of your idea that real users can use, designed, built, tested and launched."),
     S("cards", "Details", { variant: "detail", columns: "3", items: [
@@ -140,7 +140,7 @@ pages.push({
   ],
 });
 pages.push({
-  path: "/services/cto-as-a-service", title: "CTO as a Service", seo: { metaTitle: "CTO as a Service | 24 Design Co.", metaDescription: "Senior technical leadership without a full-time CTO: roadmap, engineering oversight, security and hiring support for growing startups." },
+  path: "/services/cto-as-a-service", title: "CTO as a Service", seo: { metaTitle: "CTO as a Service for Startups in Nigeria | 24 Design Co.", metaDescription: "Senior technical leadership without a full-time CTO: roadmap, engineering oversight, security and hiring support for growing startups." },
   sections: [
     hero("CTO as a Service", "Senior technical leadership without the full-time salary", "A technical partner who owns the technology side of your business, so you can focus on customers and growth."),
     S("cards", "Details", { variant: "detail", columns: "2", items: [
@@ -158,7 +158,7 @@ pages.push({
 
 // ── How we work ──
 pages.push({
-  path: "/how-we-work", title: "How We Work", seo: { metaTitle: "How We Work | 24 Design Co.", metaDescription: "How we take founders from idea to launch: a free idea review, a Discovery Sprint, the MVP build and ongoing CTO support, with no surprises." },
+  path: "/how-we-work", title: "How We Work", seo: { metaTitle: "How We Work: Idea to Launch Process | 24 Design Co.", metaDescription: "How we take founders from idea to launch: a free idea review, a Discovery Sprint, the MVP build and ongoing CTO support, with no surprises." },
   sections: [
     hero("How we work", "How we take you from idea to launch", "No surprises: what happens, what it costs and what we need from you."),
     S("cards", "Steps", { variant: "bordered", columns: "4", items: [
@@ -180,7 +180,7 @@ pages.push({
 // ── About ──
 pages.push({
   path: "/about", title: "About",
-  seo: { metaTitle: "About | 24 Design Co.", metaDescription: "We help founders turn ideas into products, and stay on as their technical team. Meet the founder behind 24 Design Co." },
+  seo: { metaTitle: "About 24 Design Co. | Lagos Software and CTO Partner", metaDescription: "We help founders turn ideas into products, and stay on as their technical team. Meet the founder behind 24 Design Co." },
   sections: [
     hero("About", "We help founders turn ideas into products, and stay on as their technical team.", "Building products and software in Lagos since 2008."),
     S("imageText", "Our story", { variant: "story", eyebrow: "Our story", heading: "A technical partner from the idea stage", body: "Products succeed when a technical partner is involved from the idea stage, not only at the coding stage. So that is how we work: we help you decide what to build, build the first version, and stay with you as it grows.\n\n**Our mission:** to help founders turn ideas into products people use, and to stay on as their technical partner.", image: `${IMG}/about-team.jpg`, imageAlt: "Illustration of the 24 Design Co. team at work", imagePosition: "right" }),
@@ -199,7 +199,7 @@ pages.push({
 // ── Contact ──
 pages.push({
   path: "/contact", title: "Contact",
-  seo: { metaTitle: "Book a free idea review | 24 Design Co.", metaDescription: "Pick a 30-minute slot, tell us what you are building, and we will come prepared with honest advice." },
+  seo: { metaTitle: "Book a Free Idea Review for Your App | 24 Design Co.", metaDescription: "Pick a free 30-minute slot, tell us what you are building, and we will come prepared with honest advice on what it would take." },
   sections: [
     hero("Book a free idea review", "Let’s talk about your idea.", "Pick a 30-minute slot, tell us a little about what you are building, and we will come prepared with honest advice."),
     S("bookingForm", "Booking form", { heading: "", text: "" }),
@@ -214,7 +214,7 @@ const BRANDS = [
   { label: "BRAND, WEBSITE AND APP", title: "EveryCation", image: "/work/brands/everycation.svg", imageAlt: "EveryCation logo", text: "Taken from idea to MVP: brand identity, website and mobile app.", link: "/our-work/everycation", linkText: "Read the case study →" },
 ];
 pages.push({
-  path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work | 24 Design Co.", metaDescription: "Products we have taken from idea to launch, from the Nexuss family history platform to booking systems for Jara Beach Resort and Lufasi Lodges." },
+  path: "/our-work", title: "Our Work", seo: { metaTitle: "Our Work: Apps From Idea to Launch | 24 Design Co.", metaDescription: "Products we have taken from idea to launch, from the Nexuss family history platform to booking systems for Jara Beach Resort and Lufasi Lodges." },
   sections: [
     hero("Our work", "Products we have taken from idea to launch", "From the first idea to a live product, and in many cases beyond launch as the technical partner."),
     S("projects", "Startups", { heading: "Startups: idea to launch", show: "case-study", layout: "cards", columns: "2", mobileCount: "all" }),

@@ -1,6 +1,6 @@
 import type { CaseStudyData } from "@/components/CaseStudy";
 
-export const meta = { title: "Nexuss case study | 24 Design Co.", description: "How we took Nexuss from a founder's idea to a working MVP in 14 weeks: the brand, 165 screens across mobile and web, and the build." };
+export const meta = { title: "Nexuss Case Study: Family History App to MVP | 24 Design Co.", description: "How we took Nexuss from a founder's idea to a working MVP in 14 weeks: the brand, 165 screens across mobile and web, and the build." };
 
 export const data: CaseStudyData = {
   name: "Nexuss",

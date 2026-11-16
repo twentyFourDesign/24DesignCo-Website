@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 
 /** "One practical tip a month". Sign-ups appear in the admin under Messages. */
 export default function NewsletterForm() {
@@ -19,6 +20,7 @@ export default function NewsletterForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error((data as { error?: string }).error || "That didn't work. Please try again.");
+      track("newsletter_signup");
       setState("done");
     } catch (err) {
       setError((err as Error).message);

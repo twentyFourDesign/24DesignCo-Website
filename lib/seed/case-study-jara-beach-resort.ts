@@ -1,6 +1,6 @@
 import type { CaseStudyData } from "@/components/CaseStudy";
 
-export const meta = { title: "Jara Beach Resort case study | 24 Design Co.", description: "How we took Jara Beach Resort from an idea to one booking system for overnight stays, day passes, retreats and live events." };
+export const meta = { title: "Jara Beach Resort Case Study: Booking System | 24 Design Co.", description: "How we took Jara Beach Resort from an idea to one booking system for overnight stays, day passes, retreats and live events." };
 
 export const data: CaseStudyData = {
   name: "Jara Beach Resort",

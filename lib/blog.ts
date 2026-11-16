@@ -13,6 +13,8 @@ export type BlogPost = {
   excerpt: string;
   author: string;
   date: string;
+  /** Last edited, for the sitemap and structured data (YYYY-MM-DD, never earlier than `date`). */
+  updated: string;
   category: string;
   keywords: string[];
   related: string[];
@@ -66,7 +68,7 @@ function extractHeadings(content: string) {
 type Row = {
   slug: string; title: string; excerpt: string; body: string; category: string; authorName: string; publishedAt: Date | null; featuredImage: string;
   featuredImageAlt: string; ctaHeading: string; seo: { metaTitle?: string; metaDescription?: string }; keywords: string[]; related: string[];
-  featured: boolean; faqSchema: boolean; showInKeepReading: boolean; readingMinutes: number;
+  featured: boolean; faqSchema: boolean; showInKeepReading: boolean; readingMinutes: number; updatedAt: Date | null;
 };
 
 function fromRow(p: Row): BlogPost {
@@ -79,6 +81,7 @@ function fromRow(p: Row): BlogPost {
     excerpt: (p.excerpt || "").trim() || p.seo?.metaDescription || "",
     author: p.authorName || "24 Design Co.",
     date: zonedDateStr(new Date(p.publishedAt ?? Date.now()), BLOG_ZONE),
+    updated: [zonedDateStr(new Date(p.publishedAt ?? Date.now()), BLOG_ZONE), zonedDateStr(new Date(p.updatedAt ?? p.publishedAt ?? Date.now()), BLOG_ZONE)].sort()[1],
     category: p.category === "Guides" || !p.category ? "How to build" : p.category,
     keywords: p.keywords ?? [],
     related: p.related ?? [],

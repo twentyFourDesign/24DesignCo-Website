@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 
 const field = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3";
 const STAGES = ["Just an idea", "Have a prototype", "Building now", "Live product"];
@@ -26,6 +27,7 @@ export default function ContactForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error((data as { error?: string }).error || "Your message could not be sent. Please try again.");
+      track("form_submit", { stage: String(form.get("stage") ?? "") });
       setState("sent");
     } catch (err) {
       setError((err as Error).message);

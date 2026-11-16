@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { whatsappLink } from "@/components/WhatsAppButton";
 import type { ReactNode } from "react";
 import { getSiteSafe } from "@/lib/cms/site";
 
@@ -64,13 +65,20 @@ export function Placeholder({ label, className = "" }: { label: string; classNam
 
 export async function Footer() {
   const s = await getSiteSafe();
+  const wa = whatsappLink(s.phone);
+  // The main menu plus the footer's own links (Contact, Privacy), each address once.
+  const links = [...s.navigation, ...s.footer.links].filter((l, i, all) => l.url && all.findIndex((x) => x.url === l.url) === i);
   return (
     <footer className="border-t border-white/10 bg-navy pb-24 text-center text-sm text-slate-300 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-5 py-8 md:px-8">
-        <span>{s.phone} · {s.email}</span>
-        {s.footer.links.length > 0 && (
-          <nav aria-label="Footer" className="mt-2 flex flex-wrap justify-center gap-x-5 gap-y-1">
-            {s.footer.links.map((l) => <Link key={l.label} href={l.url} className="hover:text-white">{l.label}</Link>)}
+        <p className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          {s.phone && <a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`} className="hover:text-white">{s.phone}</a>}
+          {wa && <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-white">WhatsApp<span className="sr-only"> (opens in a new tab)</span></a>}
+          {s.email && <a href={`mailto:${s.email}`} className="hover:text-white">{s.email}</a>}
+        </p>
+        {links.length > 0 && (
+          <nav aria-label="Footer" className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1">
+            {links.map((l) => <Link key={l.url} href={l.url} className="hover:text-white">{l.label}</Link>)}
           </nav>
         )}
         {s.footer.text && <p className="mt-2 text-xs text-slate-400">{s.footer.text}</p>}

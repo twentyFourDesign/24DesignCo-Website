@@ -7,12 +7,12 @@ import { SITE_NAME, SITE_URL, shareImages } from "@/lib/site";
 import JsonLd from "@/components/blog/JsonLd";
 
 export const metadata: Metadata = {
-  title: `Blog | ${SITE_NAME}`,
+  title: `Startup App Development Guides | ${SITE_NAME} Blog`,
   description:
-    "Practical advice for founders building their first product: app costs in Nigeria, MVP scope, Discovery Sprints, CRM builds, fitness, ridesharing and streaming apps.",
+    "Practical guides for founders building their first app: what it costs in Nigeria, MVP scope, Discovery Sprints and how to build common products.",
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
-    title: `Blog | ${SITE_NAME}`,
+    title: `Startup App Development Guides | ${SITE_NAME} Blog`,
     description:
       "Practical advice for founders building their first product: costs, MVP scope, Discovery Sprints and product guides.",
     url: `${SITE_URL}/blog`,
